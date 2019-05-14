@@ -4,7 +4,6 @@ from app.forms import LoginForm
 from app.students import Students
 
 enrolledStudents = Students()
-print(enrolledStudents[0]['name'])
 
 @app.route('/')
 def welcome():
