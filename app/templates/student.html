@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+    {% if student.alert %}
+        <h1 style="margin-top:65px;text-align:center;">{{ student.alert }}</h1>
+    {% else %}
+        <h1 class="welcome">This is a specific students page. Thier Id is: {{ student.id }}</h1>
+        <p>their name is {{ student.name }} and they are {{student.age}} years old and they are in grade {{ student.grade }}</p>
+    {% endif %}
+
+{% endblock %}
