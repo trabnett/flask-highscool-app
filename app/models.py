@@ -1,4 +1,5 @@
 from app import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -8,9 +9,15 @@ class Student(db.Model):
     twitter = db.Column(db.String(128), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<User {}>'.format(self.last_name)
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -19,16 +26,24 @@ class Course(db.Model):
     grade = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<Course {}'.format(self.course_name)
+        return '<Course {}>'.format(self.course_name)
 
 class Teacher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64), index=True)
     last_name = db.Column(db.String(64), index=True)
     started_at_school = db.Column(db.DateTime())
+    email = db.Column(db.String(120), index=True, unique=True)
+    password_hash = db.Column(db.String(128))
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return '<Teacher {}'.format(self.last_name)
+        return '<Teacher {}>'.format(self.last_name)
 
 class StudentCourse(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -36,4 +51,4 @@ class StudentCourse(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
 
     def __repr__(self):
-        return '<StudentCourse {}'.format(self.id)
+        return '<StudentCourse {}>'.format(self.id)
