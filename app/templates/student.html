@@ -4,7 +4,7 @@
         <h1 style="margin-top:65px;text-align:center;">{{ student.alert }}</h1>
     {% else %}
         <h1 class="welcome">This is a specific students page. Thier Id is: {{ student.id }}</h1>
-        <p>their name is {{ student.first_name }} and their birthday is {{student.birthday}}</p>
+        <p>their name is {{ student.first_name }} and they are {{ years }} years old.</p>
     {% endif %}
 
 {% endblock %}

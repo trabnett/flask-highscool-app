@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+    {% if educator.alert %}
+        <h1 style="margin-top:65px;text-align:center;">{{ educator.alert }}</h1>
+    {% else %}
+        <h1 class="welcome">This is a specific teacher's page. Thier Id is: {{ educator.id }}</h1>
+        <p>their name is {{ educator.first_name }} {{ educator.last_name }} (almost everyone at this school has the same first and last name) and they started working at the school in {{ year_started }}</p>
+    {% endif %}
+
+{% endblock %}

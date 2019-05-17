@@ -1,26 +1,26 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="container jumboton" style="margin-top:35px">
-        {% if (current_user != None) and (current_user.birthday is defined) %}
-        <h2>Logged In Student:</h2>
+        {% if (current_user != None) and (current_user.started_at_school is defined) %}
+        <h2>Logged In Teacher:</h2>
             <div class="card">
-                <a href="student/{{ current_user.id }}">
+                <a href="teacher/{{ current_user.id }}">
                     <ul class="list-group">
                         <li class="list-group-item"><h3>{{ current_user.first_name }} {{ current_user.last_name }}</h3></li>
                         <li class="list-group-item">id: {{ current_user.id }}</li>
-                        <li class="list-group-item">grade: </li>
+                        <li class="list-group-item">at school since: </li>
                     </ul>
                 </a>
             </div>
         {% endif %}
-        <h2>All Enrolled Students</h2>
-        {% for student in students %}
+        <h2>Current Faculty</h2>
+        {% for teacher in teachers %}
         <div class="card">
-            <a href="student/{{ student.id }}">
+            <a href="teacher/{{ teacher.id }}">
                 <ul class="list-group">
-                    <li class="list-group-item"><h3>{{ student.first_name }} {{ student.last_name }}</h3></li>
-                    <li class="list-group-item">id: {{ student.id }}</li>
-                    <li class="list-group-item">grade: </li>
+                    <li class="list-group-item"><h3>{{ teacher.first_name }} {{ teacher.last_name }}</h3></li>
+                    <li class="list-group-item">id: {{ teacher.id }}</li>
+                    <li class="list-group-item">at school since: </li>
                 </ul>
             </a>
         </div>
