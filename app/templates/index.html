@@ -3,7 +3,7 @@
     <div class="welcome jumbotron text-center">
         <h1 style="color:blue">Welcome to TRHS</h1>
         <p class="lead">Tim Rabnett High School is a fake school created by Tim Rabnett so he can work on his skills as a Flask developer.<br>You can log in as a student or teacher to check out all of the features.</p>
-        <p class="welcome">{{ user.username }}</p>
+        <p class="welcome">Welcome {{ current_user.first_name }} {{ current_user.last_name }}</p>
     </div>
 
 {% endblock %}

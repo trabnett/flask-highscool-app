@@ -1,7 +1,20 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin, current_user
+from app import login
+import app.routes
 
-class Student(db.Model):
+@login.user_loader
+def load_user(id):
+    if app.routes.teacher['status'] == False:
+        user = Student.query.get(id)
+        return user
+    user = Teacher.query.get(id)
+    return user
+
+
+
+class Student(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64), index=True)
     last_name = db.Column(db.String(64), index=True)
@@ -28,7 +41,7 @@ class Course(db.Model):
     def __repr__(self):
         return '<Course {}>'.format(self.course_name)
 
-class Teacher(db.Model):
+class Teacher(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64), index=True)
     last_name = db.Column(db.String(64), index=True)
