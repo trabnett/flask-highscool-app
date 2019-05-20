@@ -5,6 +5,10 @@
     {% else %}
         <h1 class="welcome">This is a specific students page. Thier Id is: {{ student.id }}</h1>
         <p>their name is {{ student.first_name }} and they are {{ years }} years old.</p>
+        <p>They are registered in:</p>
+        {% for course in courses%}
+            <p>{{ course[3].course_name }}, with teacher: {{ course[1].last_name }}</p>
+        {% endfor %}
     {% endif %}
 
 {% endblock %}

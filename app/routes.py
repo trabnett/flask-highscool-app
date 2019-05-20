@@ -6,7 +6,12 @@ from app import db
 from flask_login import current_user, login_user, logout_user
 from app.models import Student, Teacher, StudentCourse, Course
 from datetime import datetime
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
+engine = db.engine
+Session = sessionmaker(engine)
+session = Session()
 teacher_check = {'status': True}
 
 @app.route('/')
@@ -16,7 +21,6 @@ def welcome():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print(current_user, "right at the start of login ==================")
     if current_user.is_authenticated and current_user.birthday:
         teacher_check['status'] = False
         return redirect(f'/student/{current_user.id}')
@@ -58,7 +62,24 @@ def student(id):
             kid = student
     x = datetime.now() - kid.birthday
     years = int(x.days / 365)
-    return render_template('student.html', student=kid, years=years)
+    x = session.query(Teacher).filter_by(id=1).first()
+    y = session.query(
+    Student, 
+    Teacher, 
+    StudentCourse,
+    Course
+        ).filter(
+            Student.id == kid.id
+        ).filter(
+            Course.id == StudentCourse.course_id
+        ).filter(
+            Teacher.id == Course.teacher_id
+        ).filter(
+            kid.id == StudentCourse.student_id
+        ).all()
+    for course in y:
+        print(course[3].course_name, course[0].first_name)
+    return render_template('student.html', student=kid, years=years, courses=y)
 
 @app.route('/teachers')
 def teachers():

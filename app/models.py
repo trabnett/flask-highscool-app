@@ -30,7 +30,7 @@ class Student(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return '<User {}>'.format(self.last_name)
+        return '<Student {}>'.format(self.last_name)
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
