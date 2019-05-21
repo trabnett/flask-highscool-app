@@ -16,8 +16,7 @@ teacher_check = {'status': True}
 
 @app.route('/')
 def welcome():
-    user = {'username': 'Tim'}
-    return render_template('index.html', user=user)
+    return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -25,7 +24,7 @@ def login():
         teacher_check['status'] = False
         return redirect(f'/student/{current_user.id}')
     if current_user.is_authenticated and current_user.started_at_school:
-        return redirect(url_for('welcome'))
+        return redirect(f'/teacher/{current_user.id}')
     form = LoginForm()
     if form.validate_on_submit():
         user = Student.query.filter_by(email=form.username.data).first()
@@ -50,20 +49,19 @@ def logout():
 
 @app.route('/students')
 def students():
-    enrolledStudents = Student.query.all()
-    return render_template('students.html', students=enrolledStudents)
+    enrolled_students = Student.query.all()
+    return render_template('students.html', students=enrolled_students)
 
 @app.route('/student/<string:id>')
 def student(id):
     kid = {'alert': 'this student is not registered'}
-    enrolledStudents = Student.query.all()
-    for student in enrolledStudents:
+    enrolled_students = Student.query.all()
+    for student in enrolled_students:
         if int(student.id) == int(id):
             kid = student
-    x = datetime.now() - kid.birthday
-    years = int(x.days / 365)
-    x = session.query(Teacher).filter_by(id=1).first()
-    y = session.query(
+    days = datetime.now() - kid.birthday
+    years = int(days.days / 365)
+    student_courses = session.query(
     Student, 
     Teacher, 
     StudentCourse,
@@ -77,9 +75,7 @@ def student(id):
         ).filter(
             kid.id == StudentCourse.student_id
         ).all()
-    for course in y:
-        print(course[3].course_name, course[0].first_name)
-    return render_template('student.html', student=kid, years=years, courses=y)
+    return render_template('student.html', student=kid, years=years, courses=student_courses)
 
 @app.route('/teachers')
 def teachers():
@@ -93,4 +89,9 @@ def teacher(id):
     for person in faculty:
         if int(person.id) == int(id):
             educator = person
-    return render_template('teacher.html', educator=educator, year_started=educator.started_at_school.year)
+    teacher_courses = session.query(Teacher, Course
+        ).filter(educator.id == Course.teacher_id
+        ).filter(educator.id == Teacher.id
+        ).all()
+    print(teacher_courses, educator.id)
+    return render_template('teacher.html', educator=educator, year_started=educator.started_at_school.year, courses=teacher_courses)
