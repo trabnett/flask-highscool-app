@@ -5,14 +5,14 @@
     {% else %}
         <h1 class="welcome">This is a specific students page. Thier Id is: {{ student.id }}</h1>
         <p>their name is {{ student.first_name }} and they are {{ years }} years old.</p>
-        <p>They are registered in:</p>
+        <p>They are registered in:</p> 
         <ul>
             {% for course in courses%}
                 <li>
                     <h1>{{ course[3].course_name }}</h1>
                     <button onclick="hello({{loop.index0}})">more info</button>
+                    <p id={{loop.index0}} style="visibility:hidden;">Grade {{ course[3].grade }} {{ course[3].course_name }}, with teacher: <a href="../teacher/{{ course[1].id }}">{{ course[1].last_name }}</a></p>
                 </li>
-                <p id={{loop.index0}} style="visibility:hidden;">Grade {{ course[3].grade }} {{ course[3].course_name }}, with teacher: {{ course[1].last_name }}</p>
             {% endfor %}
         </ul>
     {% endif %}
