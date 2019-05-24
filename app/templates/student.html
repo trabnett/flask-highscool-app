@@ -8,9 +8,13 @@
         <p>They are registered in:</p>
         <ul>
             {% for course in courses%}
-                <li>Grade {{ course[3].grade}} {{ course[3].course_name }}, with teacher: {{ course[1].last_name }}</li>
+                <li>
+                    <h1>{{ course[3].course_name }}</h1>
+                    <button onclick="hello({{loop.index0}})">more info</button>
+                </li>
+                <p id={{loop.index0}} style="visibility:hidden;">Grade {{ course[3].grade }} {{ course[3].course_name }}, with teacher: {{ course[1].last_name }}</p>
             {% endfor %}
         </ul>
     {% endif %}
-
+    <script type="text/javascript" src="{{ url_for('static', filename='javascript.js') }}"></script>
 {% endblock %}
