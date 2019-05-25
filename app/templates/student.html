@@ -3,14 +3,15 @@
     {% if student.alert %}
         <h1 style="margin-top:65px;text-align:center;">{{ student.alert }}</h1>
     {% else %}
-        <h1 class="welcome">This is a specific students page. Thier Id is: {{ student.id }}</h1>
+        <img class="card-img-top" style="width: 18em;margin-top:45px;" src="https://hatchexperience.org/wp-content/uploads/2016/09/RCMsmile2016-700x748.jpg">
+        <h1>This is a specific students page. Thier Id is: {{ student.id }}</h1>
         <p>their name is {{ student.first_name }} and they are {{ years }} years old.</p>
         <p>They are registered in:</p> 
         <ul>
             {% for course in courses%}
                 <li>
                     <h1>{{ course[3].course_name }}</h1>
-                    <button onclick="hello({{loop.index0}})">more info</button>
+                    <button class="btn btn-primary" onclick="hello({{loop.index0}})">more info</button>
                     <p id={{loop.index0}} style="visibility:hidden;">Grade {{ course[3].grade }} {{ course[3].course_name }}, with teacher: <a href="../teacher/{{ course[1].id }}">{{ course[1].last_name }}</a></p>
                 </li>
             {% endfor %}

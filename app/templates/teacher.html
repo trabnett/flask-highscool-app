@@ -1,11 +1,18 @@
 {% extends "layout.html" %}
-{% block body %}
+{% block content %}
     {% if educator.alert %}
         <h1 style="margin-top:65px;text-align:center;">{{ educator.alert }}</h1>
     {% else %}
-        <h1 class="welcome">This is a specific teacher's page. Thier Id is: {{ educator.id }}</h1>
-        <p>their name is {{ educator.first_name }} {{ educator.last_name }} (almost everyone at this school has the same first and last name) and they started working at the school in {{ year_started }}</p>
-
+        <div class="card" style="width: 35em; margin-top:30px;">
+                <div class="card-header">
+                        testing!
+                </div>
+            <img class="card-img-top" style="width: 18em;" src="https://www.eduinreviewblog.com/wp-content/uploads/2017/08/Key-Differences-Between-Good-And-Great-Teachers.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h1 class="card-title">This is a specific teacher's page. Thier Id is: {{ educator.id }}</h1>
+                <p class="card-text">their name is {{ educator.first_name }} {{ educator.last_name }} (almost everyone at this school has the same first and last name) and they started working at the school in {{ year_started }}</p>
+            </div>
+        </div>
         They are teaching the following courses:
         <ul>
         {% for course in courses %}
