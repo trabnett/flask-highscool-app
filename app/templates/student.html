@@ -3,19 +3,39 @@
     {% if student.alert %}
         <h1 style="margin-top:65px;text-align:center;">{{ student.alert }}</h1>
     {% else %}
-        <img class="card-img-top" style="width: 18em;margin-top:45px;" src="https://hatchexperience.org/wp-content/uploads/2016/09/RCMsmile2016-700x748.jpg">
-        <h1>This is a specific students page. Thier Id is: {{ student.id }}</h1>
-        <p>their name is {{ student.first_name }} and they are {{ years }} years old.</p>
-        <p>They are registered in:</p> 
-        <ul>
-            {% for course in courses%}
-                <li>
-                    <h1>{{ course[3].course_name }}</h1>
-                    <button class="btn btn-primary" onclick="hello({{loop.index0}})">more info</button>
-                    <p id={{loop.index0}} style="visibility:hidden;">Grade {{ course[3].grade }} {{ course[3].course_name }}, with teacher: <a href="../teacher/{{ course[1].id }}">{{ course[1].last_name }}</a></p>
-                </li>
-            {% endfor %}
-        </ul>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card text-center" style="width:30em;">
+                        <img class="card-img-top" style="width:100%;margin-top:51px;" src="https://hatchexperience.org/wp-content/uploads/2016/09/RCMsmile2016-700x748.jpg">
+                        <h1>{{ student.first_name }} {{ student.last_name }}</h1>
+                        <p>their name is {{ student.first_name }} and they are {{ years }} years old.</p>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card" style="width:30em;">
+                            <p>They are registered in:</p> 
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Course Name</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for course in courses%}
+                                    <tr>
+                                        <td>{{ course[3].course_name }}</td>
+                                        <td><button id={{loop.index0}} class="btn btn-primary" onclick="expand({{loop.index0}})">more info</button></td>
+                                        <td style="visibility:hidden;">Grade {{ course[3].grade }} {{ course[3].course_name }}, with teacher: <a href="../teacher/{{ course[1].id }}">{{ course[1].last_name }}</a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
     <script type="text/javascript" src="{{ url_for('static', filename='javascript.js') }}"></script>
 {% endblock %}

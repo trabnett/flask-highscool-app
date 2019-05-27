@@ -1,12 +1,14 @@
-console.log("hhhhheeeeey")
+function expand(idx){
+    event.preventDefault()
+    let button = document.getElementById(idx)
+    if (button.parentNode.innerText === "more info"){
+        button.parentNode.parentNode.childNodes[5].style = "visibility: visible"
+        button.parentNode.innerHTML = `<button id=${idx} class="btn btn-primary" onclick="expand(${idx})">less info</button>`
 
-function hello(idx){
-    let moreInfo = document.getElementById(idx)
-    if (moreInfo.parentNode.childNodes[3].innerText === "more info"){
-        moreInfo.style = "visibility: visible;"
-        moreInfo.parentNode.childNodes[3].innerText = "less info"
     } else {
-        moreInfo.style = "visibility: hidden;"
-        moreInfo.parentNode.childNodes[3].innerText = "more info"
+        button.parentNode.parentNode.childNodes[5].style = "visibility: hidden"
+        button.parentNode.innerHTML = `<button id=${idx} class="btn btn-primary" onclick="expand(${idx})">more info</button>`
     }
+    
 }
+
