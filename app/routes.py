@@ -56,25 +56,27 @@ def students():
 def student(id):
     kid = {'alert': 'this student is not registered'}
     enrolled_students = Student.query.all()
+    years = 0
+    student_courses = None
     for student in enrolled_students:
         if int(student.id) == int(id):
             kid = student
-    days = datetime.now() - kid.birthday
-    years = int(days.days / 365)
-    student_courses = session.query(
-    Student, 
-    Teacher, 
-    StudentCourse,
-    Course
-        ).filter(
-            Student.id == kid.id
-        ).filter(
-            Course.id == StudentCourse.course_id
-        ).filter(
-            Teacher.id == Course.teacher_id
-        ).filter(
-            kid.id == StudentCourse.student_id
-        ).all()
+            days = datetime.now() - kid.birthday
+            years = int(days.days / 365)
+            student_courses = session.query(
+            Student, 
+            Teacher, 
+            StudentCourse,
+            Course
+                ).filter(
+                    Student.id == kid.id
+                ).filter(
+                    Course.id == StudentCourse.course_id
+                ).filter(
+                    Teacher.id == Course.teacher_id
+                ).filter(
+                    kid.id == StudentCourse.student_id
+                ).all()
     return render_template('student.html', student=kid, years=years, courses=student_courses)
 
 @app.route('/teachers')

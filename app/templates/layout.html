@@ -1,24 +1,22 @@
-<!DOCTYPE html>
-    <html>
-        <head>
-            <meta charset="utf-8">
-            {% extends "bootstrap/base.html" %}
-            <title>Welcome To TRHS</title>
-        </head>
-        <body>
-            {% include 'includes/_navbar.html' %}
-            <div class="container">
-                    {% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                            <ul>
-                                {% for message in messages %}
-                                <li>{{ message }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    {% endwith %}
-                    {% block content %}
-                    {% endblock %}
-            </div>
-        </body>
-    </html>
+{% extends "bootstrap/base.html" %}
+
+
+{% block title %}
+    Welcome To TRHS
+{% endblock %}
+
+{% block navbar %}
+    {% include 'includes/_navbar.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-info" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}

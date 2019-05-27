@@ -1,7 +1,7 @@
 console.log("hhhhheeeeey")
 
-function hello(x){
-    let moreInfo = document.getElementById(x)
+function hello(idx){
+    let moreInfo = document.getElementById(idx)
     if (moreInfo.parentNode.childNodes[3].innerText === "more info"){
         moreInfo.style = "visibility: visible;"
         moreInfo.parentNode.childNodes[3].innerText = "less info"
@@ -9,6 +9,4 @@ function hello(x){
         moreInfo.style = "visibility: hidden;"
         moreInfo.parentNode.childNodes[3].innerText = "more info"
     }
-
-
 }
