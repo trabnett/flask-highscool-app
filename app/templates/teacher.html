@@ -3,43 +3,41 @@
     {% if educator.alert %}
         <h1 style="margin-top:65px;text-align:center;">{{ educator.alert }}</h1>
     {% else %}
-        <div style="col-md-4">
-            <div class="card mb-4 shadow-sm" style="width: 35em; margin-top:30px;">
-                    <div class="card-header">
-                            testing!
-                    </div>
-                <img class="card-img-top" style="width: 18em;" src="https://www.eduinreviewblog.com/wp-content/uploads/2017/08/Key-Differences-Between-Good-And-Great-Teachers.jpg" alt="Card image cap">
-                <div class="card-body">
-                    <h1 class="card-title">This is a specific teacher's page. Thier Id is: {{ educator.id }}</h1>
-                    <p class="card-text">their name is {{ educator.first_name }} {{ educator.last_name }} (almost everyone at this school has the same first and last name) and they started working at the school in {{ year_started }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-                <div class="col-md-4">
-                  <div class="card mb-4 shadow-sm">
-                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                    <div class="card-body">
-                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                          <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+        <div class="container" style="margin-top:51px;display:flex;flex-direction: row;flex-wrap: wrap;width: 100%;align-items:center;">
+                <div>
+                    <div class="card mb-4 shadow-sm" style="width: 35em; margin-top:30px;">
+                        <img class="card-img-top" style="width: 100%;" src="https://www.eduinreviewblog.com/wp-content/uploads/2017/08/Key-Differences-Between-Good-And-Great-Teachers.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h1 class="card-title">{{ educator.first_name }} {{ educator.last_name }}</h1>
+                            <p class="card-text">{{ educator.first_name }} {{ educator.last_name }} (almost everyone at this school has the same first and last name) is one of the excellent educators at TRHS. They have been working at the school in {{ year_started }}</p>
                         </div>
-                        <small class="text-muted">9 mins</small>
-                      </div>
                     </div>
-                  </div>
                 </div>
-            </div>
-        They are teaching the following courses:
-        <ul>
-        {% for course in courses %}
-            <li>
-                Grade {{ course[1].grade}} {{ course[1].course_name }}
-            </li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-
+                <div>
+                    <div class="card mb-4 shadow-sm">
+                        <h1>Courses:</h1>
+                        <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Grade</th>
+                                        <th scope="col">Course Name</th>
+                                    </tr>
+                                </thead>
+                        <ul>
+                        {% for course in courses %}
+                            <tr>
+                                <td>
+                                    {{ course[1].grade }} 
+                                </td>
+                                <td>
+                                    {{ course[1].course_name }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </ul>
+                        </table>
+                    </div>
+                </div>
+        </div>
+        {% endif %}
 {% endblock %}

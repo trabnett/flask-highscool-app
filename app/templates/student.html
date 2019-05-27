@@ -3,18 +3,18 @@
     {% if student.alert %}
         <h1 style="margin-top:65px;text-align:center;">{{ student.alert }}</h1>
     {% else %}
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
+        <div class="container" style="margin-top:51px;display:flex;">
+            <div class="row" style="display:flex;align-items:center;">
+                <div class="col-sm-6">
                     <div class="card text-center" style="width:30em;">
-                        <img class="card-img-top" style="width:100%;margin-top:51px;" src="https://hatchexperience.org/wp-content/uploads/2016/09/RCMsmile2016-700x748.jpg">
+                        <img class="card-img-top" style="width:100%;" src="https://hatchexperience.org/wp-content/uploads/2016/09/RCMsmile2016-700x748.jpg">
                         <h1>{{ student.first_name }} {{ student.last_name }}</h1>
                         <p>their name is {{ student.first_name }} and they are {{ years }} years old.</p>
                     </div>
                 </div>
-                <div class="col-sm">
+                <div class="col-sm-6">
                     <div class="card" style="width:30em;">
-                            <p>They are registered in:</p> 
+                            <h1>Course List:</h1> 
                             <table class="table">
                                 <thead>
                                     <tr>
