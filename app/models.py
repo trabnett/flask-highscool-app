@@ -74,7 +74,7 @@ class Test(db.Model):
     test_name = db.Column(db.String(64))
 
     def __repr__(self):
-        return '<Teacher {a} {b}>'.format(a="Test", b=self.test_name)
+        return '<Test {}>'.format(self.test_name)
 
 class StudentTest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -109,6 +109,6 @@ class SportScore(db.Model):
     opponent_score = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<Score {a} {b}>'.format(a=self.sport,b=self.date)
+        return '<Score {} >'.format(self.sport)
 
 

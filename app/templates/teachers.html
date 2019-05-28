@@ -1,30 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container jumboton" style="margin-top:35px">
-        {% if (current_user != None) and (current_user.started_at_school is defined) %}
-        <h2>Logged In Teacher:</h2>
-            <div class="card">
-                <a href="teacher/{{ current_user.id }}">
-                    <ul class="list-group">
-                        <li class="list-group-item"><h3>{{ current_user.first_name }} {{ current_user.last_name }}</h3></li>
-                        <li class="list-group-item">id: {{ current_user.id }}</li>
-                        <li class="list-group-item">at school since: </li>
-                    </ul>
-                </a>
-            </div>
-        {% endif %}
-        <h2>Current Faculty</h2>
+        <h2>Current Faculty:</h2>
         {% for teacher in teachers %}
         <div class="flex card">
-            <a href="teacher/{{ teacher.id }}">
-                <div class="card-body">
-                    <div>
-                            <img class="avatar card-img-top" src="https://www.eduinreviewblog.com/wp-content/uploads/2017/08/Key-Differences-Between-Good-And-Great-Teachers.jpg" alt="Card image cap">
-                    </div>
-                    <div>
-                            <h1>{{ teacher.first_name }} {{ teacher.last_name }}</h1>
-                    </div>
-                </div>
+            <a class="school_index" href="teachers/{{ teacher.id }}">
+                <img class="avatar card-img-top" src="{{ teacher.pic_url }}" alt="Teacher Pic">
+                <h3>{{ teacher.first_name }} {{ teacher.last_name }}</h3>
             </a>
         </div>
         {% endfor %}

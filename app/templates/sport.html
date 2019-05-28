@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+<div style="margin-top: 60px;">
+    Hello {{ sport.sport_name }}
+    <ol>
+    Team Members:
+    {% for item in summary %}
+        <li>
+            {{loop.index1}} {{ item[1].last_name }}
+        </li>
+    {% endfor %}
+</ol>
+</div>
+{% endblock %}

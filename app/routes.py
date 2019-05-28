@@ -4,7 +4,7 @@ from app.forms import LoginForm
 from app.students import Students
 from app import db
 from flask_login import current_user, login_user, logout_user
-from app.models import Student, Teacher, StudentCourse, Course
+from app.models import Student, Teacher, StudentCourse, Course, Sport, Test, StudentSport, StudentTest, SportScore
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -52,7 +52,7 @@ def students():
     enrolled_students = Student.query.all()
     return render_template('students.html', students=enrolled_students)
 
-@app.route('/student/<string:id>')
+@app.route('/students/<string:id>')
 def student(id):
     kid = {'alert': 'this student is not registered'}
     enrolled_students = Student.query.all()
@@ -84,7 +84,7 @@ def teachers():
     teachers = Teacher.query.all()
     return render_template('teachers.html', teachers=teachers)
 
-@app.route('/teacher/<string:id>')
+@app.route('/teachers/<string:id>')
 def teacher(id):
     educator = {'alert': 'this teacher is not currently a part of the faculty'}
     faculty = Teacher.query.all()
@@ -97,3 +97,20 @@ def teacher(id):
         ).all()
     print(teacher_courses, educator.id)
     return render_template('teacher.html', educator=educator, year_started=educator.started_at_school.year, courses=teacher_courses)
+
+@app.route('/sports')
+def sports():
+    sports = Sport.query.all()
+    return render_template('sports.html', sports=sports)
+
+@app.route('/sports/<string:name>')
+def sport(name):
+    sport = Sport.query.filter_by(sport_name=name).first()
+    if sport == None:
+        sport = {'sport_name': 'no such sport exists'}
+    print(sport.id)
+    sport_summary = session.query(StudentSport, Student
+    ).filter(sport.id == StudentSport.sport_id
+    ).filter(StudentSport.student_id == Student.id).all()
+    print(sport_summary)
+    return render_template('sport.html', sport=sport, summary=sport_summary)

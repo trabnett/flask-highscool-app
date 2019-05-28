@@ -3,18 +3,19 @@
     {% if educator.alert %}
         <h1 style="margin-top:65px;text-align:center;">{{ educator.alert }}</h1>
     {% else %}
-        <div class="container" style="margin-top:51px;display:flex;flex-direction: row;flex-wrap: wrap;width: 100%;align-items:center;">
-                <div>
-                    <div class="card mb-4 shadow-sm" style="width: 35em; margin-top:30px;">
-                        <img class="card-img-top" style="width: 100%;" src="https://www.eduinreviewblog.com/wp-content/uploads/2017/08/Key-Differences-Between-Good-And-Great-Teachers.jpg" alt="Card image cap">
+        <div class="flex container" style="margin-top:51px;">
+            <div class="row" style="display:flex;align-items:center;">
+                <div class="col-sm-6">
+                    <div class="card text-center" style="width:30em;">
+                        <img class="card-img-top" style="width: 100%;" src="{{ educator.pic_url }}" alt="Card image cap">
                         <div class="card-body">
                             <h1 class="card-title">{{ educator.first_name }} {{ educator.last_name }}</h1>
                             <p class="card-text">{{ educator.first_name }} {{ educator.last_name }} (almost everyone at this school has the same first and last name) is one of the excellent educators at TRHS. They have been working at the school in {{ year_started }}</p>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <div class="card text-center">
+                <div class="col-sm-6">
+                    <div class="card" style="width:30em;">
                         <h1>Courses:</h1>
                         <table class="table">
                                 <thead>
@@ -38,6 +39,7 @@
                         </table>
                     </div>
                 </div>
+            </div>
         </div>
         {% endif %}
 {% endblock %}
