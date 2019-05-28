@@ -15,13 +15,16 @@
         {% endif %}
         <h2>Current Faculty</h2>
         {% for teacher in teachers %}
-        <div class="card">
+        <div class="flex card">
             <a href="teacher/{{ teacher.id }}">
-                <ul class="list-group">
-                    <li class="list-group-item"><h3>{{ teacher.first_name }} {{ teacher.last_name }}</h3></li>
-                    <li class="list-group-item">id: {{ teacher.id }}</li>
-                    <li class="list-group-item">at school since: </li>
-                </ul>
+                <div class="card-body">
+                    <div>
+                            <img class="avatar card-img-top" src="https://www.eduinreviewblog.com/wp-content/uploads/2017/08/Key-Differences-Between-Good-And-Great-Teachers.jpg" alt="Card image cap">
+                    </div>
+                    <div>
+                            <h1>{{ teacher.first_name }} {{ teacher.last_name }}</h1>
+                    </div>
+                </div>
             </a>
         </div>
         {% endfor %}

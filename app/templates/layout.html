@@ -1,8 +1,16 @@
 {% extends "bootstrap/base.html" %}
-
+{% block scripts %}
+<script src="{{url_for('.static', filename='javascript.js')}}"></script>
+{{super()}}
+{% endblock %}
 
 {% block title %}
     Welcome To TRHS
+{% endblock %}
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='./css/styles.css')}}">
 {% endblock %}
 
 {% block navbar %}

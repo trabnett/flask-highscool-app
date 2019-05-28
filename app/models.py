@@ -19,6 +19,7 @@ class Student(UserMixin, db.Model):
     first_name = db.Column(db.String(64), index=True)
     last_name = db.Column(db.String(64), index=True)
     birthday = db.Column(db.DateTime())
+    pic_url = db.Column(db.String(240)) 
     twitter = db.Column(db.String(128), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
@@ -45,6 +46,7 @@ class Teacher(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64), index=True)
     last_name = db.Column(db.String(64), index=True)
+    pic_url = db.Column(db.String(240)) 
     started_at_school = db.Column(db.DateTime())
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
@@ -65,3 +67,48 @@ class StudentCourse(db.Model):
 
     def __repr__(self):
         return '<StudentCourse {}>'.format(self.id)
+
+class Test(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
+    test_name = db.Column(db.String(64))
+
+    def __repr__(self):
+        return '<Teacher {a} {b}>'.format(a="Test", b=self.test_name)
+
+class StudentTest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    test_id = db.Column(db.Integer, db.ForeignKey('test.id'))
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+
+    def __repr__(self):
+        return '<StudentTest {}>'.format(self.id)
+
+class Sport(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sport_name = db.Column(db.String)
+    coach_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+
+    def __repr__(self):
+        return '<Sport {}>'.format(self.sport_name)
+
+class StudentSport(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+    sport_id = db.Column(db.Integer, db.ForeignKey('sport.id'))
+
+    def __repr__(self):
+        return '<StudentSport {}>'.format(self.id)
+
+class SportScore(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sport = db.Column(db.Integer, db.ForeignKey('sport.id'))
+    date = db.Column(db.DateTime())
+    opponent = db.Column(db.String(64))
+    trhs_score = db.Column(db.Integer)
+    opponent_score = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<Score {a} {b}>'.format(a=self.sport,b=self.date)
+
+
