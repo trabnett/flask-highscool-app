@@ -64,7 +64,9 @@ def student(id):
         Student, 
         Teacher, 
         StudentCourse,
-        Course
+        Course,
+        Test,
+        StudentTest
             ).filter(
                 Student.id == student.id
             ).filter(
@@ -73,23 +75,42 @@ def student(id):
                 Teacher.id == Course.teacher_id
             ).filter(
                 student.id == StudentCourse.student_id
-            ).all()
-    student_sports = session.query(
-        Student,
-        StudentSport,
-        Sport   
             ).filter(
-                student.id == StudentSport.student_id
+                Test.course_id == Course.id
             ).filter(
-                Sport.id == StudentSport.sport_id
+                StudentTest.student_id == student.id
+            ).filter(
+                Test.id == StudentTest.test_id
             ).all()
-    student_grades = StudentTest.query.filter(student.id == StudentTest.student_id).all()
-    average = 0
-    for test in student_grades:
-        total += test.score
-    print("the average of this student is: ", (average / len(student_grades)))
-    print(student_grades)
-    return render_template('student.html', student=student, years=years, courses=student_courses)
+    dic = {}
+    for entry in student_courses:
+        add_grade = []
+        if entry[3].course_name in dic and 'test_scores' in dic[entry[3].course_name]:
+            add_grade = dic[entry[3].course_name]['test_scores']
+            add_grade.append((entry[4].test_name, entry[5].score))
+        else:
+            add_grade = [(entry[4].test_name, entry[5].score)]
+        dic[entry[3].course_name] = {
+            'teacher': entry[1].last_name,
+            'teacher_id': entry[1].id,
+            'grade': entry[3].grade,
+            'test_scores': add_grade
+            }
+    gpa = []
+    for course in dic:
+        gpa.append(sum(test[1] for test in dic[course]['test_scores']) / len(dic[course]['test_scores']))
+    dic['gpa'] = round(sum(gpa)/ len(gpa),1)
+    print(dic)
+    # student_sports = session.query(
+    #     Student,
+    #     StudentSport,
+    #     Sport   
+    #         ).filter(
+    #             student.id == StudentSport.student_id
+    #         ).filter(
+    #             Sport.id == StudentSport.sport_id
+    #         ).all()
+    return render_template('student.html', student=student, years=years, courses=dic)
 
 @app.route('/teachers')
 def teachers():
