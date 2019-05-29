@@ -10,7 +10,7 @@
                     <div class="card text-center" style="width:30em;">
                         <img class="card-img-top" style="width:100%;" src="{{ student.pic_url }}">
                         <h1>{{ student.first_name }} {{ student.last_name }}</h1>
-                        <p>their name is {{ student.first_name }} and they are {{ years }} years old. Thier current average is <b>{{ courses.gpa }}%</b></p>
+                        <p>their name is {{ student.first_name }} and they are {{ years }} years old. Thier current average is <b>{{ gpa }}%</b></p>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -28,7 +28,9 @@
                                     <tr>
                                         <td>{{ course }}</td>
                                         <td><button id={{loop.index0}} class="btn btn-primary" onclick="expand({{loop.index0}})">more info</button></td>
-                                        <td style="visibility:hidden;">Grade {{ courses[course].grade }} {{ courses[course].course_name }}, with teacher: <a href="../teachers/{{ courses[course]['teacher_id'] }}">{{ courses[course].teacher }}</a></td>
+                                        <td style="visibility:hidden;">Grade {{ courses[course].grade }} {{ courses[course].course_name }}, with teacher: <a href="../teachers/{{ courses[course]['teacher_id'] }}">{{ courses[course].teacher }}</a><br>
+                                        Thier current average in this course is <b>{{ courses[course].average }}%</b>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>

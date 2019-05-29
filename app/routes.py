@@ -57,7 +57,6 @@ def student(id):
     student = Student.query.filter_by(id=id).first()
     if student == None:
         return render_template('student.html', student={'alert': 'this student is not registered'})
-    print(student)
     days = datetime.now() - student.birthday
     years = int(days.days / 365)
     student_courses = session.query(
@@ -98,8 +97,9 @@ def student(id):
             }
     gpa = []
     for course in dic:
+        dic[course]['average'] = round(sum(test[1] for test in dic[course]['test_scores']) / len(dic[course]['test_scores']),1)
         gpa.append(sum(test[1] for test in dic[course]['test_scores']) / len(dic[course]['test_scores']))
-    dic['gpa'] = round(sum(gpa)/ len(gpa),1)
+    gpa = round(sum(gpa)/ len(gpa),1)
     print(dic)
     # student_sports = session.query(
     #     Student,
@@ -110,7 +110,7 @@ def student(id):
     #         ).filter(
     #             Sport.id == StudentSport.sport_id
     #         ).all()
-    return render_template('student.html', student=student, years=years, courses=dic)
+    return render_template('student.html', student=student, years=years, courses=dic, gpa=gpa)
 
 @app.route('/teachers')
 def teachers():
