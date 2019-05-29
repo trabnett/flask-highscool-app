@@ -54,40 +54,42 @@ def students():
 
 @app.route('/students/<string:id>')
 def student(id):
-    kid = {'alert': 'this student is not registered'}
-    enrolled_students = Student.query.all()
-    years = 0
-    student_courses = None
-    for student in enrolled_students:
-        if int(student.id) == int(id):
-            kid = student
-            days = datetime.now() - kid.birthday
-            years = int(days.days / 365)
-            student_courses = session.query(
-            Student, 
-            Teacher, 
-            StudentCourse,
-            Course
-                ).filter(
-                    Student.id == kid.id
-                ).filter(
-                    Course.id == StudentCourse.course_id
-                ).filter(
-                    Teacher.id == Course.teacher_id
-                ).filter(
-                    kid.id == StudentCourse.student_id
-                ).all()
-            student_sports = session.query(
-            Student,
-            StudentSport,
-            Sport   
+    student = Student.query.filter_by(id=id).first()
+    if student == None:
+        return render_template('student.html', student={'alert': 'this student is not registered'})
+    print(student)
+    days = datetime.now() - student.birthday
+    years = int(days.days / 365)
+    student_courses = session.query(
+        Student, 
+        Teacher, 
+        StudentCourse,
+        Course
             ).filter(
-                kid.id == StudentSport.student_id
+                Student.id == student.id
+            ).filter(
+                Course.id == StudentCourse.course_id
+            ).filter(
+                Teacher.id == Course.teacher_id
+            ).filter(
+                student.id == StudentCourse.student_id
+            ).all()
+    student_sports = session.query(
+        Student,
+        StudentSport,
+        Sport   
+            ).filter(
+                student.id == StudentSport.student_id
             ).filter(
                 Sport.id == StudentSport.sport_id
             ).all()
-            print(student_sports)
-    return render_template('student.html', student=kid, years=years, courses=student_courses)
+    student_grades = StudentTest.query.filter(student.id == StudentTest.student_id).all()
+    average = 0
+    for test in student_grades:
+        total += test.score
+    print("the average of this student is: ", (average / len(student_grades)))
+    print(student_grades)
+    return render_template('student.html', student=student, years=years, courses=student_courses)
 
 @app.route('/teachers')
 def teachers():
