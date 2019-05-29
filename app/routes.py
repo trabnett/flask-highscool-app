@@ -22,9 +22,9 @@ def welcome():
 def login():
     if current_user.is_authenticated and current_user.birthday:
         teacher_check['status'] = False
-        return redirect(f'/student/{current_user.id}')
+        return redirect(f'/students/{current_user.id}')
     if current_user.is_authenticated and current_user.started_at_school:
-        return redirect(f'/teacher/{current_user.id}')
+        return redirect(f'/teachers/{current_user.id}')
     form = LoginForm()
     if form.validate_on_submit():
         user = Student.query.filter_by(email=form.username.data).first()
@@ -36,10 +36,10 @@ def login():
         login_user(user, remember=form.remember_me.data)
         if hasattr(user, 'birthday'):
             teacher_check['status'] = False
-            return redirect(f'/student/{user.id}')
+            return redirect(f'/students/{user.id}')
         if hasattr(user, 'started_at_school'):
             teacher_check['status'] = True
-            return redirect(url_for('welcome'))
+            return redirect(f'/teachers/{user.id}')
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout', methods=['POST'])
@@ -77,6 +77,16 @@ def student(id):
                 ).filter(
                     kid.id == StudentCourse.student_id
                 ).all()
+            student_sports = session.query(
+            Student,
+            StudentSport,
+            Sport   
+            ).filter(
+                kid.id == StudentSport.student_id
+            ).filter(
+                Sport.id == StudentSport.sport_id
+            ).all()
+            print(student_sports)
     return render_template('student.html', student=kid, years=years, courses=student_courses)
 
 @app.route('/teachers')
@@ -108,9 +118,10 @@ def sport(name):
     sport = Sport.query.filter_by(sport_name=name).first()
     if sport == None:
         sport = {'sport_name': 'no such sport exists'}
-    print(sport.id)
+        return render_template('sport.html', sport=sport)
     sport_summary = session.query(StudentSport, Student
     ).filter(sport.id == StudentSport.sport_id
-    ).filter(StudentSport.student_id == Student.id).all()
+    ).filter(StudentSport.student_id == Student.id
+    ).all()
     print(sport_summary)
     return render_template('sport.html', sport=sport, summary=sport_summary)

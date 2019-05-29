@@ -2,7 +2,7 @@
 {% block content %}
     {% for sport in sports %}
         <div class="welcome">
-            <p>{{ sport.sport_name }}</p>
+            <a href="/sports/{{sport.sport_name}}"><p>{{ sport.sport_name }}</p></a>
         </div>
     {% endfor%}
 {% endblock %}

@@ -19,6 +19,7 @@ class Student(UserMixin, db.Model):
     first_name = db.Column(db.String(64), index=True)
     last_name = db.Column(db.String(64), index=True)
     birthday = db.Column(db.DateTime())
+    grade = db.Column(db.Integer)
     pic_url = db.Column(db.String(240)) 
     twitter = db.Column(db.String(128), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -80,6 +81,7 @@ class StudentTest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     test_id = db.Column(db.Integer, db.ForeignKey('test.id'))
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+    score = db.Column(db.Integer)
 
     def __repr__(self):
         return '<StudentTest {}>'.format(self.id)

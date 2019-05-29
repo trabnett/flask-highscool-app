@@ -6,7 +6,7 @@
     Team Members:
     {% for item in summary %}
         <li>
-            {{loop.index1}} {{ item[1].last_name }}
+            <a href="/students/{{ item[1].id }}">{{loop.index1}} {{ item[1].last_name }}</a>
         </li>
     {% endfor %}
 </ol>
