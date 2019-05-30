@@ -1,14 +1,22 @@
-function expand(idx){
-    event.preventDefault()
-    let button = document.getElementById(idx)
-    if (button.parentNode.innerText === "more info"){
-        button.parentNode.parentNode.childNodes[5].style = "visibility: visible"
-        button.parentNode.innerHTML = `<button id=${idx} class="btn btn-primary" onclick="expand(${idx})">less info</button>`
 
+function tests(num, input){
+    let x = document.getElementById(num).parentNode.parentNode
+    let z
+    if (x.childNodes[7]){
+        z = x.childNodes[7]
+        x.removeChild(z)
     } else {
-        button.parentNode.parentNode.childNodes[5].style = "visibility: hidden"
-        button.parentNode.innerHTML = `<button id=${idx} class="btn btn-primary" onclick="expand(${idx})">more info</button>`
+    let y = document.createElement('div')
+    y.innerHTML = `
+        <h1>Tests:</h2>
+        <ul>
+        </ul>
+    `
+    input.forEach(arr => {
+        let node = document.createElement('li')
+        node.innerHTML = `<li>${arr[0]}: <b>${arr[1]}%</b></li>`
+        y.childNodes[3].appendChild(node)
+    })
+    x.appendChild(y)
     }
-    
 }
-

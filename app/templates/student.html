@@ -25,13 +25,15 @@
                                 </thead>
                                 <tbody>
                                 {% for course in courses%}
+                                    {% with x =  courses[course].test_scores %}
                                     <tr>
                                         <td>{{ course }}</td>
-                                        <td><button id={{loop.index0}} class="btn btn-primary" onclick="expand({{loop.index0}})">more info</button></td>
-                                        <td style="visibility:hidden;">Grade {{ courses[course].grade }} {{ courses[course].course_name }}, with teacher: <a href="../teachers/{{ courses[course]['teacher_id'] }}">{{ courses[course].teacher }}</a><br>
-                                        Thier current average in this course is <b>{{ courses[course].average }}%</b>
+                                        <td>Grade {{ courses[course].grade }} {{ courses[course].course_name }}, with teacher: <a href="../teachers/{{ courses[course]['teacher_id'] }}">{{ courses[course].teacher }}</a><br>                                         
+                                            Thier current average in this course is <b>{{ courses[course].average }}%</b>
                                         </td>
+                                        <td><button id={{loop.index0}} class="btn btn-primary" onclick="tests({{ loop.index0 }}, {{x}})">test results</button></td>
                                     </tr>
+                                    {% endwith %}
                                 {% endfor %}
                                 </tbody>
                             </table>

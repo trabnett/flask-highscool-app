@@ -86,9 +86,9 @@ def student(id):
         add_grade = []
         if entry[3].course_name in dic and 'test_scores' in dic[entry[3].course_name]:
             add_grade = dic[entry[3].course_name]['test_scores']
-            add_grade.append((entry[4].test_name, entry[5].score))
+            add_grade.append([entry[4].test_name, entry[5].score])
         else:
-            add_grade = [(entry[4].test_name, entry[5].score)]
+            add_grade = [[entry[4].test_name, entry[5].score]]
         dic[entry[3].course_name] = {
             'teacher': entry[1].last_name,
             'teacher_id': entry[1].id,
