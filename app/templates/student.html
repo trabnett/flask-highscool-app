@@ -38,6 +38,23 @@
                                 </tbody>
                             </table>
                     </div>
+                    <div class="card" style="width:30em;">
+                        <h1>Sports:</h1> 
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sport</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for sport in sports %}
+                                <tr>
+                                    <td><a href="/sports/{{ sport[2].sport_name }}">{{ sport[2].sport_name }}</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

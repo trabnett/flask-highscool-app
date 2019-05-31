@@ -100,17 +100,19 @@ def student(id):
         dic[course]['average'] = round(sum(test[1] for test in dic[course]['test_scores']) / len(dic[course]['test_scores']),1)
         gpa.append(sum(test[1] for test in dic[course]['test_scores']) / len(dic[course]['test_scores']))
     gpa = round(sum(gpa)/ len(gpa),1)
-    print(dic)
-    # student_sports = session.query(
-    #     Student,
-    #     StudentSport,
-    #     Sport   
-    #         ).filter(
-    #             student.id == StudentSport.student_id
-    #         ).filter(
-    #             Sport.id == StudentSport.sport_id
-    #         ).all()
-    return render_template('student.html', student=student, years=years, courses=dic, gpa=gpa)
+    student_sports = session.query(
+        Student,
+        StudentSport,
+        Sport   
+            ).filter(
+                Sport.id == StudentSport.sport_id
+            ).filter(
+                student.id == StudentSport.student_id
+            ).filter(
+                student.id == Student.id
+            ).all()
+    print(student.id, student_sports)
+    return render_template('student.html', student=student, years=years, courses=dic, gpa=gpa, sports=student_sports)
 
 @app.route('/teachers')
 def teachers():
