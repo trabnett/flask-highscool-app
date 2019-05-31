@@ -39,6 +39,29 @@
                         </table>
                     </div>
                 </div>
+                <div class="card" style="width:30em;">
+                    <h1>Sports:</h1> 
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sport</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if sports|length == 0 %}
+                            <tr>
+                                <td>This teacher is not currently coaching any sports</td>
+                            </tr>
+                        {% else %}
+                        {% for sport in sports %}
+                            <tr>
+                                <td><a href="/sports/{{ sport[0].sport_name }}">{{ sport[0].sport_name }}</a></td>
+                            </tr>
+                        {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         {% endif %}

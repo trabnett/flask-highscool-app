@@ -130,8 +130,12 @@ def teacher(id):
         ).filter(educator.id == Course.teacher_id
         ).filter(educator.id == Teacher.id
         ).all()
-    print(teacher_courses, educator.id)
-    return render_template('teacher.html', educator=educator, year_started=educator.started_at_school.year, courses=teacher_courses)
+    teacher_sports = session.query(Sport, Teacher
+        ).filter(educator.id == Teacher.id
+        ).filter(Sport.coach_id == educator.id
+        ).all()
+    print(teacher_sports)
+    return render_template('teacher.html', educator=educator, year_started=educator.started_at_school.year, courses=teacher_courses, sports=teacher_sports)
 
 @app.route('/sports')
 def sports():
