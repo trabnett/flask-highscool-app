@@ -54,40 +54,65 @@ def students():
 
 @app.route('/students/<string:id>')
 def student(id):
-    kid = {'alert': 'this student is not registered'}
-    enrolled_students = Student.query.all()
-    years = 0
-    student_courses = None
-    for student in enrolled_students:
-        if int(student.id) == int(id):
-            kid = student
-            days = datetime.now() - kid.birthday
-            years = int(days.days / 365)
-            student_courses = session.query(
-            Student, 
-            Teacher, 
-            StudentCourse,
-            Course
-                ).filter(
-                    Student.id == kid.id
-                ).filter(
-                    Course.id == StudentCourse.course_id
-                ).filter(
-                    Teacher.id == Course.teacher_id
-                ).filter(
-                    kid.id == StudentCourse.student_id
-                ).all()
-            student_sports = session.query(
-            Student,
-            StudentSport,
-            Sport   
+    student = Student.query.filter_by(id=id).first()
+    if student == None:
+        return render_template('student.html', student={'alert': 'this student is not registered'})
+    days = datetime.now() - student.birthday
+    years = int(days.days / 365)
+    student_courses = session.query(
+        Student, 
+        Teacher, 
+        StudentCourse,
+        Course,
+        Test,
+        StudentTest
             ).filter(
-                kid.id == StudentSport.student_id
+                Student.id == student.id
+            ).filter(
+                Course.id == StudentCourse.course_id
+            ).filter(
+                Teacher.id == Course.teacher_id
+            ).filter(
+                student.id == StudentCourse.student_id
+            ).filter(
+                Test.course_id == Course.id
+            ).filter(
+                StudentTest.student_id == student.id
+            ).filter(
+                Test.id == StudentTest.test_id
+            ).all()
+    dic = {}
+    for entry in student_courses:
+        add_grade = []
+        if entry[3].course_name in dic and 'test_scores' in dic[entry[3].course_name]:
+            add_grade = dic[entry[3].course_name]['test_scores']
+            add_grade.append([entry[4].test_name, entry[5].score])
+        else:
+            add_grade = [[entry[4].test_name, entry[5].score]]
+        dic[entry[3].course_name] = {
+            'teacher': entry[1].last_name,
+            'teacher_id': entry[1].id,
+            'grade': entry[3].grade,
+            'test_scores': add_grade
+            }
+    gpa = []
+    for course in dic:
+        dic[course]['average'] = round(sum(test[1] for test in dic[course]['test_scores']) / len(dic[course]['test_scores']),1)
+        gpa.append(sum(test[1] for test in dic[course]['test_scores']) / len(dic[course]['test_scores']))
+    gpa = round(sum(gpa)/ len(gpa),1)
+    student_sports = session.query(
+        Student,
+        StudentSport,
+        Sport   
             ).filter(
                 Sport.id == StudentSport.sport_id
+            ).filter(
+                student.id == StudentSport.student_id
+            ).filter(
+                student.id == Student.id
             ).all()
-            print(student_sports)
-    return render_template('student.html', student=kid, years=years, courses=student_courses)
+    print(student.id, student_sports)
+    return render_template('student.html', student=student, years=years, courses=dic, gpa=gpa, sports=student_sports)
 
 @app.route('/teachers')
 def teachers():
