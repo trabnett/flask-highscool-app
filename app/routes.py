@@ -144,6 +144,8 @@ def sports():
 
 @app.route('/sports/<string:name>')
 def sport(name):
+    if current_user.is_authenticated:
+        print(current_user, "<====== current user")
     sport = Sport.query.filter_by(sport_name=name).first()
     if sport == None:
         sport = {'sport_name': 'no such sport exists'}
@@ -152,5 +154,16 @@ def sport(name):
     ).filter(sport.id == StudentSport.sport_id
     ).filter(StudentSport.student_id == Student.id
     ).all()
-    print(sport_summary)
     return render_template('sport.html', sport=sport, summary=sport_summary)
+
+@app.route('/students/<string:id>/sports/<string:name>/delete', methods=['POST'])
+def delete(name, id):
+    sport = session.query(Student, Sport, StudentSport
+    ).filter(id == Student.id
+    ).filter(name == Sport.sport_name
+    ).filter(Sport.id == StudentSport.sport_id
+    ).filter(id == StudentSport.student_id).all()
+    print(sport[0][2].id, "<===jeyyyyy")
+    session.delete(sport[0][2])
+    session.commit()
+    return redirect(f'/students/{id}')

@@ -25,13 +25,22 @@
                             <a  style="color:#9d9d9d;line-height:3.62em;margin-left:1em;" onclick="parentNode.submit()">Logout</a>
                         </form>
                     </li>
+                    <li>
+                        <div class="btn-group" style="float:right;border-radius:35px;">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ current_user.last_name }}
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                            </div>
+                        </div>
+                    </li>
                 {% endif %}
             </ul>
-                {% if current_user.is_authenticated %}
-                    <p>{{ current_user.first_name[0] }}{{ current_user.last_name[0] }}</p>
-                {% else %}
-
-                {% endif %}
         </div><!--/.nav-collapse -->
     </div>
 </nav>
