@@ -31,7 +31,9 @@
                                         <td>Grade {{ courses[course].grade }} {{ courses[course].course_name }}, with teacher: <a href="../teachers/{{ courses[course]['teacher_id'] }}">{{ courses[course].teacher }}</a><br>                                         
                                             Thier current average in this course is <b>{{ courses[course].average }}%</b>
                                         </td>
+                                        {% if student.id == current_user.id %}
                                         <td><button id={{loop.index0}} class="btn btn-primary" onclick="tests({{ loop.index0 }}, {{x}})">test results</button></td>
+                                        {% endif %}
                                     </tr>
                                     {% endwith %}
                                 {% endfor %}

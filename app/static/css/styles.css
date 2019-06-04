@@ -27,3 +27,19 @@ h3{
     margin-left: 1em;
     margin-top: 2em;
 }
+.user_circle{
+    border-radius: 50%;
+    height: 3.1em;
+    width: 3.1em;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3px;
+
+}
+.user_circle_dropdown{
+    color:#9d9d9d;
+    line-height:3.62em;
+    margin-left:1em;
+}

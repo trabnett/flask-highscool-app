@@ -19,28 +19,30 @@
                 <li>
                     <a href="{{ url_for('login') }}">Login</a>
                 </li>
+                </ul>
                 {% else %}
-                    <li>
-                        <form class="nav" action="/logout" method="post">
-                            <a  style="color:#9d9d9d;line-height:3.62em;margin-left:1em;" onclick="parentNode.submit()">Logout</a>
-                        </form>
-                    </li>
-                    <li>
-                        <div class="btn-group" style="float:right;border-radius:35px;">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ current_user.last_name }}
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Separated link</a>
+                    </ul>
+                    <ul class="navbar-nav mr-auto">
+                        <li>
+                            <div class="btn-group" style="float:right;border-radius:35px;">
+                                <button type="button" class="user_circle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ current_user.first_name[0] }}{{ current_user.last_name[0] }}
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">
+                                        <form class="nav" action="/logout" method="post">
+                                            <a class="user_circle_dropdown" onclick="parentNode.submit()">Logout</a>
+                                        </form>
+                                    </a>
+                                    <a class="user_circle_dropdown dropdown-item" data-toggle="modal" data-target="#changePassword" href="#">Change Password</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Separated link</a>
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
+                    </ul>
                 {% endif %}
-            </ul>
+                    
         </div><!--/.nav-collapse -->
     </div>
 </nav>

@@ -15,6 +15,7 @@
 
 {% block navbar %}
     {% include 'includes/_navbar.html' %}
+    {% include 'includes/_password_modal.html' %}
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -25,6 +26,7 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        {% block app_content %}{% endblock %}
+        {% block app_content %}
+        {% endblock %}
     </div>
 {% endblock %}
