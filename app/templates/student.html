@@ -54,7 +54,7 @@
                                     <td><a href="/sports/{{ sport[2].sport_name }}">{{ sport[2].sport_name }}</a></td>
                                     {% if current_user.id == student.id%}
                                     <td>
-                                    <form action="/students/{{ student.id }}/sports/{{ sport[2].sport_name}}/delete " method="post">
+                                    <form action="/students/{{ student.id }}/sports/{{ sport[2].sport_name}}" method="post">
                                         <button class="btn btn-primary" type="submit" name="dropout">Drop out of Sport</button>
                                     </form>
                                     </td>

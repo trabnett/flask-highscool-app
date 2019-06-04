@@ -21,26 +21,27 @@ function tests(num, input){
     }
 }
 
-function match(e){
+function match(){
     let div = document.getElementById('new_password2')
     if (div.childNodes[5]){
         div.childNodes[5].remove()
     }
-    console.log(div.childNodes, "<====")
     let pwd1 = document.getElementById('Password2').value
     let pwd2 = document.getElementById('Password3').value
-    if (pwd1 === "" && pwd2 === ""){
+    if (pwd1 === "" || pwd2 === ""){
         return
     }
     if (pwd1 === pwd2){
+        let button = document.getElementById('password_update_button')
+        button.type = "submit"
         let warning = document.createElement('div')
-        warning.innerHTML = `<p style="text-align:center;color:green;">They Match</p>`
+        warning.innerHTML = `<p style="text-align:center;color:green;">&#10004; They Match</p>`
         div.appendChild(warning)
-        console.log('yes sir')
     } else {
+        let button = document.getElementById('password_update_button')
+        button.type = 'button'
         let warning = document.createElement('div')
         warning.innerHTML = `<p style="text-align:center;color:red;">Please make sure your passwords match</p>`
         div.appendChild(warning)
-        console.log('no match')
     }
 }

@@ -1,21 +1,23 @@
 from app import app
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from app.forms import LoginForm
 from app.students import Students
 from app import db
 from flask_login import current_user, login_user, logout_user
 from app.models import Student, Teacher, StudentCourse, Course, Sport, Test, StudentSport, StudentTest, SportScore
 from datetime import datetime
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, update
 from sqlalchemy.orm import sessionmaker
+from werkzeug.security import generate_password_hash, check_password_hash
 
 engine = db.engine
 Session = sessionmaker(engine)
 session = Session()
-teacher_check = {'status': True}
+teacher_check = {'status': False}
 
 @app.route('/')
 def welcome():
+    print(current_user, teacher_check)
     return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -52,8 +54,9 @@ def students():
     enrolled_students = Student.query.all()
     return render_template('students.html', students=enrolled_students)
 
-@app.route('/students/<string:id>')
+@app.route('/students/<string:id>', methods=['GET'])
 def student(id):
+    print(teacher_check, "teacher_check")
     student = Student.query.filter_by(id=id).first()
     if student == None:
         return render_template('student.html', student={'alert': 'this student is not registered'})
@@ -114,12 +117,32 @@ def student(id):
     print(student.id, student_sports)
     return render_template('student.html', student=student, years=years, courses=dic, gpa=gpa, sports=student_sports)
 
+@app.route('/students/<string:id>', methods=['POST'])
+def update_student(id):
+    old_password = request.form.get("old_password")
+    new_password1 = request.form.get("new_password1")
+    new_password2 = request.form.get("new_password2")
+    new_hash = generate_password_hash(new_password1)
+    student = session.query(Student).filter_by(id = id).first()
+    if check_password_hash(student.password_hash, old_password) == True:
+        student.password_hash = new_hash
+        print(student.password_hash, "new hash?")
+        session.commit()
+    else:
+        message = "Invalid Password"
+        flash('Invalid Password')
+    return redirect(f'/students/{id}')
+
+    print(old_password, "<=== old_password", new_password1, new_password2, hash)
+    print(student)
+    return redirect(f'/students/{id}')
+
 @app.route('/teachers')
 def teachers():
     teachers = Teacher.query.all()
     return render_template('teachers.html', teachers=teachers)
 
-@app.route('/teachers/<string:id>')
+@app.route('/teachers/<string:id>', methods=['GET'])
 def teacher(id):
     educator = {'alert': 'this teacher is not currently a part of the faculty'}
     faculty = Teacher.query.all()
@@ -136,6 +159,16 @@ def teacher(id):
         ).all()
     print(teacher_sports)
     return render_template('teacher.html', educator=educator, year_started=educator.started_at_school.year, courses=teacher_courses, sports=teacher_sports)
+
+@app.route('/teachers/<string:id>', methods=['POST'])
+def update_teacher(id):
+    old_password = request.form.get("old_password")
+    new_password1 = request.form.get("new_password1")
+    new_password2 = request.form.get("new_password2")
+    print(old_password, "<=== old_password", new_password1, new_password2)
+    teacher = Teacher.query.filter_by(id = id).first()
+    print(teacher)
+    return redirect(f'/teachers/{id}')
 
 @app.route('/sports')
 def sports():
