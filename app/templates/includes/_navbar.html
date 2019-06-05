@@ -29,14 +29,20 @@
                                     {{ current_user.first_name[0] }}{{ current_user.last_name[0] }}
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">
+                                    {% if current_user.started_at_school %}
+                                    <a class="user_circle_dropdown dropdown-item" href="/teachers/{{current_user.id}}">{{ current_user.first_name }} {{ current_user.last_name }}</a>
+                                    <a class="user_circle_dropdown dropdown-item" data-toggle="modal" data-target="#changePassword" href="#">Add New Sports Team</a>
+                                    {% else %}
+                                    <a class="user_circle_dropdown dropdown-item" href="/students/{{current_user.id}}">{{ current_user.first_name }} {{ current_user.last_name }}</a>
+                                    <br>
+                                    {% endif %}
+                                    <a class="user_circle_dropdown dropdown-item" data-toggle="modal" data-target="#changePassword" href="#">Change Password</a>
+                                    <a class="dropdown-item">
                                         <form class="nav" action="/logout" method="post">
                                             <a class="user_circle_dropdown" onclick="parentNode.submit()">Logout</a>
                                         </form>
                                     </a>
-                                    <a class="user_circle_dropdown dropdown-item" data-toggle="modal" data-target="#changePassword" href="#">Change Password</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Separated link</a>
                                 </div>
                             </div>
                         </li>

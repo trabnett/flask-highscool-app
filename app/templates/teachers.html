@@ -1,14 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container jumboton" style="margin-top:35px">
-        <h2>Current Faculty:</h2>
+<div class="buffer container">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr><th><h3>Current Faculty:</h3></th></tr>
+        </thead>
+        <tbody>
         {% for teacher in teachers %}
-        <div class="flex card">
-            <a class="school_index" href="teachers/{{ teacher.id }}">
-                <img class="avatar card-img-top" src="{{ teacher.pic_url }}" alt="Teacher Pic">
-                <h3>{{ teacher.first_name }} {{ teacher.last_name }}</h3>
-            </a>
-        </div>
+        <tr>
+            <td><a href="teachers/{{ teacher.id }}"><h5>{{ teacher.first_name }} {{ teacher.last_name }}</h5></a></td>
+        </tr>
         {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

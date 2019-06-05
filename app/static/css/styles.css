@@ -7,6 +7,9 @@
     max-width: 80px;
     max-height:80px;
 }
+.buffer{
+    margin-top:51px;
+}
 .flex{
     display: flex;
     flex-direction: row;
@@ -42,4 +45,8 @@ h3{
     color:#9d9d9d;
     line-height:3.62em;
     margin-left:1em;
+}
+.warning{
+    color:red;
+    text-align: center;
 }

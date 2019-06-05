@@ -4,7 +4,15 @@
     {% if student.alert %}
         <h1 style="margin-top:65px;text-align:center;">{{ student.alert }}</h1>
     {% else %}
-        <div class="flex container" style="margin-top:51px;">
+        <div class="buffer flex container">
+            <div class="container">
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
             <div class="row" style="display:flex;align-items:center;">
                 <div class="col-sm-6">
                     <div class="card text-center" style="width:30em;">
@@ -16,23 +24,23 @@
                 <div class="col-sm-6">
                     <div class="card" style="width:30em;">
                             <h1>Course List:</h1> 
-                            <table class="table">
+                            <table class="table table-striped table-hover" id="courses">
                                 <thead>
                                     <tr>
                                         <th scope="col">Course Name</th>
-                                        <th scope="col"></th>
+                                        <th scope="col">Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {% for course in courses%}
-                                    {% with x =  courses[course].test_scores %}
-                                    <tr>
+                                    {% with scores =  courses[course].test_scores %}
+                                    <tr id="row{{loop.index0}}">
                                         <td>{{ course }}</td>
                                         <td>Grade {{ courses[course].grade }} {{ courses[course].course_name }}, with teacher: <a href="../teachers/{{ courses[course]['teacher_id'] }}">{{ courses[course].teacher }}</a><br>                                         
                                             Thier current average in this course is <b>{{ courses[course].average }}%</b>
                                         </td>
                                         {% if student.id == current_user.id %}
-                                        <td><button id={{loop.index0}} class="btn btn-primary" onclick="tests({{ loop.index0 }}, {{x}})">test results</button></td>
+                                        <td><button id={{loop.index0}} class="btn btn-primary btn-xs" onclick="tests({{ loop.index0 }}, {{scores}})">test results</button></td>
                                         {% endif %}
                                     </tr>
                                     {% endwith %}
@@ -42,7 +50,7 @@
                     </div>
                     <div class="card" style="width:30em;">
                         <h1>Sports:</h1> 
-                        <table class="table">
+                        <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col">Sport</th>
@@ -54,8 +62,8 @@
                                     <td><a href="/sports/{{ sport[2].sport_name }}">{{ sport[2].sport_name }}</a></td>
                                     {% if current_user.id == student.id%}
                                     <td>
-                                    <form action="/students/{{ student.id }}/sports/{{ sport[2].sport_name}}" method="post">
-                                        <button class="btn btn-primary" type="submit" name="dropout">Drop out of Sport</button>
+                                    <form action="/students/{{ student.id }}/sports/{{ sport[2].sport_name}}/delete" method="post">
+                                        <button class="btn btn-primary btn-xs" type="submit" name="dropout">Drop out of Sport</button>
                                     </form>
                                     </td>
                                     {% endif %}

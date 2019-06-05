@@ -2,49 +2,61 @@
 {% block content %}
 <div class="container jumboton" style="margin-top:35px">
         <h2>Enrolled Students:</h2>
-            <h3>Grade 9:</h3>
-            {% for student in students %}
-                {% if student.grade == 9 %}
-                    <div class="flex card">
-                        <a class="school_index" href="students/{{ student.id }}">
-                            <img class="avatar card-img-top" src="{{ student.pic_url }}" alt="Student Pic">
-                            <h3>{{ student.first_name }} {{ student.last_name }}</h3>
-                        </a>
-                    </div>
-                {% endif %}
-            {% endfor %}
-            <h3>Grade 10:</h3>
-            {% for student in students %}
-                {% if student.grade == 10 %}
-                    <div class="flex card">
-                        <a class="school_index" href="students/{{ student.id }}">
-                            <img class="avatar card-img-top" src="{{ student.pic_url }}" alt="Student Pic">
-                            <h3>{{ student.first_name }} {{ student.last_name }}</h3>
-                        </a>
-                    </div>
-                {% endif %}
-            {% endfor %}
-            <h3>Grade 11:</h3>
-            {% for student in students %}
-                {% if student.grade == 11 %}
-                    <div class="flex card">
-                        <a class="school_index" href="students/{{ student.id }}">
-                            <img class="avatar card-img-top" src="{{ student.pic_url }}" alt="Student Pic">
-                            <h3>{{ student.first_name }} {{ student.last_name }}</h3>
-                        </a>
-                    </div>
-                {% endif %}
-            {% endfor %}
-            <h3>Grade 12:</h3>
-            {% for student in students %}
-                {% if student.grade == 12 %}
-                    <div class="flex card">
-                        <a class="school_index" href="students/{{ student.id }}">
-                            <img class="avatar card-img-top" src="{{ student.pic_url }}" alt="Student Pic">
-                            <h3>{{ student.first_name }} {{ student.last_name }}</h3>
-                        </a>
-                    </div>
-                {% endif %}
-            {% endfor %}
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr><th><h3>Grade 9:</h3></th></tr>
+                </thead>
+                <tbody>
+                {% for student in students %}
+                    {% if student.grade == 9 %}
+                        <tr>
+                            <td><a href="students/{{ student.id }}"><h5>{{ student.first_name }} {{ student.last_name }}</h5></a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr><th><h3>Grade 10:</h3></th></tr>
+                </thead>
+                <tbody>
+                {% for student in students %}
+                    {% if student.grade == 10 %}
+                        <tr>
+                            <td><a href="students/{{ student.id }}"><h5>{{ student.first_name }} {{ student.last_name }}</h5></a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr><th><h3>Grade 11:</h3></th></tr>
+                </thead>
+                <tbody>
+                {% for student in students %}
+                    {% if student.grade == 11 %}
+                        <tr>
+                            <td><a href="students/{{ student.id }}"><h5>{{ student.first_name }} {{ student.last_name }}</h5></a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr><th><h3>Grade 12:</h3></th></tr>
+                </thead>
+                <tbody>
+                {% for student in students %}
+                    {% if student.grade == 12 %}
+                        <tr>
+                            <td><a href="students/{{ student.id }}"><h5>{{ student.first_name }} {{ student.last_name }}</h5></a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
 </div>
 {% endblock %}

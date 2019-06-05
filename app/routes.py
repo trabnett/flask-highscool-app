@@ -124,17 +124,12 @@ def update_student(id):
     new_password2 = request.form.get("new_password2")
     new_hash = generate_password_hash(new_password1)
     student = session.query(Student).filter_by(id = id).first()
-    if check_password_hash(student.password_hash, old_password) == True:
+    if check_password_hash(student.password_hash, old_password):
         student.password_hash = new_hash
         print(student.password_hash, "new hash?")
         session.commit()
     else:
-        message = "Invalid Password"
-        flash('Invalid Password')
-    return redirect(f'/students/{id}')
-
-    print(old_password, "<=== old_password", new_password1, new_password2, hash)
-    print(student)
+        flash('You incorrectly entered your current password')
     return redirect(f'/students/{id}')
 
 @app.route('/teachers')
@@ -165,28 +160,40 @@ def update_teacher(id):
     old_password = request.form.get("old_password")
     new_password1 = request.form.get("new_password1")
     new_password2 = request.form.get("new_password2")
-    print(old_password, "<=== old_password", new_password1, new_password2)
-    teacher = Teacher.query.filter_by(id = id).first()
-    print(teacher)
+    new_hash = generate_password_hash(new_password1)
+    teacher = session.query(Teacher).filter_by(id = id).first()
+    if check_password_hash(teacher.password_hash, old_password):
+        teacher.password_hash = new_hash
+        session.commit()
+    else:
+        flash('You incorrectly entered your current password')
     return redirect(f'/teachers/{id}')
 
 @app.route('/sports')
 def sports():
-    sports = Sport.query.all()
-    return render_template('sports.html', sports=sports)
+    num = []
+    if hasattr(current_user, 'birthday'):
+        student_sports = StudentSport.query.filter_by(student_id=current_user.id).all()
+        for sport in student_sports:
+            num.append(sport.sport_id)
+    sports = session.query(Sport, Teacher).filter(
+        Sport.coach_id == Teacher.id
+    ).all()
+    return render_template('sports.html', sports=sports, student_sports=num)
 
 @app.route('/sports/<string:name>')
 def sport(name):
-    if current_user.is_authenticated:
-        print(current_user, "<====== current user")
     sport = Sport.query.filter_by(sport_name=name).first()
     if sport == None:
         sport = {'sport_name': 'no such sport exists'}
         return render_template('sport.html', sport=sport)
-    sport_summary = session.query(StudentSport, Student
+    sport_summary = session.query(StudentSport, Student, Teacher, Sport
     ).filter(sport.id == StudentSport.sport_id
     ).filter(StudentSport.student_id == Student.id
+    ).filter(Teacher.id == Sport.coach_id
+    ).filter(StudentSport.sport_id == Sport.id
     ).all()
+    print(sport_summary)
     return render_template('sport.html', sport=sport, summary=sport_summary)
 
 @app.route('/students/<string:id>/sports/<string:name>/delete', methods=['POST'])
@@ -200,3 +207,13 @@ def delete(name, id):
     session.delete(sport[0][2])
     session.commit()
     return redirect(f'/students/{id}')
+
+@app.route('/students/<string:id>/sports/<string:name>/join', methods=['POST'])
+def join(name, id):
+    sport = Sport.query.filter_by(sport_name=name).first()
+    print(sport.id, "sport id")
+    new_student_sport = StudentSport(sport_id = sport.id, student_id = id)
+    session.add(new_student_sport)
+    session.commit()
+    print('here')
+    return redirect(f'/sports/{name}')

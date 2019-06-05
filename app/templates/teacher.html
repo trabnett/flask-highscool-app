@@ -3,7 +3,15 @@
     {% if educator.alert %}
         <h1 style="margin-top:65px;text-align:center;">{{ educator.alert }}</h1>
     {% else %}
-        <div class="flex container" style="margin-top:51px;">
+        <div class="buffer flex container">
+            <div class="container">
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
             <div class="row" style="display:flex;align-items:center;">
                 <div class="col-sm-6">
                     <div class="card text-center" style="width:30em;">
