@@ -3,36 +3,33 @@
     {% if educator.alert %}
         <h1 style="margin-top:65px;text-align:center;">{{ educator.alert }}</h1>
     {% else %}
-        <div class="buffer flex container">
-            <div class="container">
-                {% for message in get_flashed_messages() %}
-                <div class="alert alert-warning">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{ message }}
+        <div class="buffer flex-wrap container">
+            <div class="row">
+                <div class="container">
+                    {% for message in get_flashed_messages() %}
+                    <div class="alert alert-warning">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
-            <div class="row" style="display:flex;align-items:center;">
-                <div class="col-sm-6">
-                    <div class="card text-center" style="width:30em;">
-                        <img class="card-img-top" style="width: 100%;" src="{{ educator.pic_url }}" alt="Card image cap">
-                        <div class="card-body">
-                            <h1 class="card-title">{{ educator.first_name }} {{ educator.last_name }}</h1>
-                            <p class="card-text">{{ educator.first_name }} {{ educator.last_name }} (almost everyone at this school has the same first and last name) is one of the excellent educators at TRHS. They have been working at the school in {{ year_started }}</p>
+                <div class="flex-wrap">
+                    <div class="col-sm-6">
+                        <div class="card text-center" style="width:30em;">
+                            <img class="card-img-top" style="width: 100%;" src="{{ educator.pic_url }}" alt="Card image cap">
+                                <h1>{{ educator.first_name }} {{ educator.last_name }}</h1>
+                                <p>{{ educator.first_name }} {{ educator.last_name }} (almost everyone at this school has the same first and last name) is one of the excellent educators at TRHS. They have been working at the school in {{ year_started }}</p>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="card" style="width:30em;">
+                    <div class="col-sm-6">
                         <h1>Courses:</h1>
-                        <table class="table">
+                        <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">Grade</th>
                                         <th scope="col">Course Name</th>
                                     </tr>
                                 </thead>
-                        <ul>
                         {% for course in courses %}
                             <tr>
                                 <td>
@@ -43,32 +40,29 @@
                                 </td>
                             </tr>
                         {% endfor %}
-                        </ul>
+                        </table>
+                        <h1>Sports:</h1> 
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sport</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% if sports|length == 0 %}
+                                <tr>
+                                    <td>This teacher is not currently coaching any sports</td>
+                                </tr>
+                            {% else %}
+                            {% for sport in sports %}
+                                <tr>
+                                    <td><a href="/sports/{{ sport[0].sport_name }}">{{ sport[0].sport_name }}</a></td>
+                                </tr>
+                            {% endfor %}
+                            {% endif %}
+                            </tbody>
                         </table>
                     </div>
-                </div>
-                <div class="card" style="width:30em;">
-                    <h1>Sports:</h1> 
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Sport</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% if sports|length == 0 %}
-                            <tr>
-                                <td>This teacher is not currently coaching any sports</td>
-                            </tr>
-                        {% else %}
-                        {% for sport in sports %}
-                            <tr>
-                                <td><a href="/sports/{{ sport[0].sport_name }}">{{ sport[0].sport_name }}</a></td>
-                            </tr>
-                        {% endfor %}
-                        {% endif %}
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>

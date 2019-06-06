@@ -139,11 +139,9 @@ def teachers():
 
 @app.route('/teachers/<string:id>', methods=['GET'])
 def teacher(id):
-    educator = {'alert': 'this teacher is not currently a part of the faculty'}
-    faculty = Teacher.query.all()
-    for person in faculty:
-        if int(person.id) == int(id):
-            educator = person
+    educator = Teacher.query.filter_by(id=id).first()
+    if educator == None:
+        return render_template('teacher.html', educator={'alert': 'this teacher is not currently a part of the faculty'})
     teacher_courses = session.query(Teacher, Course
         ).filter(educator.id == Course.teacher_id
         ).filter(educator.id == Teacher.id
