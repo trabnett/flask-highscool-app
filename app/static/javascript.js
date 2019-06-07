@@ -7,10 +7,10 @@ function tests(num, input){
     }
     let node = document.createElement('table')
     node.id = 'remove'
-    node.classList.add('table')
-    let str = '<thead><tr>Test Scores</tr></thead>'
+    node.classList.add('table-striped')
+    let str = '<thead><tr>Test Scores:</tr></thead>'
     input.forEach(test => {
-        str += `<tr><td>${test[0]}</td><td>${test[1]}</td></tr>`
+        str += `<tr><td>${test[0]}</td><td>${test[1]}%</td></tr>`
     })
     node.innerHTML = `${str}`
     x.parentNode.insertBefore(node, x.nextSibling)

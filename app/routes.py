@@ -9,6 +9,7 @@ from datetime import datetime
 from sqlalchemy import create_engine, update
 from sqlalchemy.orm import sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
+from app.helper_functions import hello, get_average
 
 engine = db.engine
 Session = sessionmaker(engine)
@@ -17,6 +18,7 @@ teacher_check = {'status': False}
 
 @app.route('/')
 def welcome():
+    print(hello("jim"))
     print(current_user, teacher_check)
     return render_template('index.html')
 
@@ -215,3 +217,20 @@ def join(name, id):
     session.commit()
     print('here')
     return redirect(f'/sports/{name}')
+
+@app.route('/courses')
+def courses():
+    courses = session.query(Course, Teacher
+    ).filter(Teacher.id == Course.teacher_id).order_by(Course.grade).all()
+    print(courses)
+    return render_template('courses.html', courses=courses)
+
+@app.route('/courses/<string:name>')
+def course(name):
+    course = session.query(Course, StudentCourse, Student, Teacher
+    ).filter(name == Course.course_name
+    ).filter(StudentCourse.course_id == Course.id
+    ).filter(Student.id == StudentCourse.student_id
+    ).filter(Course.teacher_id == Teacher.id).all()
+    print(course)
+    return render_template('course.html', course=course, get_average=get_average)
