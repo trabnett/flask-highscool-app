@@ -143,7 +143,6 @@ def sports():
 @app.route('/sports/<string:name>')
 def sport(name):
     sport = Sport.query.filter_by(sport_name=name).first()
-    print("<------------", sport)
     if sport == None:
         print("here?")
         return render_template('sport.html', alert='no such sport exists')
