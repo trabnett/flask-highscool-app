@@ -7,31 +7,13 @@ function tests(num, input){
     }
     let node = document.createElement('table')
     node.id = 'remove'
-    node.classList.add('table-striped')
+    node.classList.add('test_scores', 'table-striped')
     let str = '<thead><tr>Test Scores:</tr></thead>'
     input.forEach(test => {
         str += `<tr><td>${test[0]}</td><td>${test[1]}%</td></tr>`
     })
     node.innerHTML = `${str}`
     x.parentNode.insertBefore(node, x.nextSibling)
-    // let z
-    // if (x.childNodes[7]){
-    //     z = x.childNodes[7]
-    //     x.removeChild(z)
-    // } else {
-    // let y = document.createElement('div')
-    // y.innerHTML = `
-    //     <h2>Tests:</h2>
-    //     <ul>
-    //     </ul>
-    // `
-    // input.forEach(arr => {
-    //     let node = document.createElement('li')
-    //     node.innerHTML = `<li>${arr[0]}: <b>${arr[1]}%</b></li>`
-    //     y.childNodes[3].appendChild(node)
-    // })
-    // x.appendChild(y)
-    // }
 }
 
 function match(){

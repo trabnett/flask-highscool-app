@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import LoginForm, TestScore
+from app.forms import LoginForm, TestScore, NewSport
 from app.students import Students
 from app import db
 from flask_login import current_user, login_user, logout_user
@@ -118,7 +118,6 @@ def teacher(id):
 def update_teacher(id):
     old_password = request.form.get("old_password")
     new_password1 = request.form.get("new_password1")
-    new_password2 = request.form.get("new_password2")
     new_hash = generate_password_hash(new_password1)
     teacher = session.query(Teacher).filter_by(id = id).first()
     if check_password_hash(teacher.password_hash, old_password):
@@ -128,8 +127,15 @@ def update_teacher(id):
         flash('You incorrectly entered your current password')
     return redirect(f'/teachers/{id}')
 
-@app.route('/sports')
+@app.route('/sports', methods=['GET', 'POST'])
 def sports():
+    if request.method == 'POST':
+        new_sport = request.form.get('sport_name')
+        max_size = request.form.get('max_size')
+        sport = Sport(sport_name=new_sport,coach_id=current_user.id,max_size=max_size)
+        session.add(sport)
+        session.commit()
+        return redirect('/sports')
     num = []
     if hasattr(current_user, 'birthday'):
         student_sports = StudentSport.query.filter_by(student_id=current_user.id).all()
@@ -140,9 +146,14 @@ def sports():
     ).all()
     return render_template('sports.html', sports=sports, student_sports=num)
 
-@app.route('/sports/<string:name>')
+@app.route('/sports/<string:name>', methods=['GET', 'POST'])
 def sport(name):
-    sport = Sport.query.filter_by(sport_name=name).first()
+    sport = Sport.query.filter_by(sport_name = name).first()
+    if request.method == 'POST':
+        local_object = session.merge(sport)
+        session.delete(local_object)
+        session.commit()
+        return redirect('/')
     if sport == None:
         print("here?")
         return render_template('sport.html', alert='no such sport exists')
@@ -152,7 +163,6 @@ def sport(name):
     ).filter(Teacher.id == Sport.coach_id
     ).filter(StudentSport.sport_id == Sport.id
     ).all()
-    print(sport_summary)
     return render_template('sport.html', sport=sport, summary=sport_summary)
 
 @app.route('/students/<string:id>/sports/<string:name>/delete', methods=['POST'])
@@ -162,7 +172,6 @@ def delete(name, id):
     ).filter(name == Sport.sport_name
     ).filter(Sport.id == StudentSport.sport_id
     ).filter(id == StudentSport.student_id).all()
-    print(sport[0][2].id, "<===jeyyyyy")
     session.delete(sport[0][2])
     session.commit()
     return redirect(f'/students/{id}')
@@ -180,12 +189,16 @@ def join(name, id):
     session.commit()
     return redirect(f'/sports/{name}')
 
-@app.route('/courses')
+@app.route('/courses', methods=['GET', 'POST'])
 def courses():
     courses = session.query(Course, Teacher
     ).filter(Teacher.id == Course.teacher_id).order_by(Course.grade).all()
     print(courses)
     return render_template('courses.html', courses=courses)
+
+@app.route('/courses/new')
+def new_course():
+    return render_template('new_course.html')
 
 @app.route('/courses/<int:id>')
 def course(id):
@@ -198,7 +211,6 @@ def course(id):
 
 @app.route('/courses/<int:id>/new_test', methods=['GET', 'POST'])
 def new_test(id):
-    print(request.form, "heyyyyyy")
     if request.method == 'POST':
         test_name = request.form.get('test_name')
         new_test = Test(course_id = id, test_name = test_name)

@@ -33,7 +33,7 @@
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Team Members</th>
+                    <th scope="col">Team Members {{ summary|length }}/{{ summary[0][3].max_size }}</th> 
                 </tr>
             </thead>
             <tbody>
@@ -46,8 +46,14 @@
         </table>
     </div>
     {% else %}
+
         <div class="buffer container">
             <h3>This sport currently has no enrolled students.</h3>
+            {% if current_user.started_at_school and current_user.id == sport.coach_id %}
+            <div class="alert alert-success" role="alert">
+                    You are the coach of this sport, but there are no studnts enrolled. Would you like to cancel the sport?<form action="/sports/{{ sport.sport_name }}" method="post"><button class="btn btn-primary btn-xs" type="submit">Remove Sport?</button></form>
+            </div>
+            {% endif %}
         </div>
     {% endif %}
 {% endif %}

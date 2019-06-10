@@ -32,6 +32,7 @@
                                 <div class="dropdown-menu">
                                     {% if current_user.started_at_school %}
                                     <a class="user_circle_dropdown dropdown-item" href="/teachers/{{current_user.id}}">{{ current_user.first_name }} {{ current_user.last_name }}</a><br>
+                                    <a class="user_circle_dropdown dropdown-item" href="/courses/new">Add New Class</a><br>
                                     <a class="user_circle_dropdown dropdown-item" data-toggle="modal" data-target="#add_sport" href="#">Add New Sports Team</a>
                                     {% else %}
                                     <a class="user_circle_dropdown dropdown-item" href="/students/{{current_user.id}}">{{ current_user.first_name }} {{ current_user.last_name }}</a>

@@ -13,3 +13,8 @@ class TestScore(FlaskForm):
     student = StringField('Student', validators=[DataRequired()])
     score= IntegerField('Score', validators=[DataRequired(), NumberRange(min=0, max=100, message="You Must Enter A Value Between 0-100")])
     submit = SubmitField('Register Test Scores')
+
+class NewSport(FlaskForm):
+    sport_name = StringField('String Name', validators=[DataRequired()])
+    max_size = IntegerField('Max Size', validators=[DataRequired()])
+    submit = SubmitField('Submit New Team')
