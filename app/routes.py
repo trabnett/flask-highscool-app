@@ -143,9 +143,10 @@ def sports():
 @app.route('/sports/<string:name>')
 def sport(name):
     sport = Sport.query.filter_by(sport_name=name).first()
+    print("<------------", sport)
     if sport == None:
-        sport = {'sport_name': 'no such sport exists'}
-        return render_template('sport.html', sport=sport)
+        print("here?")
+        return render_template('sport.html', alert='no such sport exists')
     sport_summary = session.query(StudentSport, Student, Teacher, Sport
     ).filter(sport.id == StudentSport.sport_id
     ).filter(StudentSport.student_id == Student.id
@@ -170,11 +171,14 @@ def delete(name, id):
 @app.route('/students/<int:id>/sports/<string:name>/join', methods=['POST'])
 def join(name, id):
     sport = Sport.query.filter_by(sport_name=name).first()
-    print(sport.id, "sport id")
+    count = StudentSport.query.filter_by(sport_id=sport.id).count()
+    print(count)
+    if count >= sport.max_size:
+        flash('This team is full. You cannot register right now.')
+        return  redirect(f'/sports/{name}')
     new_student_sport = StudentSport(sport_id = sport.id, student_id = id)
     session.add(new_student_sport)
     session.commit()
-    print('here')
     return redirect(f'/sports/{name}')
 
 @app.route('/courses')
@@ -191,7 +195,6 @@ def course(id):
     ).filter(StudentCourse.course_id == Course.id
     ).filter(Student.id == StudentCourse.student_id
     ).filter(Course.teacher_id == Teacher.id).all()
-    print(course)
     return render_template('course.html', course=course, get_average=get_average)
 
 @app.route('/courses/<int:id>/new_test', methods=['GET', 'POST'])
