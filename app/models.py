@@ -90,6 +90,7 @@ class Sport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sport_name = db.Column(db.String)
     coach_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    max_size = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Sport {}>'.format(self.sport_name)
