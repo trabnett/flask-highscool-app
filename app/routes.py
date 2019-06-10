@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import LoginForm
+from app.forms import LoginForm, TestScore
 from app.students import Students
 from app import db
 from flask_login import current_user, login_user, logout_user
@@ -9,16 +9,15 @@ from datetime import datetime
 from sqlalchemy import create_engine, update
 from sqlalchemy.orm import sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.helper_functions import hello, get_average
+from app.helper_functions import get_average, get_test_scores, get_gpa
 
 engine = db.engine
 Session = sessionmaker(engine)
 session = Session()
-teacher_check = {'status': False}
+teacher_check = {'status': None}
 
 @app.route('/')
 def welcome():
-    print(hello("jim"))
     print(current_user, teacher_check)
     return render_template('index.html')
 
@@ -28,6 +27,7 @@ def login():
         teacher_check['status'] = False
         return redirect(f'/students/{current_user.id}')
     if current_user.is_authenticated and current_user.started_at_school:
+        teacher_check['status'] = True
         return redirect(f'/teachers/{current_user.id}')
     form = LoginForm()
     if form.validate_on_submit():
@@ -64,47 +64,8 @@ def student(id):
         return render_template('student.html', student={'alert': 'this student is not registered'})
     days = datetime.now() - student.birthday
     years = int(days.days / 365)
-    student_courses = session.query(
-        Student, 
-        Teacher, 
-        StudentCourse,
-        Course,
-        Test,
-        StudentTest
-            ).filter(
-                Student.id == student.id
-            ).filter(
-                Course.id == StudentCourse.course_id
-            ).filter(
-                Teacher.id == Course.teacher_id
-            ).filter(
-                student.id == StudentCourse.student_id
-            ).filter(
-                Test.course_id == Course.id
-            ).filter(
-                StudentTest.student_id == student.id
-            ).filter(
-                Test.id == StudentTest.test_id
-            ).all()
-    dic = {}
-    for entry in student_courses:
-        add_grade = []
-        if entry[3].course_name in dic and 'test_scores' in dic[entry[3].course_name]:
-            add_grade = dic[entry[3].course_name]['test_scores']
-            add_grade.append([entry[4].test_name, entry[5].score])
-        else:
-            add_grade = [[entry[4].test_name, entry[5].score]]
-        dic[entry[3].course_name] = {
-            'teacher': entry[1].last_name,
-            'teacher_id': entry[1].id,
-            'grade': entry[3].grade,
-            'test_scores': add_grade
-            }
-    gpa = []
-    for course in dic:
-        dic[course]['average'] = round(sum(test[1] for test in dic[course]['test_scores']) / len(dic[course]['test_scores']),1)
-        gpa.append(sum(test[1] for test in dic[course]['test_scores']) / len(dic[course]['test_scores']))
-    gpa = round(sum(gpa)/ len(gpa),1)
+    academic_summary = get_test_scores(id)
+    gpa = get_gpa(academic_summary)
     student_sports = session.query(
         Student,
         StudentSport,
@@ -116,14 +77,12 @@ def student(id):
             ).filter(
                 student.id == Student.id
             ).all()
-    print(student.id, student_sports)
-    return render_template('student.html', student=student, years=years, courses=dic, gpa=gpa, sports=student_sports)
+    return render_template('student.html', student=student, years=years, courses=academic_summary, gpa=gpa, sports=student_sports)
 
 @app.route('/students/<string:id>', methods=['POST'])
 def update_student(id):
     old_password = request.form.get("old_password")
     new_password1 = request.form.get("new_password1")
-    new_password2 = request.form.get("new_password2")
     new_hash = generate_password_hash(new_password1)
     student = session.query(Student).filter_by(id = id).first()
     if check_password_hash(student.password_hash, old_password):
@@ -208,7 +167,7 @@ def delete(name, id):
     session.commit()
     return redirect(f'/students/{id}')
 
-@app.route('/students/<string:id>/sports/<string:name>/join', methods=['POST'])
+@app.route('/students/<int:id>/sports/<string:name>/join', methods=['POST'])
 def join(name, id):
     sport = Sport.query.filter_by(sport_name=name).first()
     print(sport.id, "sport id")
@@ -225,12 +184,38 @@ def courses():
     print(courses)
     return render_template('courses.html', courses=courses)
 
-@app.route('/courses/<string:name>')
-def course(name):
+@app.route('/courses/<int:id>')
+def course(id):
     course = session.query(Course, StudentCourse, Student, Teacher
-    ).filter(name == Course.course_name
+    ).filter(id == Course.id
     ).filter(StudentCourse.course_id == Course.id
     ).filter(Student.id == StudentCourse.student_id
     ).filter(Course.teacher_id == Teacher.id).all()
     print(course)
     return render_template('course.html', course=course, get_average=get_average)
+
+@app.route('/courses/<int:id>/new_test', methods=['GET', 'POST'])
+def new_test(id):
+    print(request.form, "heyyyyyy")
+    if request.method == 'POST':
+        test_name = request.form.get('test_name')
+        new_test = Test(course_id = id, test_name = test_name)
+        session.add(new_test)
+        session.commit()
+        form_data = request.form
+        for key in form_data.keys():
+            for value in form_data.getlist(key):
+                if key != 'test_name':
+                    new_student_test = StudentTest(test_id = new_test.id, student_id = key, score = value)
+                    session.add(new_student_test)
+                    session.commit()
+    form = TestScore()
+    if form.validate_on_submit():
+        print(form.student.data, form.test.data, form.score.data, "heyy moooo")
+    course_summary = session.query(Course, StudentCourse, Student, Teacher
+    ).filter(id == Course.id
+    ).filter(StudentCourse.course_id == Course.id
+    ).filter(Student.id == StudentCourse.student_id
+    ).filter(Course.teacher_id == Teacher.id).all()
+    print(course_summary)
+    return render_template('new_test.html', course_summary=course_summary, form=form)

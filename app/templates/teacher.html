@@ -36,7 +36,7 @@
                                     {{ course[1].grade }} 
                                 </td>
                                 <td>
-                                    {{ course[1].course_name }}
+                                    <a href="/courses/{{ course[1].id }}">{{ course[1].course_name }}</a>
                                 </td>
                             </tr>
                         {% endfor %}
