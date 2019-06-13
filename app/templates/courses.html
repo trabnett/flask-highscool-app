@@ -14,7 +14,7 @@
             <tr>
                 <td><a href="/courses/{{ course[0].id }}">{{ course[0].course_name }}</a></td>
                 <td>{{ course[0].grade }}</td>
-                <td>{{ course[1].first_name }} {{ course[1].last_name }}</td>
+                <td><a href="/teachers/{{ course[1].id }}">{{ course[1].first_name }} {{ course[1].last_name }}</a></td>
             </tr>
             {% endfor%}
         </tbody>

@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import LoginForm, TestScore, NewSport
+from app.forms import LoginForm, TestScore, NewSport, NewCourse
 from app.students import Students
 from app import db
 from flask_login import current_user, login_user, logout_user
@@ -191,6 +191,14 @@ def join(name, id):
 
 @app.route('/courses', methods=['GET', 'POST'])
 def courses():
+    form = NewCourse()
+    if request.method == 'POST' and form.validate():
+        
+        students = Student.query.filter_by(grade=form.grade.data).all()
+        return render_template('new_course_with_students.html', form=form, course_name=form.course_name.data, grade=form.grade.data, students=students)
+    elif request.method == 'POST':
+        print(form.errors,"errors")
+        return render_template('new_course.html', form=form)
     courses = session.query(Course, Teacher
     ).filter(Teacher.id == Course.teacher_id).order_by(Course.grade).all()
     print(courses)
@@ -198,7 +206,8 @@ def courses():
 
 @app.route('/courses/new')
 def new_course():
-    return render_template('new_course.html')
+    form = NewCourse()
+    return render_template('new_course.html', form=form)
 
 @app.route('/courses/<int:id>')
 def course(id):
@@ -207,6 +216,9 @@ def course(id):
     ).filter(StudentCourse.course_id == Course.id
     ).filter(Student.id == StudentCourse.student_id
     ).filter(Course.teacher_id == Teacher.id).all()
+    print(course, "<======")
+    if len(course) == 0:
+        return render_template('course.html', alert='This course does not exist, or there are no students registered in this course')
     return render_template('course.html', course=course, get_average=get_average)
 
 @app.route('/courses/<int:id>/new_test', methods=['GET', 'POST'])

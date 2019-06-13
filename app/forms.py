@@ -18,3 +18,8 @@ class NewSport(FlaskForm):
     sport_name = StringField('String Name', validators=[DataRequired()])
     max_size = IntegerField('Max Size', validators=[DataRequired()])
     submit = SubmitField('Submit New Team')
+
+class NewCourse(FlaskForm):
+    course_name = StringField('Course Name', validators=[DataRequired()])
+    grade = IntegerField('Grade', validators=[DataRequired(), NumberRange(min=9,max=12,message=('This school only offers grads 9-12.'))])
+    submit = SubmitField('Create Course')

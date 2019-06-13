@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
+{% if alert %}
+<div class="buffer container">{{ alert }}</div>
+{% else %}
 <div class="buffer container">
     {% if current_user.started_at_school and current_user.id == course[0][3].id %}
     <div class="alert alert-success" role="alert">
@@ -25,4 +28,5 @@
         </tbody>
     </table>
 </div>
+{% endif %}
 {% endblock%}

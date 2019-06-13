@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="buffer container">{{ course_name }}
+
+    {% for student in students %}
+    {{ student.first_name }}<input type="checkbox" name="{{ student.id }}""></input>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,8 +1,39 @@
 {% extends "layout.html" %}
 
 {% block content %}
+{% with messages = get_flashed_messages() %}
+{% if current_user.started_at_school %}
 <div class="buffer container">
-    <h1>We doing it!</h1>
+    <h1>Create New Course</h1>
+    <form action="/courses" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.course_name.label }}<br>
+                {{ form.course_name(size=32) }}<br>
+                {% for error in form.course_name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.grade.label }}<br>
+                {{ form.grade(size=32) }}<br>
+                {% for error in form.grade.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+                {% if messages %}
+                        {% for message in messages %}
+                            <span style="color: red;">[{{ message }}]</span>
+                        {% endfor %}
+                {% endif %}
+            </p>
+            <p>{{ form.submit() }}</p>
+        </form>
 </div>
+{% else %}
+<div class="buffer container">
+    <h2>You are not a teacher at this school</h2>
+</div>
+{% endif %}
+{% endwith %}
 
 {% endblock %}
