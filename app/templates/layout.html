@@ -1,4 +1,5 @@
 {% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 {% block scripts %}
 <script src="{{url_for('.static', filename='javascript.js')}}"></script>
 {{super()}}

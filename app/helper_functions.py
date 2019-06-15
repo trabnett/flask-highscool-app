@@ -16,11 +16,16 @@ def get_average(student_id, name):
     ).filter(Course.course_name == name
     ).filter(StudentTest.test_id == Test.id
     ).filter(Test.course_id == Course.id).all()
+    print('there')
     for grade in grades:
         res.append(grade[0].score)
-    return round((sum(res) / len(res)), 1)
+    if len(res) == 0:
+        return 0
+    else:
+        return round((sum(res) / len(res)), 1)
 
 def get_test_scores(student_id):
+    print('start')
     student_courses = session.query(
     Student, 
     Teacher, 
@@ -58,6 +63,7 @@ def get_test_scores(student_id):
             'grade': entry[3].grade,
             'test_scores': add_grade
             }
+    print('here')
     for course in dic:
         dic[course]['average'] = round(sum(test[1] for test in dic[course]['test_scores']) / len(dic[course]['test_scores']),1)
     return dic

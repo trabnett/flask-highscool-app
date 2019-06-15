@@ -3,23 +3,37 @@
 {% if current_user.started_at_school and current_user.id == course_summary[0][3].id %}
 
 <div class="buffer container">
+    <h3>Grade {{ course_summary[0][0].grade}} {{ course_summary[0][0].course_name }}, New Test</h3>
     <form class="form-inline" action="/courses/{{ course_summary[0][0].id}}/new_test" method="post">
-        <div class="form-group mx-sm mb-2">
-            {{ form.test_name.label }}
-            {{ form.test_name() }} 
-        </div><br>
-        {% for course in course_summary %}
-        <div class="form-group mx-sm-3 mb-2">
+        <table>
+            <thead>
+                <tr class="new-test-title">
+                    <th>{{ form.test_name.label }}</th>
+                    <th>{{ form.test_name() }}</th>
+                </tr>
+                <tr>
+                    <th>Student:</th>
+                    <th>Score:</th>
+                </tr>
+            </thead>
+            {% for course in course_summary %}
+            <div class="form-group mx-sm-3 mb-2">
+                <tr>
+                    <td>{{ course[2].first_name }} {{ course[2].last_name }}</td>
+                    <td>
+                        <label for="inputPassword2" class="sr-only">{{ course[2].first_name }} {{ course[2].last_name }}</label>
+                        <input type="number" class="test-input form-control" min="0" max="100" name="{{ course[2].id }}">
+                    </td>
+                </tr>
+            </div>
+            {% endfor %}
+            <tr>
+                <td>
+                    <button type="submit" class="btn btn-primary mb-2">Submit Grades</button>
+                </td>
+            </tr>
 
-            <!-- <input type="text" readonly class="form-control-plaintext" name="{{ course[2].id }}" value="{{ course[2].first_name }} {{ course[2].last_name }}"> -->
-            {{ course[2].first_name }} {{ course[2].last_name }}
-        </div>
-        <div class="form-group mx-sm-3 mb-2">
-            <label for="inputPassword2" class="sr-only">{{ course[2].first_name }} {{ course[2].last_name }}</label>
-            <input type="number" class="form-control" name="{{ course[2].id }}" placeholder="Grade">
-        </div><br>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary mb-2">Submit Grades</button>
+        </table>
     </form>
 </div>
 {% else %}

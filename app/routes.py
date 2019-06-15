@@ -193,20 +193,34 @@ def join(name, id):
 def courses():
     form = NewCourse()
     if request.method == 'POST' and form.validate():
-        
         students = Student.query.filter_by(grade=form.grade.data).all()
         return render_template('new_course_with_students.html', form=form, course_name=form.course_name.data, grade=form.grade.data, students=students)
     elif request.method == 'POST':
-        print(form.errors,"errors")
         return render_template('new_course.html', form=form)
     courses = session.query(Course, Teacher
     ).filter(Teacher.id == Course.teacher_id).order_by(Course.grade).all()
     print(courses)
     return render_template('courses.html', courses=courses)
 
-@app.route('/courses/new')
+@app.route('/courses/new', methods=['GET', 'POST'])
 def new_course():
     form = NewCourse()
+    if request.method == 'POST' and form.validate():
+        check = Course.query.filter_by(course_name=request.form.get('course_name'), grade=request.form.get('grade')).first()
+        if check == None:
+            y = Course(course_name=request.form.get('course_name'), grade=request.form.get('grade'), teacher_id=current_user.id)
+            session.add(y)
+            session.commit()
+            data = request.form
+            print(y.id, "course id")
+            for student in data:
+                if student[:7] == 'student':
+                    x = StudentCourse(student_id = request.form.get(student), course_id=y.id)
+                    session.add(x)
+                    session.commit()
+        else:
+            print('that course already exists')
+
     return render_template('new_course.html', form=form)
 
 @app.route('/courses/<int:id>')
@@ -220,6 +234,20 @@ def course(id):
     if len(course) == 0:
         return render_template('course.html', alert='This course does not exist, or there are no students registered in this course')
     return render_template('course.html', course=course, get_average=get_average)
+
+@app.route('/courses/<int:id>/remove_students', methods=['GET','POST'])
+def remove_students(id):
+    print(request.method, "<-------")
+    if request.method == 'POST':
+        return 'Hello'
+    return "here we go"
+
+@app.route('/courses/<int:id>/add_students', methods=['GET','POST'])
+def add_students(id):
+    print(request.method, "<-------")
+    if request.method == 'POST':
+        return 'Hello'
+    return "here we go"
 
 @app.route('/courses/<int:id>/new_test', methods=['GET', 'POST'])
 def new_test(id):

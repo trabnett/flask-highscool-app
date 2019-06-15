@@ -1,9 +1,40 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class="buffer container">{{ course_name }}
+<div class="buffer container">
+    <h1>Create New Course</h1>
+    <form action="/courses/new" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.course_name.label }}<br>
+                {{ form.course_name(size=32, readonly=true, class="form-input") }}<br>
+                {% for error in form.course_name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.grade.label }}<br>
+                {{ form.grade(size=32, readonly=ture, class="form-input") }}<br>
+                {% for error in form.grade.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+                {% if messages %}
+                        {% for message in messages %}
+                            <span style="color: red;">[{{ message }}]</span>
+                        {% endfor %}
+                {% endif %}
+            </p>
+            <p>
+                <table>
+                    {% for student in students %}
+                        <tr class="student-checkbox">
+                            <td><label style="width:14.5em"><input id="id{{ student.id }}"type="checkbox" class="checkbox style-2 pull-right" name="student{{ loop.index }}" value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</lable></td>
+                        </tr>
+                    {% endfor %}
+                </table>
 
-    {% for student in students %}
-    {{ student.first_name }}<input type="checkbox" name="{{ student.id }}""></input>
-    {% endfor %}
+            </p>
+            <input class="btn btn-primary" type="submit" value="Submit">
+        </form>
+    </div>
 </div>
 {% endblock %}

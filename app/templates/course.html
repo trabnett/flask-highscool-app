@@ -6,7 +6,20 @@
 <div class="buffer container">
     {% if current_user.started_at_school and current_user.id == course[0][3].id %}
     <div class="alert alert-success" role="alert">
-            You are the teacher of this course. Would you like to enter the results of a new test?<button class="btn btn-primary btn-xs" onclick="location.href = '/courses/{{ course[0][0].id }}/new_test';">Add New Test</button>
+            You are the teacher of this course. Would you like to:
+            <ul>
+                <li><button class="course-button btn btn-primary btn-xs" onclick="location.href = '/courses/{{ course[0][0].id }}/new_test';">Add New Test</button></li>
+                <li>
+                    <form action="/courses/{{ course[0][0].id }}/add_students" method="get">
+                        <button class="course-button btn btn-primary btn-xs" type="submit">Add Students</button></li>
+                    </form>
+                </li>
+                <li>
+                    <form action="/courses/{{ course[0][0].id }}/remove_students" method="get">
+                        <button class="course-button btn btn-primary btn-xs" type="submit">Remove Students</button></li>
+                    </form>
+                <li><button class="course-button btn btn-primary btn-xs" onclick="location.href = '/courses/{{ course[0][0].id }}/delete';">Remove Course</button></li>
+            </ul>
     </div>
     {% endif %}
     <h1>{{ course[0][0].course_name }}</h1>
