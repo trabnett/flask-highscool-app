@@ -5,11 +5,11 @@
 {% if current_user.started_at_school %}
 <div class="buffer container">
     <h1>Create New Course</h1>
-    {{ wtf.quick_form(form, action="/courses") }}
+    {{ wtf.quick_form(form, id='quick_form', action="/courses") }}
 </div>
 {% else %}
 <div class="buffer container">
-    <h2>You are not a teacher at this school</h2>
+    <h2>You are not logged in as a teacher at this school</h2>
 </div>
 {% endif %}
 {% endwith %}

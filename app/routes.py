@@ -244,10 +244,13 @@ def remove_students(id):
 
 @app.route('/courses/<int:id>/add_students', methods=['GET','POST'])
 def add_students(id):
-    print(request.method, "<-------")
+    course = Course.query.filter_by(id=id).first()
     if request.method == 'POST':
-        return 'Hello'
-    return "here we go"
+        return redirect(f'/courses/{id}')
+    grade = course.grade
+    students = session.query(Student, StudentCourse).outerjoin(StudentCourse).filter(Student.grade == grade).filter(StudentCourse.id == None).all()
+    print(students, course)
+    return render_template('course_add_students.html', students=students, course=course)
 
 @app.route('/courses/<int:id>/new_test', methods=['GET', 'POST'])
 def new_test(id):

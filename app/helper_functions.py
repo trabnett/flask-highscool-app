@@ -70,6 +70,8 @@ def get_test_scores(student_id):
 
 def get_gpa(academic_summary):
     gpa = []
+    if len(academic_summary) == 0:
+        return 100
     for course in academic_summary:
         gpa.append(sum(test[1] for test in academic_summary[course]['test_scores']) / len(academic_summary[course]['test_scores']))
     gpa = round(sum(gpa)/ len(gpa),1)

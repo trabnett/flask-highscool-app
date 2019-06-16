@@ -1,3 +1,14 @@
+//workaround for styling wtforms quickforms buttons so that they match bootstrap buttons 
+let quick_form = document.getElementById('quick_form')
+if (quick_form){
+    quick_form.childNodes.forEach(node => {
+        if (node.type === 'submit'){
+            node.classList.add('bootstrap-copy')
+        }
+    })
+}
+
+
 
 function tests(num, input){
     let x = document.getElementById(`row${num}`)
