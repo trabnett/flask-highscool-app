@@ -25,6 +25,9 @@
             </p>
             <p>
                 <table>
+                    <thead>
+                        <tr><td><h2>Add Students:</h2></td></tr>
+                    </thead>
                     {% for student in students %}
                         <tr class="student-checkbox">
                             <td><label style="width:14.5em"><input id="id{{ student.id }}"type="checkbox" class="checkbox style-2 pull-right" name="student{{ loop.index }}" value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</lable></td>

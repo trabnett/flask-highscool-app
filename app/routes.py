@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import LoginForm, TestScore, NewSport, NewCourse, Register
+from app.forms import LoginForm, TestScore, NewSport, NewCourse, Register, JoinFaculty
 from app.students import Students
 from app import db
 from flask_login import current_user, login_user, logout_user
@@ -315,5 +315,15 @@ def register():
     form = Register()
     if request.method == 'POST' and form.validate():
         return render_template('register.html', form=form)
-    
     return render_template('register.html', form=form)
+
+@app.route('/join_faculty', methods=['GET', 'POST'])
+def join_faculty():
+    form = JoinFaculty()
+    if request.method == 'POST' and form.validate():
+        return render_template('join_faculty.html', form=form)
+    return render_template('join_faculty.html', form=form)
+
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+    return render_template('admin.html')

@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from datetime import datetime, date
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, SelectField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, NumberRange, Email, EqualTo, Length
@@ -29,10 +30,20 @@ class NewCourse(FlaskForm):
 class Register(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
-    birthday = DateField('Birthday', format='%Y-%m-%d')
+    birthday = DateField('Birthday', format='%Y-%m-%d', default=date(2000, 1, 1))
     grade = IntegerField('Grade', validators=[DataRequired(), NumberRange(min=9,max=12,message=('This school only offers grads 9-12.'))])
     pic_url = StringField('Picture Url', validators=[DataRequired()])
     twitter = StringField('Twitter - (not required)')
+    email = StringField('Email address', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=4), EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField('Confirm Password',)
+    submit = SubmitField('Register')
+
+class JoinFaculty(FlaskForm):
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
+    started_at_school = DateField('Started At School', format='%Y-%m-%d', default=datetime.now())
+    pic_url = StringField('Picture Url', validators=[DataRequired()])
     email = StringField('Email address', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=4), EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Confirm Password',)

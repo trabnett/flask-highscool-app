@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div class="buffer container">
+        <h1>Admin Portal:</h1>
+
+        {% if current_user.email == 'tim@timrabnett.com' %}
+            you are good
+        {% else %}
+            you are not authorized
+        {% endif %}
+    </div>
+{% endblock %}

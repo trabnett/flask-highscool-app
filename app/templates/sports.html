@@ -9,7 +9,6 @@
                 <th scope="col">Coach</th>
             </tr>
         </thead>
-        <tbody>
             {% for sport in sports %}
             <tr>
                 {% if current_user.birthday  %}
@@ -31,7 +30,6 @@
                     <td><a href="/teachers/{{sport[1].id}}">{{ sport[1].first_name }}</a></td>
                 {% endif %}
             </tr>
-        </tbody>
         {% endfor%}
     </table>
 </div>

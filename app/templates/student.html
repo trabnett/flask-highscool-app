@@ -61,7 +61,7 @@
                                     {% if current_user.id == student.id and current_user.birthday %}
                                     <td>
                                     <form action="/students/{{ student.id }}/sports/{{ sport[2].sport_name}}/delete" method="post">
-                                        <button class="btn btn-primary btn-xs" type="submit" name="dropout">Drop out of Sport</button>
+                                        <button style="float:right" class="btn btn-primary btn-xs" type="submit" name="dropout">Drop out of Sport</button>
                                     </form>
                                     </td>
                                     {% endif %}
