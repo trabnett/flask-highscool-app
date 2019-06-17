@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="buffer container">
+        <h1>working</h1>
+        {{ wtf.quick_form(form, id='quick_form', action='/register') }}
+    </div>
+{% endblock %}

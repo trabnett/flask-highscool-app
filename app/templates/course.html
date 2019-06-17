@@ -1,29 +1,41 @@
 {% extends "layout.html" %}
 {% block content %}
+{% include 'includes/_remove_course_modal.html' %}
 {% if alert %}
 <div class="buffer container">{{ alert }}</div>
 {% else %}
 <div class="buffer container">
-    {% if current_user.started_at_school and current_user.id == course[0][3].id %}
+    {% if current_user.started_at_school and current_user.id == c.teacher_id %}
     <div class="alert alert-success" role="alert">
             You are the teacher of this course. Would you like to:
             <ul>
-                <li><button class="course-button btn btn-primary btn-xs" onclick="location.href = '/courses/{{ course[0][0].id }}/new_test';">Add New Test</button></li>
+                <li><button class="course-button btn btn-primary btn-xs" onclick="location.href = '/courses/{{ c.id }}/new_test';">Add New Test</button></li>
                 <li>
-                    <form action="/courses/{{ course[0][0].id }}/add_students" method="get">
+                    <form action="/courses/{{ c.id }}/add_students" method="get">
                         <button class="course-button btn btn-primary btn-xs" type="submit">Add Students</button></li>
                     </form>
                 </li>
                 <li>
-                    <form action="/courses/{{ course[0][0].id }}/remove_students" method="get">
+                    <form action="/courses/{{ c.id }}/remove_students" method="get">
                         <button class="course-button btn btn-primary btn-xs" type="submit">Remove Students</button></li>
                     </form>
-                <li><button class="course-button btn btn-primary btn-xs" onclick="location.href = '/courses/{{ course[0][0].id }}/delete';">Remove Course</button></li>
+                <li><a class="course-button btn btn-primary btn-xs" data-toggle="modal" data-target="#remove_course" href="#">Delete Course</a></li>
             </ul>
     </div>
+    <h1>{{ c.course_name }}</h1>
+    <h3>Teacher: Professor <a href="/teachers/{{ current_user.id }}">{{ current_user.last_name }}</a></h3>
     {% endif %}
-    <h1>{{ course[0][0].course_name }}</h1>
-    <h3>Teacher: Professor <a href="/teachers/{{ course[0][3].id }}">{{ course[0][3].last_name }}</a></h3>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {% if course|length > 0 %}
     <table class="table table-striped table-hover">
         <thead>
             <tr>
@@ -40,6 +52,9 @@
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <h1></h1>
+    {% endif %}
 </div>
 {% endif %}
 {% endblock%}

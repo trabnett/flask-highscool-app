@@ -4,6 +4,11 @@
     {% with messages = get_flashed_messages() %}
         <div class="container" style="margin-top: 35px">
             <h1>Sign In</h1>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-info" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
             {{ wtf.quick_form(form, id='quick_form') }}
         </div>
     {% endwith %}

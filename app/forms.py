@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, SelectField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms.fields.html5 import DateField
+from wtforms.validators import DataRequired, NumberRange, Email, EqualTo, Length
+from wtforms.widgets import PasswordInput
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -23,3 +25,15 @@ class NewCourse(FlaskForm):
     course_name = StringField('Course Name', validators=[DataRequired()])
     grade = IntegerField('Grade', validators=[DataRequired(), NumberRange(min=9,max=12,message=('This school only offers grads 9-12.'))])
     submit = SubmitField('Create Course')
+
+class Register(FlaskForm):
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
+    birthday = DateField('Birthday', format='%Y-%m-%d')
+    grade = IntegerField('Grade', validators=[DataRequired(), NumberRange(min=9,max=12,message=('This school only offers grads 9-12.'))])
+    pic_url = StringField('Picture Url', validators=[DataRequired()])
+    twitter = StringField('Twitter - (not required)')
+    email = StringField('Email address', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=4), EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField('Confirm Password',)
+    submit = SubmitField('Register')

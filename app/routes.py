@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import LoginForm, TestScore, NewSport, NewCourse
+from app.forms import LoginForm, TestScore, NewSport, NewCourse, Register
 from app.students import Students
 from app import db
 from flask_login import current_user, login_user, logout_user
@@ -223,33 +223,66 @@ def new_course():
 
     return render_template('new_course.html', form=form)
 
-@app.route('/courses/<int:id>')
+@app.route('/courses/<int:id>', methods=['GET', 'POST'])
 def course(id):
+    if request.method == 'POST':
+        tests = Test.query.filter_by(course_id=id).all()
+        print(tests)
+        # student_courses = StudentCourse.query.filter_by(course_id=id).all()
+        # for student_course in student_courses:
+        #     local_sc = session.merge(student_course)
+        #     session.delete(local_sc)
+        #     session.commit()
+        # course = Course.query.filter_by(id=id).first()
+        # local_c = session.merge(course)
+        # session.delete(local_c)
+        # session.commit()
+        return "check sql"
+    c = Course.query.get(id)
     course = session.query(Course, StudentCourse, Student, Teacher
     ).filter(id == Course.id
     ).filter(StudentCourse.course_id == Course.id
     ).filter(Student.id == StudentCourse.student_id
     ).filter(Course.teacher_id == Teacher.id).all()
-    print(course, "<======")
-    if len(course) == 0:
+    if len(course) == 0 and c.teacher_id != current_user.id:
+        print(course)
         return render_template('course.html', alert='This course does not exist, or there are no students registered in this course')
-    return render_template('course.html', course=course, get_average=get_average)
+    return render_template('course.html', c=c, course=course, get_average=get_average)
 
 @app.route('/courses/<int:id>/remove_students', methods=['GET','POST'])
 def remove_students(id):
-    print(request.method, "<-------")
+    course = Course.query.filter_by(id=id).first()
+    print(course.course_name)
     if request.method == 'POST':
-        return 'Hello'
-    return "here we go"
+        data = request.form
+        for student in data:
+            student_course = session.query(StudentCourse).filter_by(student_id=request.form.get(student), course_id=id).first()
+            session.delete(student_course)
+            session.commit()
+        return redirect(f'/courses/{id}')
+    students = session.query(Student, StudentCourse
+    ).filter(Student.id == StudentCourse.student_id
+    ).filter(StudentCourse.course_id == id).all()
+    return render_template('course_remove_students.html', course=course, students=students)
 
 @app.route('/courses/<int:id>/add_students', methods=['GET','POST'])
 def add_students(id):
     course = Course.query.filter_by(id=id).first()
     if request.method == 'POST':
+        data = request.form
+        for student in data:
+            if student[:7] == 'student':
+                print(request.form.get(student))
+                x = StudentCourse(student_id = request.form.get(student), course_id=id)
+                session.add(x)
+                session.commit()
+                print(x)
         return redirect(f'/courses/{id}')
     grade = course.grade
-    students = session.query(Student, StudentCourse).outerjoin(StudentCourse).filter(Student.grade == grade).filter(StudentCourse.id == None).all()
-    print(students, course)
+    print(grade, "this is grade")
+    sub = session.query(StudentCourse.student_id).filter_by(course_id=id)
+    students = session.query(Student).filter(Student.grade == grade).filter(~Student.id.in_(sub)).all()
+    print(students, "whaaaaat")
     return render_template('course_add_students.html', students=students, course=course)
 
 @app.route('/courses/<int:id>/new_test', methods=['GET', 'POST'])
@@ -267,12 +300,20 @@ def new_test(id):
                     session.add(new_student_test)
                     session.commit()
     form = TestScore()
-    if form.validate_on_submit():
-        print(form.student.data, form.test.data, form.score.data, "heyy moooo")
     course_summary = session.query(Course, StudentCourse, Student, Teacher
     ).filter(id == Course.id
     ).filter(StudentCourse.course_id == Course.id
     ).filter(Student.id == StudentCourse.student_id
     ).filter(Course.teacher_id == Teacher.id).all()
-    print(course_summary)
+    if len(course_summary) == 0:
+        flash('You cannot add a test when there are no students registered in a course.')
+        return redirect(f'/courses/{id}')
     return render_template('new_test.html', course_summary=course_summary, form=form)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = Register()
+    if request.method == 'POST' and form.validate():
+        return render_template('register.html', form=form)
+    
+    return render_template('register.html', form=form)
