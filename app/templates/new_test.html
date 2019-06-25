@@ -4,7 +4,7 @@
 
 <div class="buffer container">
     <h3>Grade {{ course_summary[0][0].grade}} {{ course_summary[0][0].course_name }}, New Test</h3>
-    <form class="form-inline" action="/courses/{{ course_summary[0][0].id}}/new_test" method="post">
+    <form action="/courses/{{ course_summary[0][0].id}}/new_test" method="post">
         <table>
             <thead>
                 <tr class="new-test-title">

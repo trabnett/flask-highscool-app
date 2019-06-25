@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, NumberRange, Email, EqualTo, Length
 from wtforms.widgets import PasswordInput
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
@@ -33,7 +33,7 @@ class Register(FlaskForm):
     birthday = DateField('Birthday', format='%Y-%m-%d', default=date(2000, 1, 1))
     grade = IntegerField('Grade', validators=[DataRequired(), NumberRange(min=9,max=12,message=('This school only offers grads 9-12.'))])
     pic_url = StringField('Picture Url', validators=[DataRequired()])
-    twitter = StringField('Twitter - (not required)')
+    twitter = StringField('Twitter - (not required)', default=None)
     email = StringField('Email address', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=4), EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Confirm Password',)

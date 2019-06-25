@@ -30,6 +30,11 @@
                                         <th scope="col">Course Name</th>
                                     </tr>
                                 </thead>
+                        {% if courses|length == 0 %}
+                        <tr>
+                            <td>This teacher is not teaching any courses right now.</td>
+                        </tr>
+                        {% else %}
                         {% for course in courses %}
                             <tr>
                                 <td>
@@ -40,6 +45,7 @@
                                 </td>
                             </tr>
                         {% endfor %}
+                        {% endif %}
                         </table>
                         <h1>Sports:</h1> 
                         <table class="table table-striped table-hover">

@@ -3,13 +3,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="alert alert-danger">Remove Course</h3>
-                <p>This action cannot be reversed! By confirming you will delete this course forever.</p>
+                <p>This action cannot be reversed! By confirming you will delete this course, all records of student taking this course as well as all tests and test scores associated with this class forever. Obviously a real highshcool wouldn't have a feature that works in this way. It is only incuded to show that data cascades on delete.</p>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post">
+                <form method="post" action="/courses/{{ c.id }}/delete">
                     <button type="submit" class="btn btn-danger btn-ok">Confirm</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                 </form>

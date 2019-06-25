@@ -1,8 +1,9 @@
 from app import db
+from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, current_user
-from app import login
 import app.routes
+from app import login
 
 @login.user_loader
 def load_user(id):
@@ -12,8 +13,6 @@ def load_user(id):
     user = Teacher.query.get(id)
     return user
 
-
-
 class Student(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64), index=True)
@@ -21,9 +20,12 @@ class Student(UserMixin, db.Model):
     birthday = db.Column(db.DateTime())
     grade = db.Column(db.Integer)
     pic_url = db.Column(db.String(240)) 
-    twitter = db.Column(db.String(128), index=True, unique=True)
+    twitter = db.Column(db.String(128))
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    student_course = relationship('StudentCourse', cascade='delete')
+    student_test = relationship('StudentTest', cascade='delete')
+    student_sport = relationship('StudentSport', cascade='delete')
     
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -39,6 +41,9 @@ class Course(db.Model):
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
     course_name = db.Column(db.String(64))
     grade = db.Column(db.Integer)
+    teacher = relationship('Teacher')
+    test = relationship('Test', cascade='delete')
+    student_course = relationship('StudentCourse', cascade='delete')
 
     def __repr__(self):
         return '<Course {}>'.format(self.course_name)
@@ -51,6 +56,8 @@ class Teacher(UserMixin, db.Model):
     started_at_school = db.Column(db.DateTime())
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    course = relationship('Course', cascade='delete')
+    sport = relationship('Sport', cascade='delete')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -65,6 +72,8 @@ class StudentCourse(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+    student = relationship('Student')
+    course = relationship('Course')
 
     def __repr__(self):
         return '<StudentCourse {}>'.format(self.id)
@@ -73,6 +82,8 @@ class Test(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     test_name = db.Column(db.String(64))
+    course = relationship('Course')
+    student_test = relationship('StudentTest', cascade='delete')
 
     def __repr__(self):
         return '<Test {}>'.format(self.test_name)
@@ -82,6 +93,8 @@ class StudentTest(db.Model):
     test_id = db.Column(db.Integer, db.ForeignKey('test.id'))
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
     score = db.Column(db.Integer)
+    student = relationship('Student')
+    test = relationship('Test')
 
     def __repr__(self):
         return '<StudentTest {}>'.format(self.id)
@@ -91,6 +104,9 @@ class Sport(db.Model):
     sport_name = db.Column(db.String)
     coach_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
     max_size = db.Column(db.Integer)
+    teacher = relationship('Teacher')
+    student_sport = relationship('StudentSport', cascade='delete')
+    sport_score = relationship('SportScore', cascade='delete')
 
     def __repr__(self):
         return '<Sport {}>'.format(self.sport_name)
@@ -99,17 +115,20 @@ class StudentSport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
     sport_id = db.Column(db.Integer, db.ForeignKey('sport.id'))
+    student = relationship('Student')
+    sport = relationship('Sport')
 
     def __repr__(self):
         return '<StudentSport {}>'.format(self.id)
 
 class SportScore(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sport = db.Column(db.Integer, db.ForeignKey('sport.id'))
+    sport_id = db.Column(db.Integer, db.ForeignKey('sport.id'))
     date = db.Column(db.DateTime())
     opponent = db.Column(db.String(64))
     trhs_score = db.Column(db.Integer)
     opponent_score = db.Column(db.Integer)
+    sport = relationship('Sport')
 
     def __repr__(self):
         return '<Score {} >'.format(self.sport)

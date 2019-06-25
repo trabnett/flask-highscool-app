@@ -18,7 +18,6 @@ teacher_check = {'status': None}
 
 @app.route('/')
 def welcome():
-    print(current_user, teacher_check)
     return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -31,9 +30,9 @@ def login():
         return redirect(f'/teachers/{current_user.id}')
     form = LoginForm()
     if form.validate_on_submit():
-        user = Student.query.filter_by(email=form.username.data).first()
+        user = Student.query.filter_by(email=form.email.data).first()
         if user == None:
-            user = Teacher.query.filter_by(email=form.username.data).first()
+            user = Teacher.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
@@ -58,7 +57,7 @@ def students():
 
 @app.route('/students/<string:id>', methods=['GET'])
 def student(id):
-    print(teacher_check, "teacher_check")
+    print(current_user, "student page current user")
     student = Student.query.filter_by(id=id).first()
     if student == None:
         return render_template('student.html', student={'alert': 'this student is not registered'})
@@ -155,7 +154,6 @@ def sport(name):
         session.commit()
         return redirect('/')
     if sport == None:
-        print("here?")
         return render_template('sport.html', alert='no such sport exists')
     sport_summary = session.query(StudentSport, Student, Teacher, Sport
     ).filter(sport.id == StudentSport.sport_id
@@ -193,6 +191,10 @@ def join(name, id):
 def courses():
     form = NewCourse()
     if request.method == 'POST' and form.validate():
+        check = Course.query.filter_by(course_name=request.form.get('course_name'), grade=request.form.get('grade')).first()
+        if check != None:
+            flash('this course already exists!')
+            return redirect ('/courses/new')
         students = Student.query.filter_by(grade=form.grade.data).all()
         return render_template('new_course_with_students.html', form=form, course_name=form.course_name.data, grade=form.grade.data, students=students)
     elif request.method == 'POST':
@@ -208,19 +210,22 @@ def new_course():
     if request.method == 'POST' and form.validate():
         check = Course.query.filter_by(course_name=request.form.get('course_name'), grade=request.form.get('grade')).first()
         if check == None:
+            print(check, "<======")
             y = Course(course_name=request.form.get('course_name'), grade=request.form.get('grade'), teacher_id=current_user.id)
             session.add(y)
             session.commit()
             data = request.form
-            print(y.id, "course id")
+            course_id = y.id
             for student in data:
                 if student[:7] == 'student':
                     x = StudentCourse(student_id = request.form.get(student), course_id=y.id)
                     session.add(x)
                     session.commit()
+            return redirect(f'/courses/{course_id}')
         else:
-            print('that course already exists')
-
+            print('fail')
+            flash('A course with that name is already being taught in that grade')
+            return redirect('/courses/new')
     return render_template('new_course.html', form=form)
 
 @app.route('/courses/<int:id>', methods=['GET', 'POST'])
@@ -249,6 +254,13 @@ def course(id):
         return render_template('course.html', alert='This course does not exist, or there are no students registered in this course')
     return render_template('course.html', c=c, course=course, get_average=get_average)
 
+@app.route('/courses/<int:id>/delete', methods=['POST'])
+def delete_course(id):
+    course = Course.query.get(id)
+    db.session.delete(course)
+    db.session.commit()
+    return redirect(f'/teachers/{current_user.id}')
+
 @app.route('/courses/<int:id>/remove_students', methods=['GET','POST'])
 def remove_students(id):
     course = Course.query.filter_by(id=id).first()
@@ -257,8 +269,9 @@ def remove_students(id):
         data = request.form
         for student in data:
             student_course = session.query(StudentCourse).filter_by(student_id=request.form.get(student), course_id=id).first()
-            session.delete(student_course)
-            session.commit()
+            local_object = db.session.merge(student_course)
+            db.session.delete(local_object)
+            db.session.commit()
         return redirect(f'/courses/{id}')
     students = session.query(Student, StudentCourse
     ).filter(Student.id == StudentCourse.student_id
@@ -299,6 +312,7 @@ def new_test(id):
                     new_student_test = StudentTest(test_id = new_test.id, student_id = key, score = value)
                     session.add(new_student_test)
                     session.commit()
+        return redirect(f'/courses/{id}')
     form = TestScore()
     course_summary = session.query(Course, StudentCourse, Student, Teacher
     ).filter(id == Course.id
@@ -313,17 +327,46 @@ def new_test(id):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = Register()
-    if request.method == 'POST' and form.validate():
-        return render_template('register.html', form=form)
+    if form.validate_on_submit():
+        data = request.form
+        email_check = Student.query.filter_by(email=form.email.data).first()
+        if email_check != None:
+            flash('This email is already assigned to a student. Are you sure you are not already a student at this school?')
+            return render_template('register.html', form=form)
+        new_student = Student(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, birthday=form.birthday.data, grade=int(form.grade.data), pic_url=form.pic_url.data, password_hash=generate_password_hash(form.password.data))
+        if len(form.twitter.data) > 0:
+            new_student.twitter = form.twitter.data
+        db.session.add(new_student)
+        db.session.commit()
+        flash(f'Thank you {new_student.first_name}  {new_student.last_name}. You are now a registered student! Please Log in!')
+        return redirect('/login')
     return render_template('register.html', form=form)
 
 @app.route('/join_faculty', methods=['GET', 'POST'])
 def join_faculty():
     form = JoinFaculty()
     if request.method == 'POST' and form.validate():
-        return render_template('join_faculty.html', form=form)
+        check_email = Teacher.query.filter_by(email=form.email.data).first()
+        if check_email != None:
+            flash('This email is already assigned to a Teacher. Are you sure you are not already a teacher at this school?')
+            return render_template('join_faculty.html', form=form)
+        new_teacher = Teacher(first_name=form.first_name.data, last_name=form.last_name.data, started_at_school=form.started_at_school.data, pic_url=form.pic_url.data, email=form.email.data, password_hash=generate_password_hash(form.password.data))
+        db.session.add(new_teacher)
+        db.session.commit()
+        flash(f'Thank you {new_teacher.first_name} {new_teacher.last_name}. You are now a registered teacher. Please Log in!')
+        return redirect('/login')
     return render_template('join_faculty.html', form=form)
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     return render_template('admin.html')
+
+@app.route('/testthing')
+def test():
+    student = Course.query.get(29)
+    db.session.delete(student)
+    db.session.commit()
+    x = student.course_name
+    student_courses = StudentCourse.query.filter_by(course_id=29)
+    student_sports = Test.query.filter_by(course_id=29)
+    return render_template('test_rename.html', student=student, x=x, courses=student_courses, sports=student_sports)
