@@ -57,14 +57,13 @@ def students():
 
 @app.route('/students/<string:id>', methods=['GET'])
 def student(id):
-    print(current_user, "student page current user")
     student = Student.query.filter_by(id=id).first()
     if student == None:
         return render_template('student.html', student={'alert': 'this student is not registered'})
     days = datetime.now() - student.birthday
     years = int(days.days / 365)
-    print('here')
     academic_summary = get_test_scores(id)
+    print(academic_summary, "academic summary in students/<student_id>")
     gpa = get_gpa(academic_summary)
     student_sports = session.query(
         Student,
@@ -100,6 +99,7 @@ def teachers():
 
 @app.route('/teachers/<string:id>', methods=['GET'])
 def teacher(id):
+    print('asdfasdfasdfhello')
     educator = Teacher.query.filter_by(id=id).first()
     if educator == None:
         return render_template('teacher.html', educator={'alert': 'this teacher is not currently a part of the faculty'})
@@ -286,17 +286,16 @@ def add_students(id):
         data = request.form
         for student in data:
             if student[:7] == 'student':
-                print(request.form.get(student))
-                x = StudentCourse(student_id = request.form.get(student), course_id=id)
-                session.add(x)
-                session.commit()
-                print(x)
+                # !!!look into fixing this!!! Since I changed the StudentCourse.id to be a forign key, it is not autoincramenting, as a result I have to get the highest id and add 1 when adding a new StudentCourse
+                count = StudentCourse.query.filter_by(course_id=id).order_by(StudentCourse.id.desc()).all()
+                sc_id = count[0].id + 1
+                x = StudentCourse(id=sc_id, student_id = request.form.get(student), course_id=id)
+                db.session.add(x)
+                db.session.commit()
         return redirect(f'/courses/{id}')
     grade = course.grade
-    print(grade, "this is grade")
     sub = session.query(StudentCourse.student_id).filter_by(course_id=id)
     students = session.query(Student).filter(Student.grade == grade).filter(~Student.id.in_(sub)).all()
-    print(students, "whaaaaat")
     return render_template('course_add_students.html', students=students, course=course)
 
 @app.route('/courses/<int:id>/new_test', methods=['GET', 'POST'])
@@ -310,7 +309,8 @@ def new_test(id):
         for key in form_data.keys():
             for value in form_data.getlist(key):
                 if key != 'test_name':
-                    new_student_test = StudentTest(test_id = new_test.id, student_id = key, score = value)
+                    student_course = StudentCourse.query.filter_by(student_id=key, course_id=id).first()
+                    new_student_test = StudentTest(test_id = new_test.id, student_course_id = student_course.id, score = value)
                     session.add(new_student_test)
                     session.commit()
         return redirect(f'/courses/{id}')
@@ -364,10 +364,8 @@ def admin():
 
 @app.route('/testthing')
 def test():
-    student = Course.query.get(29)
-    db.session.delete(student)
-    db.session.commit()
-    x = student.course_name
-    student_courses = StudentCourse.query.filter_by(course_id=29)
-    student_sports = Test.query.filter_by(course_id=29)
-    return render_template('test_rename.html', student=student, x=x, courses=student_courses, sports=student_sports)
+    sc = StudentCourse.query.get(4)
+    local_object = session.merge(sc)
+    session.delete(local_object)
+    session.commit()
+    return "hey"
