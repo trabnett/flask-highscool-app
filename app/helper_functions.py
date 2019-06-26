@@ -42,10 +42,11 @@ def get_test_scores(student_id):
         ).filter(
             Test.course_id == Course.id
         ).filter(
-            StudentTest.student_id == student_id
+            StudentTest.student_course_id == StudentCourse.id
         ).filter(
             Test.id == StudentTest.test_id
         ).all()
+    print("!!!", student_courses, "<==========")
     dic = {}
     for entry in student_courses:
         add_grade = []

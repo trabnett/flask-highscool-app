@@ -63,6 +63,7 @@ def student(id):
         return render_template('student.html', student={'alert': 'this student is not registered'})
     days = datetime.now() - student.birthday
     years = int(days.days / 365)
+    print('here')
     academic_summary = get_test_scores(id)
     gpa = get_gpa(academic_summary)
     student_sports = session.query(

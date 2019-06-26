@@ -24,7 +24,6 @@ class Student(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     student_course = relationship('StudentCourse', cascade='delete')
-    student_test = relationship('StudentTest', cascade='delete')
     student_sport = relationship('StudentSport', cascade='delete')
     
     def set_password(self, password):
@@ -69,11 +68,12 @@ class Teacher(UserMixin, db.Model):
         return '<Teacher {}>'.format(self.last_name)
 
 class StudentCourse(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey('student_course.id'), primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
     student = relationship('Student')
     course = relationship('Course')
+    student_test = relationship('StudentTest', cascade='delete')
 
     def __repr__(self):
         return '<StudentCourse {}>'.format(self.id)
@@ -91,9 +91,9 @@ class Test(db.Model):
 class StudentTest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     test_id = db.Column(db.Integer, db.ForeignKey('test.id'))
-    student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+    student_course_id = db.Column(db.Integer, db.ForeignKey('student_course.id'))
     score = db.Column(db.Integer)
-    student = relationship('Student')
+    student_course = relationship('StudentCourse')
     test = relationship('Test')
 
     def __repr__(self):
