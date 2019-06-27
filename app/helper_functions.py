@@ -18,13 +18,12 @@ def get_average(student_id, course_name):
     ).filter(Test.course_id == Course.id
     ).filter(StudentCourse.student_id == student_id).all()
     print(grades)
-    return 0
-    # for grade in grades:
-    #     res.append(grade[0].score)
-    # if len(res) == 0:
-    #     return 0
-    # else:
-    #     return round((sum(res) / len(res)), 1)
+    for grade in grades:
+        res.append(grade[0].score)
+    if len(res) == 0:
+        return 0
+    else:
+        return round((sum(res) / len(res)), 1)
 
 def get_test_scores(student_id):
     print('hello from helper function')
@@ -48,7 +47,6 @@ def get_test_scores(student_id):
                 Test.id == StudentTest.test_id
             ).all()
 
-    print("!!!", student_courses, "<==========")
     dic = {}
     for entry in student_courses:
         add_grade = []

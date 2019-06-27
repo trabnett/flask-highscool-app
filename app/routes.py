@@ -92,6 +92,14 @@ def update_student(id):
         flash('You incorrectly entered your current password')
     return redirect(f'/students/{id}')
 
+@app.route('/students/<int:id>/delete', methods=['POST'])
+def delete_student(id):
+    student = Student.query.get(id)
+    local_object = session.merge(student)
+    session.delete(local_object)
+    session.commit()
+    return redirect('/register')
+
 @app.route('/teachers')
 def teachers():
     teachers = Teacher.query.all()
@@ -126,6 +134,14 @@ def update_teacher(id):
     else:
         flash('You incorrectly entered your current password')
     return redirect(f'/teachers/{id}')
+
+@app.route('/teachers/<int:id>/delete', methods=['POST'])
+def delete_teacher(id):
+    teacher = Teacher.query.get(id)
+    local_object = session.merge(teacher)
+    session.delete(local_object)
+    session.commit()
+    return redirect('/join_faculty')
 
 @app.route('/sports', methods=['GET', 'POST'])
 def sports():
@@ -211,7 +227,6 @@ def new_course():
     if request.method == 'POST' and form.validate():
         check = Course.query.filter_by(course_name=request.form.get('course_name'), grade=request.form.get('grade')).first()
         if check == None:
-            print(check, "<======")
             y = Course(course_name=request.form.get('course_name'), grade=request.form.get('grade'), teacher_id=current_user.id)
             session.add(y)
             session.commit()
@@ -219,12 +234,18 @@ def new_course():
             course_id = y.id
             for student in data:
                 if student[:7] == 'student':
-                    x = StudentCourse(student_id = request.form.get(student), course_id=y.id)
+                    # same problem as '/courses/<id>/add_students where id in not autoincramemting
+                    count = StudentCourse.query.order_by(StudentCourse.id.desc()).all()
+                    print("========>", count)
+                    if len(count) == 0:
+                        sc_id = 1
+                    else:
+                        sc_id = count[0].id + 1
+                    x = StudentCourse(id=sc_id, student_id = request.form.get(student), course_id=y.id)
                     session.add(x)
                     session.commit()
             return redirect(f'/courses/{course_id}')
         else:
-            print('fail')
             flash('A course with that name is already being taught in that grade')
             return redirect('/courses/new')
     return render_template('new_course.html', form=form)
@@ -244,6 +265,7 @@ def course(id):
         # session.delete(local_c)
         # session.commit()
         return "check sql"
+    print("yo")
     c = Course.query.get(id)
     course = session.query(Course, StudentCourse, Student, Teacher
     ).filter(id == Course.id
@@ -287,8 +309,11 @@ def add_students(id):
         for student in data:
             if student[:7] == 'student':
                 # !!!look into fixing this!!! Since I changed the StudentCourse.id to be a forign key, it is not autoincramenting, as a result I have to get the highest id and add 1 when adding a new StudentCourse
-                count = StudentCourse.query.filter_by(course_id=id).order_by(StudentCourse.id.desc()).all()
-                sc_id = count[0].id + 1
+                count = StudentCourse.query.order_by(StudentCourse.id.desc()).all()
+                if len(count) == 0:
+                    sc_id = 1
+                else:
+                    sc_id = count[0].id + 1
                 x = StudentCourse(id=sc_id, student_id = request.form.get(student), course_id=id)
                 db.session.add(x)
                 db.session.commit()
