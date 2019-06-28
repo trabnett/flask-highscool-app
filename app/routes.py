@@ -57,13 +57,13 @@ def students():
 
 @app.route('/students/<string:id>', methods=['GET'])
 def student(id):
-    print(current_user, "student page current user")
     student = Student.query.filter_by(id=id).first()
     if student == None:
         return render_template('student.html', student={'alert': 'this student is not registered'})
     days = datetime.now() - student.birthday
     years = int(days.days / 365)
     academic_summary = get_test_scores(id)
+    print(academic_summary, "academic summary in students/<student_id>")
     gpa = get_gpa(academic_summary)
     student_sports = session.query(
         Student,
@@ -92,6 +92,14 @@ def update_student(id):
         flash('You incorrectly entered your current password')
     return redirect(f'/students/{id}')
 
+@app.route('/students/<int:id>/delete', methods=['POST'])
+def delete_student(id):
+    student = Student.query.get(id)
+    local_object = session.merge(student)
+    session.delete(local_object)
+    session.commit()
+    return redirect('/register')
+
 @app.route('/teachers')
 def teachers():
     teachers = Teacher.query.all()
@@ -99,6 +107,7 @@ def teachers():
 
 @app.route('/teachers/<string:id>', methods=['GET'])
 def teacher(id):
+    print('asdfasdfasdfhello')
     educator = Teacher.query.filter_by(id=id).first()
     if educator == None:
         return render_template('teacher.html', educator={'alert': 'this teacher is not currently a part of the faculty'})
@@ -125,6 +134,14 @@ def update_teacher(id):
     else:
         flash('You incorrectly entered your current password')
     return redirect(f'/teachers/{id}')
+
+@app.route('/teachers/<int:id>/delete', methods=['POST'])
+def delete_teacher(id):
+    teacher = Teacher.query.get(id)
+    local_object = session.merge(teacher)
+    session.delete(local_object)
+    session.commit()
+    return redirect('/join_faculty')
 
 @app.route('/sports', methods=['GET', 'POST'])
 def sports():
@@ -210,7 +227,6 @@ def new_course():
     if request.method == 'POST' and form.validate():
         check = Course.query.filter_by(course_name=request.form.get('course_name'), grade=request.form.get('grade')).first()
         if check == None:
-            print(check, "<======")
             y = Course(course_name=request.form.get('course_name'), grade=request.form.get('grade'), teacher_id=current_user.id)
             session.add(y)
             session.commit()
@@ -218,12 +234,18 @@ def new_course():
             course_id = y.id
             for student in data:
                 if student[:7] == 'student':
-                    x = StudentCourse(student_id = request.form.get(student), course_id=y.id)
+                    # same problem as '/courses/<id>/add_students where id in not autoincramemting
+                    count = StudentCourse.query.order_by(StudentCourse.id.desc()).all()
+                    print("========>", count)
+                    if len(count) == 0:
+                        sc_id = 1
+                    else:
+                        sc_id = count[0].id + 1
+                    x = StudentCourse(id=sc_id, student_id = request.form.get(student), course_id=y.id)
                     session.add(x)
                     session.commit()
             return redirect(f'/courses/{course_id}')
         else:
-            print('fail')
             flash('A course with that name is already being taught in that grade')
             return redirect('/courses/new')
     return render_template('new_course.html', form=form)
@@ -243,6 +265,7 @@ def course(id):
         # session.delete(local_c)
         # session.commit()
         return "check sql"
+    print("yo")
     c = Course.query.get(id)
     course = session.query(Course, StudentCourse, Student, Teacher
     ).filter(id == Course.id
@@ -285,17 +308,19 @@ def add_students(id):
         data = request.form
         for student in data:
             if student[:7] == 'student':
-                print(request.form.get(student))
-                x = StudentCourse(student_id = request.form.get(student), course_id=id)
-                session.add(x)
-                session.commit()
-                print(x)
+                # !!!look into fixing this!!! Since I changed the StudentCourse.id to be a forign key, it is not autoincramenting, as a result I have to get the highest id and add 1 when adding a new StudentCourse
+                count = StudentCourse.query.order_by(StudentCourse.id.desc()).all()
+                if len(count) == 0:
+                    sc_id = 1
+                else:
+                    sc_id = count[0].id + 1
+                x = StudentCourse(id=sc_id, student_id = request.form.get(student), course_id=id)
+                db.session.add(x)
+                db.session.commit()
         return redirect(f'/courses/{id}')
     grade = course.grade
-    print(grade, "this is grade")
     sub = session.query(StudentCourse.student_id).filter_by(course_id=id)
     students = session.query(Student).filter(Student.grade == grade).filter(~Student.id.in_(sub)).all()
-    print(students, "whaaaaat")
     return render_template('course_add_students.html', students=students, course=course)
 
 @app.route('/courses/<int:id>/new_test', methods=['GET', 'POST'])
@@ -309,7 +334,8 @@ def new_test(id):
         for key in form_data.keys():
             for value in form_data.getlist(key):
                 if key != 'test_name':
-                    new_student_test = StudentTest(test_id = new_test.id, student_id = key, score = value)
+                    student_course = StudentCourse.query.filter_by(student_id=key, course_id=id).first()
+                    new_student_test = StudentTest(test_id = new_test.id, student_course_id = student_course.id, score = value)
                     session.add(new_student_test)
                     session.commit()
         return redirect(f'/courses/{id}')
@@ -363,10 +389,8 @@ def admin():
 
 @app.route('/testthing')
 def test():
-    student = Course.query.get(29)
-    db.session.delete(student)
-    db.session.commit()
-    x = student.course_name
-    student_courses = StudentCourse.query.filter_by(course_id=29)
-    student_sports = Test.query.filter_by(course_id=29)
-    return render_template('test_rename.html', student=student, x=x, courses=student_courses, sports=student_sports)
+    sc = StudentCourse.query.get(4)
+    local_object = session.merge(sc)
+    session.delete(local_object)
+    session.commit()
+    return "hey"

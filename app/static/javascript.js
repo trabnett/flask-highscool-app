@@ -9,7 +9,6 @@ if (quick_form){
 }
 
 
-
 function tests(num, input){
     let x = document.getElementById(`row${num}`)
     let y = x.nextSibling
