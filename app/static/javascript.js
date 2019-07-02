@@ -8,6 +8,45 @@ if (quick_form){
     })
 }
 
+let x = 0
+function scroll(e){
+    let id1 = ''
+    let id2 = ''
+    let scroll_num = 0
+    console.log(x)
+    if (x < 644){
+        scroll_num = x
+        id1 = "school"
+        id2 = "class"
+    } else if (x < 1210) {
+        scroll_num = x - 800
+        id1 = "class"
+        id2 = "sportpic"
+    } else if (x < 2011) {
+        scroll_num = x - 1550
+        id1 = "sportpic"
+        id2 = "cafeteria"
+    } else if (x < 2720) {
+        scroll_num = x - 2200
+        id1 = "cafeteria"
+        id2 = "test"
+    }
+    y = document.getElementById(id1)
+    z = document.getElementById(id2)
+    let opacity = 1 - (scroll_num / 500)
+    if (window.scrollY > x) {
+        x = window.scrollY
+        y.style.opacity = opacity
+        z.style.opacity = 1 - opacity
+    } else {
+        x = window.scrollY
+        y.style.opacity = opacity
+        z.style.opacity = 1 - opacity
+    }
+    x = window.scrollY
+}
+
+document.addEventListener("scroll", scroll)
 
 function tests(num, input){
     let x = document.getElementById(`row${num}`)

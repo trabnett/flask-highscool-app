@@ -1,10 +1,28 @@
 {% extends 'layout.html'%}
 {% block content %}
-    <div class="welcome jumbotron text-center">
-        <h1 style="color:blue">Welcome to TRHS</h1>
-        <p class="lead">Tim Rabnett High School is a fake school created by Tim Rabnett so he can work on his skills as a Flask developer.<br>You can log in as a student or teacher to check out all of the features.</p>
-        <p class="welcome">Welcome {{ current_user.first_name }} {{ current_user.last_name }}</p>
+    <div id="school" class="homepage" style="background:url({{ url_for('static', filename='img/school.jpg') }});" >
     </div>
-
-
+    <div class="first homepage-banner">
+        Welcome to TRHS. A fake highschool for practicing Flask Programming skills.
+    </div>
+    <div id="class" class="homepage" style="background:url({{ url_for('static', filename='img/classpic.jpg') }});" >
+    </div>
+    <div class="homepage-banner">
+        We offer so many cool things for students, like sports...
+    </div>
+    <div id="sportpic" class="homepage" style="min-height:600px!important;background:url({{ url_for('static', filename='img/basketball.jpg') }})">
+    </div>
+    <div class="homepage-banner">
+        A cafeteria...
+    </div>
+    <div id="cafeteria" class="homepage" style="min-height:600px!important;background:url({{ url_for('static', filename='img/cafeteria.jpeg') }})">
+    </div>
+    <div class="homepage-banner">
+        And tests that make your kid smarter!
+    </div>
+    <div id="test" class="homepage" style="min-height:600px!important;background:url({{ url_for('static', filename='img/test.jpg') }})">
+    </div>
+    <div class="homepage-banner" style="max-height:80px;">
+        Thanks for visiting!
+    </div>
 {% endblock %}
