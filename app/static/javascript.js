@@ -26,8 +26,8 @@ function scroll(e){
         scroll_num = x - 1550
         id1 = "sportpic"
         id2 = "cafeteria"
-    } else if (x < 2720) {
-        scroll_num = x - 2200
+    } else {
+        scroll_num = x - 2380
         id1 = "cafeteria"
         id2 = "test"
     }
