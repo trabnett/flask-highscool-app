@@ -1,4 +1,5 @@
 from app import app
+import os
 from flask import render_template, flash, redirect, url_for, request
 from app.forms import LoginForm, TestScore, NewSport, NewCourse, Register, JoinFaculty
 from app.students import Students
@@ -18,7 +19,12 @@ teacher_check = {'status': None}
 
 @app.route('/')
 def welcome():
+    print(os.environ['GMAIL_ACCOUNT'])
     return render_template('index.html')
+
+@app.route('/about')
+def about():
+    return "working on it"
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

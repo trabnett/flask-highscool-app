@@ -8,12 +8,14 @@ if (quick_form){
     })
 }
 
+console.log('test')
+
 let x = 0
-function scroll(e){
+function scroll(){
+    console.log("hello")
     let id1 = ''
     let id2 = ''
     let scroll_num = 0
-    console.log(x)
     if (x < 644){
         scroll_num = x
         id1 = "school"
@@ -46,7 +48,11 @@ function scroll(e){
     x = window.scrollY
 }
 
-document.addEventListener("scroll", scroll)
+if (document.getElementById('school')){
+    console.log('here')
+    document.addEventListener("scroll", scroll)
+}
+
 
 function tests(num, input){
     let x = document.getElementById(`row${num}`)
