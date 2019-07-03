@@ -23,6 +23,7 @@ class Student(UserMixin, db.Model):
     twitter = db.Column(db.String(128))
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    reset_code = db.Column(db.String(64))
     student_course = relationship('StudentCourse', cascade='delete')
     student_sport = relationship('StudentSport', cascade='delete')
     
@@ -55,6 +56,7 @@ class Teacher(UserMixin, db.Model):
     started_at_school = db.Column(db.DateTime())
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    reset_code = db.Column(db.String(64))
     course = relationship('Course', cascade='delete')
     sport = relationship('Sport', cascade='delete')
 

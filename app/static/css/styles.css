@@ -8,7 +8,7 @@
     max-height:80px;
 }
 .buffer{
-    margin-top:51px;
+    margin-top:8em;
 }
 .flex{
     display: flex;
@@ -98,10 +98,12 @@ h3{
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
     background-size: cover !important;
-    min-height: 50em !important;
+    min-height: 46em !important;
+    /* min-width: 20em !important; */
   }
 .homepage-banner {
-    height:3em;
+    max-height:8em;
+    min-height:1em;
     background-color:#222;
     color: #9d9d9d;
     font-family: "Calibri", Times, serif;
@@ -111,7 +113,7 @@ h3{
     z-index: 1;
 }
 .first {
-    position: absolute;
+    position: relative;
     bottom: 0;
 }
 .footer {

@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from datetime import datetime, date
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, SelectField
 from wtforms.fields.html5 import DateField
-from wtforms.validators import DataRequired, NumberRange, Email, EqualTo, Length
+from wtforms.validators import DataRequired, NumberRange, Email, EqualTo, Length, Regexp
 from wtforms.widgets import PasswordInput
 
 class LoginForm(FlaskForm):
@@ -48,3 +48,12 @@ class JoinFaculty(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), Length(min=4), EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Confirm Password',)
     submit = SubmitField('Register')
+
+class ResetPassword(FlaskForm):
+    new_password = PasswordField('New Password', validators=[DataRequired(), Regexp(r'^[\w.@+-]+$', message='Come on man. You know you cant use spaces in a password.'), Length(min=4), EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField('Confirm Password')
+    submit = SubmitField('Reset Password')
+
+class ForgotPassword(FlaskForm):
+    email = StringField('Email address', validators=[DataRequired(), Email()])
+    submit = SubmitField('Reset Password')
