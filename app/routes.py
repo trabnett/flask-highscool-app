@@ -1,7 +1,7 @@
 from app import app
 import os
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import LoginForm, TestScore, NewSport, NewCourse, Register, JoinFaculty
+from app.forms import LoginForm, TestScore, NewSport, NewCourse, Register, JoinFaculty, ResetPassword, ForgotPassword
 from app.students import Students
 from app import db, mail
 from flask_mail import Message
@@ -12,6 +12,8 @@ from sqlalchemy import create_engine, update
 from sqlalchemy.orm import sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.helper_functions import get_average, get_test_scores, get_gpa
+from app.mail_templates import template1
+import secrets
 
 engine = db.engine
 Session = sessionmaker(engine)
@@ -20,12 +22,6 @@ teacher_check = {'status': None}
 
 @app.route('/')
 def welcome():
-    print(os.environ['GMAIL_ACCOUNT'])
-    msg = Message("Hi Tim",
-                  sender='testapptr78@gmail.com',
-                  recipients=["timrabnett@hotmail.com"])
-    msg.html = "<p>Hi Tim,\nAnother go at it. I hope this produces a fine email that everyone likes. This is a long paragraph that should be split eventually. See if it works. Blah blah blah blah blah. And more talking.\n\nAnd now we are starting a new line. Is this okay? What can I say. This is all working in an okay fashion. I hope the HTML stuff is working okay also.</p><h1>here is an h1</h1><div style='background-color:blue;color:white;'>hello</div><a href='https://google.com'>google</a>"
-    mail.send(msg)
     return render_template('index.html')
 
 @app.route('/about')
@@ -98,7 +94,6 @@ def update_student(id):
     student = session.query(Student).filter_by(id = id).first()
     if check_password_hash(student.password_hash, old_password):
         student.password_hash = new_hash
-        print(student.password_hash, "new hash?")
         session.commit()
     else:
         flash('You incorrectly entered your current password')
@@ -406,3 +401,44 @@ def test():
     session.delete(local_object)
     session.commit()
     return "hey"
+
+@app.route('/reset_password/<string:code>', methods=['GET', 'POST'])
+def reset_password(code):
+    if current_user.is_authenticated:
+        return render_template('reset_password.html', alert="You are already logged in. If you want to change your password, you can do that in the Account Settings Tab.")
+    form = ResetPassword()
+    user = Student.query.filter_by(reset_code=code).first()
+    if user == None:
+        user = Teacher.query.filter_by(reset_code=code).first()
+    if user == None:
+        return render_template('reset_password.html', alert="This link in no longer active. Please click the link send to your email, or ask for a new one to be resent.")
+    if form.validate_on_submit():
+        new_hash = generate_password_hash(form.new_password.data)
+        user.password_hash = new_hash
+        db.session.commit()
+        flash('Your Password has been updated. Please Login.')
+        return redirect('/login')
+    return render_template('reset_password.html', code=code, user=user, form=form)
+
+@app.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    if current_user.is_authenticated:
+        return render_template('forgot_password.html', alert="You are already logged in. If you want to change your password, you can do that in the Account Settings Tab.")
+    form = ForgotPassword()
+    if form.validate_on_submit():
+        user = Student.query.filter_by(email=form.email.data).first()
+        if user == None:
+            user = Teacher.query.filter_by(email=form.email.data).first()
+        if user == None:
+            return render_template('reset_password.html', alert="Hmmm. This email doesn't seem to be registered at this highschool.")
+        code = secrets.token_hex(20)
+        user.reset_code = code
+        db.session.commit()
+        msg = Message(f"Hi {user.first_name}",
+                    sender=os.environ['GMAIL_ACCOUNT'],
+                    recipients=[user.email])
+        msg.html = template1(user, code)
+        mail.send(msg)
+        flash('Please check your email. A link has been sent to you with a link to reset your password.')
+        return redirect('/login')
+    return render_template('forgot_password.html', form=form)
