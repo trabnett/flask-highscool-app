@@ -1,9 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
     {% include 'includes/_remove_course_modal.html' %}
-    {% if alert %}
-        <div class="buffer container">{{ alert }}</div>
-    {% else %}
         <div class="buffer container">
             {% if current_user.started_at_school and current_user.id == c.teacher_id %}
             <div class="alert alert-success" role="alert">
@@ -56,5 +53,4 @@
             <h1></h1>
         {% endif %}
     </div>
-    {% endif %}
 {% endblock%}

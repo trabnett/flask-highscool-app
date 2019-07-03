@@ -67,11 +67,11 @@ def students():
 def student(id):
     student = Student.query.filter_by(id=id).first()
     if student == None:
-        return render_template('student.html', student={'alert': 'this student is not registered'})
+        flash('There is no student with that id registered.')
+        return render_template('alerts/not_found.html')
     days = datetime.now() - student.birthday
     years = int(days.days / 365)
     academic_summary = get_test_scores(id)
-    print(academic_summary, "academic summary in students/<student_id>")
     gpa = get_gpa(academic_summary)
     student_sports = session.query(
         Student,
@@ -114,10 +114,10 @@ def teachers():
 
 @app.route('/teachers/<string:id>', methods=['GET'])
 def teacher(id):
-    print('asdfasdfasdfhello')
     educator = Teacher.query.filter_by(id=id).first()
     if educator == None:
-        return render_template('teacher.html', educator={'alert': 'this teacher is not currently a part of the faculty'})
+        flash('There is no teacher at this school with that id.')
+        return render_template('alerts/not_found.html')
     teacher_courses = session.query(Teacher, Course
         ).filter(educator.id == Course.teacher_id
         ).filter(educator.id == Teacher.id
@@ -126,7 +126,6 @@ def teacher(id):
         ).filter(educator.id == Teacher.id
         ).filter(Sport.coach_id == educator.id
         ).all()
-    print(teacher_sports)
     return render_template('teacher.html', educator=educator, year_started=educator.started_at_school.year, courses=teacher_courses, sports=teacher_sports)
 
 @app.route('/teachers/<string:id>', methods=['POST'])
@@ -178,7 +177,8 @@ def sport(name):
         session.commit()
         return redirect('/')
     if sport == None:
-        return render_template('sport.html', alert='no such sport exists')
+        flash('No such sport exists!')
+        return render_template('alerts/not_found.html')
     sport_summary = session.query(StudentSport, Student, Teacher, Sport
     ).filter(sport.id == StudentSport.sport_id
     ).filter(StudentSport.student_id == Student.id
@@ -243,7 +243,6 @@ def new_course():
                 if student[:7] == 'student':
                     # same problem as '/courses/<id>/add_students where id in not autoincramemting
                     count = StudentCourse.query.order_by(StudentCourse.id.desc()).all()
-                    print("========>", count)
                     if len(count) == 0:
                         sc_id = 1
                     else:
@@ -272,15 +271,16 @@ def course(id):
         # session.delete(local_c)
         # session.commit()
         return "check sql"
-    print("yo")
     c = Course.query.get(id)
+    if c == None:
+        flash('This course does not exist')
+        return render_template('alerts/not_found.html')
     course = session.query(Course, StudentCourse, Student, Teacher
     ).filter(id == Course.id
     ).filter(StudentCourse.course_id == Course.id
     ).filter(Student.id == StudentCourse.student_id
     ).filter(Course.teacher_id == Teacher.id).all()
     if len(course) == 0 and c.teacher_id != current_user.id:
-        print(course)
         return render_template('course.html', alert='This course does not exist, or there are no students registered in this course')
     return render_template('course.html', c=c, course=course, get_average=get_average)
 
@@ -434,6 +434,7 @@ def forgot_password():
         code = secrets.token_hex(20)
         user.reset_code = code
         db.session.commit()
+        # mail only works when debug mode is off. please make sure you are in production mode if you want the emails to work
         msg = Message(f"Hi {user.first_name}",
                     sender=os.environ['GMAIL_ACCOUNT'],
                     recipients=[user.email])
