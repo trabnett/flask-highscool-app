@@ -3,7 +3,8 @@ import os
 from flask import render_template, flash, redirect, url_for, request
 from app.forms import LoginForm, TestScore, NewSport, NewCourse, Register, JoinFaculty
 from app.students import Students
-from app import db
+from app import db, mail
+from flask_mail import Message
 from flask_login import current_user, login_user, logout_user
 from app.models import Student, Teacher, StudentCourse, Course, Sport, Test, StudentSport, StudentTest, SportScore
 from datetime import datetime
@@ -20,6 +21,11 @@ teacher_check = {'status': None}
 @app.route('/')
 def welcome():
     print(os.environ['GMAIL_ACCOUNT'])
+    msg = Message("Hi Tim",
+                  sender='testapptr78@gmail.com',
+                  recipients=["timrabnett@hotmail.com"])
+    msg.html = "<p>Hi Tim,\nAnother go at it. I hope this produces a fine email that everyone likes. This is a long paragraph that should be split eventually. See if it works. Blah blah blah blah blah. And more talking.\n\nAnd now we are starting a new line. Is this okay? What can I say. This is all working in an okay fashion. I hope the HTML stuff is working okay also.</p><h1>here is an h1</h1><div style='background-color:blue;color:white;'>hello</div><a href='https://google.com'>google</a>"
+    mail.send(msg)
     return render_template('index.html')
 
 @app.route('/about')
