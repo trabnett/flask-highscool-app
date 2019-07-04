@@ -26,7 +26,7 @@ def welcome():
 
 @app.route('/about')
 def about():
-    return "working on it"
+    return render_template('about.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -443,3 +443,12 @@ def forgot_password():
         flash('Please check your email. A link has been sent to you with a link to reset your password.')
         return redirect('/login')
     return render_template('forgot_password.html', form=form)
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('alerts/404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('alerts/500.html'), 500

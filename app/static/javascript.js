@@ -8,11 +8,9 @@ if (quick_form){
     })
 }
 
-console.log('test')
-
+// scroll fade feature for homepage
 let x = 0
 function scroll(){
-    console.log("hello")
     let id1 = ''
     let id2 = ''
     let scroll_num = 0
@@ -49,11 +47,10 @@ function scroll(){
 }
 
 if (document.getElementById('school')){
-    console.log('here')
     document.addEventListener("scroll", scroll)
 }
 
-
+// display test scores on student page
 function tests(num, input){
     let x = document.getElementById(`row${num}`)
     let y = x.nextSibling
@@ -71,6 +68,7 @@ function tests(num, input){
     x.parentNode.insertBefore(node, x.nextSibling)
 }
 
+// check if password and new password match in password modal
 function match(){
     let div = document.getElementById('new_password2')
     if (div.childNodes[5]){

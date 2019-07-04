@@ -6,25 +6,42 @@
         <div class="first homepage-banner">
             Welcome to TRHS. A fake highschool for practicing Flask Programming skills.
         </div>
-        <div id="class" class="homepage" style="opacity:0.3;background:url({{ url_for('static', filename='img/classpic.jpg') }});" >
+        <div id="class" class="homepage" style="opacity:0.5;background:url({{ url_for('static', filename='img/classpic.jpg') }});" >
         </div>
         <div class="homepage-banner">
             We offer so many cool things for students, like sports...
         </div>
-        <div id="sportpic" class="homepage" style="opacity:0.3;background:url({{ url_for('static', filename='img/basketball.jpg') }})">
+        <div id="sportpic" class="homepage" style="opacity:0.4;background:url({{ url_for('static', filename='img/basketball.jpg') }})">
         </div>
         <div class="homepage-banner">
             A cafeteria...
         </div>
-        <div id="cafeteria" class="homepage" style="opacity:0.3;background:url({{ url_for('static', filename='img/cafeteria.jpeg') }})">
+        <div id="cafeteria" class="homepage" style="opacity:0.4;background:url({{ url_for('static', filename='img/cafeteria.jpeg') }})">
         </div>
         <div class="homepage-banner">
             And tests that make your kid smarter!
         </div>
         <div id="test" class="homepage" style="opacity:0.7;background:url({{ url_for('static', filename='img/test.jpg') }})">
         </div>
-        <div class="homepage-banner" style="min-height:80px;">
-            Thanks for visiting!
+        <div class="row w-100 p-3 card-backdrop">
+            <div class="col-sm-6">
+                <div class="card card-content homepage-card">
+                    <img class="card-img-top" src="{{ url_for('static', filename='img/gradcap.png')}}" alt="Grad Cap">
+                    <div class="card-body">
+                        <p class="card-text">Give your Child the best fake education.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card card-content homepage-card">
+                    <img class="card-img-top" src="{{ url_for('static', filename='img/notebook.png')}}" alt="School Notebook">
+                    <div class="card-body">
+                        <p class="card-text">Make their studies a fake top priority!</p>
+                </div>
+            </div>
         </div>
+    </div>
+    <div class="homepage-banner" style="min-height:80px;">
+            Thanks for visiting!
     </div>
 {% endblock %}

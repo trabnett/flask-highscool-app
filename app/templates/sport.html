@@ -1,8 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if alert %}
-<div class="buffer container"><h3>{{ alert }}</h3></div>
-{% else %}
     {% if summary[0] %}
     <div class="buffer container">
         {% with messages = get_flashed_messages() %}
@@ -52,5 +49,4 @@
             {% endif %}
         </div>
     {% endif %}
-{% endif %}
 {% endblock %}
