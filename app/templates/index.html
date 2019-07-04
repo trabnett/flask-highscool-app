@@ -23,22 +23,33 @@
         </div>
         <div id="test" class="homepage" style="opacity:0.7;background:url({{ url_for('static', filename='img/test.jpg') }})">
         </div>
-        <div class="row w-100 p-3 card-backdrop">
-            <div class="col-sm-6">
+        <div class="homepage-banner last">
+            Enroll today!
+        </div>
+        <div class=".d-inline-flex d-flex justify-content-around card-backdrop card-deck">
+
                 <div class="card card-content homepage-card">
-                    <img class="card-img-top" src="{{ url_for('static', filename='img/gradcap.png')}}" alt="Grad Cap">
+                    <img class="card-img-top card-icon" src="{{ url_for('static', filename='img/gradcap.png')}}" alt="Grad Cap">
                     <div class="card-body">
                         <p class="card-text">Give your Child the best fake education.</p>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6">
+
+
                 <div class="card card-content homepage-card">
-                    <img class="card-img-top" src="{{ url_for('static', filename='img/notebook.png')}}" alt="School Notebook">
+                    <img class="card-img-top card-icon" src="{{ url_for('static', filename='img/basketball-128.png')}}" alt="Basketball">
+                    <div class="card-body">
+                        <p class="card-text">And the best fake sports!</p>
+                    </div>
+                </div>
+
+                <div class="card card-content homepage-card">
+                    <img class="card-img-top card-icon" src="{{ url_for('static', filename='img/notebook.png')}}" alt="School Notebook">
                     <div class="card-body">
                         <p class="card-text">Make their studies a fake top priority!</p>
+                    </div>
                 </div>
-            </div>
+
         </div>
     </div>
     <div class="homepage-banner" style="min-height:80px;">

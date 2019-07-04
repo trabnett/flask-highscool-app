@@ -3,7 +3,7 @@
 {% if current_user.started_at_school and current_user.id == course_summary[0][3].id %}
 
 <div class="buffer container">
-    <h3>Grade {{ course_summary[0][0].grade}} {{ course_summary[0][0].course_name }}, New Test</h3>
+    <h1>Grade {{ course_summary[0][0].grade}} {{ course_summary[0][0].course_name }}, New Test</h1>
     <form action="/courses/{{ course_summary[0][0].id}}/new_test" method="post">
         <table>
             <thead>

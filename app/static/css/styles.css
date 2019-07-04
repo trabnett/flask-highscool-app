@@ -126,8 +126,13 @@ h3{
   text-align: center;
 }
 .card-backdrop {
-    min-height: 48em;
+    min-height: 50em;
     background-color: #9d9d9d;
+    box-sizing: border-box;
+    margin: 0 -5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 .card-content {
     width: 20rem;
@@ -136,9 +141,18 @@ h3{
 }
 
 .homepage-card {
-    margin: auto;
     margin-top: 17em;
     border-radius: 6px;
     background-color: white;
+    height: 18em;
 }
+.card-icon {
+    height: 10em;
+    margin-top: 1em;
+}
+.last {
+    position: sticky;
+    top: 1.4em;
+}
+
 

@@ -1,5 +1,5 @@
 
-<div class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="settingsModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header d-flex justify-content-center">
@@ -34,7 +34,7 @@
             <div class="modal-body">
                 <h4>Leave Your Job as a Teacher</h4>
                 <div class="alert alert-warning" role="alert">
-                    Warning! Leaving this job will delete all records of your Courses, StudnetCourses, Tests, StudentTests, and Sports you coach!
+                    Warning! Leaving this job will delete all records of all Courses, StudnetCourses, Tests, StudentTests, and Sports you coach! You will also need to find a new fake job.
                 </div>
                 <form action="/teachers/{{ current_user.id }}/delete" method="post">
                     <input type="submit" class="btn btn-danger btn-ok" value="Quit Your Job">
