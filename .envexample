@@ -1,0 +1,5 @@
+export FLASK_APP=highschool.py
+export GMAIL_ACCOUNT=your email (must be @gmail.com)
+export GMAIL_PASSWORD=your gmail password
+export ADMIN1=your administrator email (must be a registered student or teacher)
+export SECRET_KEY=somethingsecret

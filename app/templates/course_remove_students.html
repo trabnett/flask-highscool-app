@@ -1,29 +1,29 @@
 {% extends 'layout.html' %}
 {% block content %}
-{% if current_user.started_at_school and current_user.id == course.teacher_id %}
-<div class="buffer container">
-<h1>These are the current students in grade {{ course.grade }} {{ course.course_name }}:</h1>
-<form action="/courses/{{ course.id }}/remove_students" method="post">
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th><h3>Remove?</h3></th>
-            </tr>
-        </thead>
-            {% for student in students %}
-            <tr class="student-checkbox">
-                    <td><label style="width:14.5em"><input id="id{{ student[0].id }}"type="checkbox" class="checkbox style-2 pull-right" name="student{{ loop.index }}" value="{{ student[0].id }}">{{ student[0].first_name }} {{ student[0].last_name }}</lable></td>
-            </tr>
-            {% endfor %}
-            <tr>
-                <td><input class="btn btn-primary" type="submit" value="Submit"></td>
-            </tr>
-    </table>
-</form>
-</div>
-{% else %}
-<div class="buffer container">
-    You are not authorized to remove players from this class
-</div>
-{% endif %}
+    {% if current_user.started_at_school and current_user.id == course.teacher_id %}
+        <div class="buffer container">
+            <h1>These are the current students in grade {{ course.grade }} {{ course.course_name }}:</h1>
+            <form action="/courses/{{ course.id }}/remove_students" method="post">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th><h3>Remove?</h3></th>
+                        </tr>
+                    </thead>
+                        {% for student in students %}
+                            <tr class="student-checkbox">
+                                <td><label style="width:14.5em"><input id="id{{ student[0].id }}"type="checkbox" class="checkbox style-2 pull-right" name="student{{ loop.index }}" value="{{ student[0].id }}">{{ student[0].first_name }} {{ student[0].last_name }}</lable></td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td><input class="btn btn-primary" type="submit" value="Submit"></td>
+                        </tr>
+                </table>
+            </form>
+        </div>
+        {% else %}
+            <div class="buffer container">
+                You are not authorized to remove players from this class
+            </div>
+    {% endif %}
 {% endblock %}

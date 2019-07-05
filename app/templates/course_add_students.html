@@ -1,26 +1,25 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class="buffer container">
-    <h1>Add Students to Grade {{ course.grade }} {{ course.course_name }}</h1>
-    <form action="/courses/{{ course.id }}/add_students" method="post">
-        <Table class="table table-striped table-hover">
-            <thead>
-                <th>Grade {{ course.grade }} students not in this class:</th>
-            </thead>
-            {% if students|length == 0 %}
-            <tr><td>All possible students are registered in this course.</td></tr>
-            {% else %}
-            {% for student in students %}
-            <tr class="student-checkbox">
-                    <td><label style="width:14.5em"><input id="id{{ student.id }}"type="checkbox" class="checkbox style-2 pull-right" name="student{{ loop.index }}" value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</lable></td>
-            </tr>
-            {% endfor %}
-            <tr>
-                <td><input class="btn btn-primary" type="submit" value="Submit"></td>
-            </tr>
-            {% endif %}
-        </Table>
-    </form>
-
-</div>
+    <div class="buffer container">
+        <h1>Add Students to Grade {{ course.grade }} {{ course.course_name }}</h1>
+        <form action="/courses/{{ course.id }}/add_students" method="post">
+            <Table class="table table-striped table-hover">
+                <thead>
+                    <th>Grade {{ course.grade }} students not in this class:</th>
+                </thead>
+                {% if students|length == 0 %}
+                    <tr><td>All possible students are registered in this course.</td></tr>
+                {% else %}
+                    {% for student in students %}
+                        <tr class="student-checkbox">
+                            <td><label style="width:14.5em"><input id="id{{ student.id }}"type="checkbox" class="checkbox style-2 pull-right" name="student{{ loop.index }}" value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</lable></td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td><input class="btn btn-primary" type="submit" value="Submit"></td>
+                    </tr>
+                {% endif %}
+            </Table>
+        </form>
+    </div>
 {% endblock %}

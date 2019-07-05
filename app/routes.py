@@ -256,21 +256,8 @@ def new_course():
             return redirect('/courses/new')
     return render_template('new_course.html', form=form)
 
-@app.route('/courses/<int:id>', methods=['GET', 'POST'])
+@app.route('/courses/<int:id>')
 def course(id):
-    if request.method == 'POST':
-        tests = Test.query.filter_by(course_id=id).all()
-        print(tests)
-        # student_courses = StudentCourse.query.filter_by(course_id=id).all()
-        # for student_course in student_courses:
-        #     local_sc = session.merge(student_course)
-        #     session.delete(local_sc)
-        #     session.commit()
-        # course = Course.query.filter_by(id=id).first()
-        # local_c = session.merge(course)
-        # session.delete(local_c)
-        # session.commit()
-        return "check sql"
     c = Course.query.get(id)
     if c == None:
         flash('This course does not exist')
@@ -398,14 +385,6 @@ def admin():
     students = Student.query.all()
     courses = Course.query.all()
     return render_template('admin.html', teachers=teachers, students=students, courses=courses)
-
-@app.route('/testthing')
-def test():
-    sc = StudentCourse.query.get(4)
-    local_object = session.merge(sc)
-    session.delete(local_object)
-    session.commit()
-    return "hey"
 
 @app.route('/reset_password/<string:code>', methods=['GET', 'POST'])
 def reset_password(code):

@@ -1,37 +1,37 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="buffer container">
-    <h1>Sports</h1>
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Sport</th>
-                <th scope="col">Status</th>
-                <th scope="col">Coach</th>
-            </tr>
-        </thead>
-            {% for sport in sports %}
-            <tr>
-                {% if current_user.birthday  %}
-                    {% if sport[0].id in student_sports %}
-                        <td><a href="/sports/{{sport[0].sport_name}}">{{ sport[0].sport_name }}</a>
-                        <td>You are on this team!</td>
+    <div class="buffer container">
+        <h1>Sports</h1>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Sport</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Coach</th>
+                </tr>
+            </thead>
+                {% for sport in sports %}
+                <tr>
+                    {% if current_user.birthday  %}
+                        {% if sport[0].id in student_sports %}
+                            <td><a href="/sports/{{sport[0].sport_name}}">{{ sport[0].sport_name }}</a>
+                            <td>You are on this team!</td>
+                        {% else %}
+                            <td style="display:inline-flex;"><a href="/sports/{{sport[0].sport_name}}">{{ sport[0].sport_name }}</a></td>
+                            <td>
+                                <form action="/students/{{ current_user.id }}/sports/{{ sport[0].sport_name}}/join" method="post">
+                                    <button class="btn btn-primary btn-xs" type="submit" name="dropout">Join Team</button>
+                                </form>
+                        {% endif %}
+                        </td>
+                        <td><a href="/teachers/{{sport[1].id}}">{{ sport[1].first_name }}</a></td>
                     {% else %}
-                        <td style="display:inline-flex;"><a href="/sports/{{sport[0].sport_name}}">{{ sport[0].sport_name }}</a></td>
-                        <td>
-                            <form action="/students/{{ current_user.id }}/sports/{{ sport[0].sport_name}}/join" method="post">
-                                <button class="btn btn-primary btn-xs" type="submit" name="dropout">Join Team</button>
-                            </form>
+                        <td><a href="/sports/{{sport[0].sport_name}}">{{ sport[0].sport_name }}</a></td>
+                        <td></td>
+                        <td><a href="/teachers/{{sport[1].id}}">{{ sport[1].first_name }}</a></td>
                     {% endif %}
-                    </td>
-                    <td><a href="/teachers/{{sport[1].id}}">{{ sport[1].first_name }}</a></td>
-                {% else %}
-                    <td><a href="/sports/{{sport[0].sport_name}}">{{ sport[0].sport_name }}</a></td>
-                    <td></td>
-                    <td><a href="/teachers/{{sport[1].id}}">{{ sport[1].first_name }}</a></td>
-                {% endif %}
-            </tr>
-        {% endfor%}
-    </table>
-</div>
+                </tr>
+            {% endfor%}
+        </table>
+    </div>
 {% endblock %}

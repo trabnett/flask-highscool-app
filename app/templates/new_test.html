@@ -1,48 +1,45 @@
 {% extends "layout.html" %}
 {% block content%}
-{% if current_user.started_at_school and current_user.id == course_summary[0][3].id %}
+    {% if current_user.started_at_school and current_user.id == course_summary[0][3].id %}
 
-<div class="buffer container">
-    <h1>Grade {{ course_summary[0][0].grade}} {{ course_summary[0][0].course_name }}, New Test</h1>
-    <form action="/courses/{{ course_summary[0][0].id}}/new_test" method="post">
-        <table>
-            <thead>
-                <tr class="new-test-title">
-                    <th>{{ form.test_name.label }}</th>
-                    <th>{{ form.test_name() }}</th>
-                </tr>
-                <tr>
-                    <th>Student:</th>
-                    <th>Score:</th>
-                </tr>
-            </thead>
-            {% for course in course_summary %}
-            <div class="form-group mx-sm-3 mb-2">
-                <tr>
-                    <td>{{ course[2].first_name }} {{ course[2].last_name }}</td>
-                    <td>
-                        <label for="inputPassword2" class="sr-only">{{ course[2].first_name }} {{ course[2].last_name }}</label>
-                        <input type="number" class="test-input form-control" min="0" max="100" name="{{ course[2].id }}">
-                    </td>
-                </tr>
+        <div class="buffer container">
+            <h1>Grade {{ course_summary[0][0].grade}} {{ course_summary[0][0].course_name }}, New Test</h1>
+            <form action="/courses/{{ course_summary[0][0].id}}/new_test" method="post">
+                <table>
+                    <thead>
+                        <tr class="new-test-title">
+                            <th>{{ form.test_name.label }}</th>
+                            <th>{{ form.test_name() }}</th>
+                        </tr>
+                        <tr>
+                            <th>Student:</th>
+                            <th>Score:</th>
+                        </tr>
+                    </thead>
+                    {% for course in course_summary %}
+                        <div class="form-group mx-sm-3 mb-2">
+                            <tr>
+                                <td>{{ course[2].first_name }} {{ course[2].last_name }}</td>
+                                <td>
+                                    <label for="inputPassword2" class="sr-only">{{ course[2].first_name }} {{ course[2].last_name }}</label>
+                                    <input type="number" class="test-input form-control" min="0" max="100" name="{{ course[2].id }}">
+                                </td>
+                            </tr>
+                        </div>
+                    {% endfor %}
+                    <tr>
+                        <td>
+                            <button type="submit" class="btn btn-primary mb-2">Submit Grades</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        {% else %}
+        <div class="buffer container">
+            <div class="alert alert-danger" role="alert">
+                You Are Not Authoried To Enter Test Results For This Course!
             </div>
-            {% endfor %}
-            <tr>
-                <td>
-                    <button type="submit" class="btn btn-primary mb-2">Submit Grades</button>
-                </td>
-            </tr>
-
-        </table>
-    </form>
-</div>
-{% else %}
-<div class="buffer container">
-    <div class="alert alert-danger" role="alert">
-        You Are Not Authoried To Enter Test Results For This Course!
-    </div>
-</div>
-{% endif %}
-
-
+        </div>
+    {% endif %}
 {% endblock %}
