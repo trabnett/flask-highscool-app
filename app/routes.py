@@ -392,7 +392,12 @@ def join_faculty():
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
-    return render_template('admin.html')
+    if current_user.email != os.environ['ADMIN1']:
+        return render_template('alerts/access_denied.html')
+    teachers = Teacher.query.all()
+    students = Student.query.all()
+    courses = Course.query.all()
+    return render_template('admin.html', teachers=teachers, students=students, courses=courses)
 
 @app.route('/testthing')
 def test():

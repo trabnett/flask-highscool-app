@@ -2,11 +2,103 @@
 {% block content %}
     <div class="buffer container">
         <h1>Admin Portal:</h1>
-
-        {% if current_user.email == 'tim@timrabnett.com' %}
-            you are good
-        {% else %}
-            you are not authorized
-        {% endif %}
+        <h2>Teachers:</h2>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Teacher ID</th>
+                    <th>Teacher First Name</th>
+                    <th>Teacher Last Name</th>
+                    <th>Teacher Pic Url</th>
+                    <th>Teacher Started at School</th>
+                    <th>Teacher Password Hash</th>
+                    <th>Teacher Resest Code</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for teacher in teachers %}
+                <tr>
+                    <td>{{ teacher.id }}</td>
+                    <td>{{ teacher.first_name }}</td>
+                    <td>{{ teacher.last_name }}</td>
+                    <td>{{ teacher.pic_url }}</td>
+                    <td>{{ teacher.started_at_school }}</td>
+                    <td>{{ teacher.password_hash }}</td>
+                    <td>{{ teacher.reset_code }}</td>
+                    <td>
+                        <form action="/teachers/{{ teacher.id }}/delete" method="post">
+                            <button class="btn btn-primary btn-xs" type="submit" name="delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor%}
+            </tbody>
+        </table>
+        <h2>Students:</h2>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Student First Name</th>
+                    <th>Student Last Name</th>
+                    <th>Student Pic Url</th>
+                    <th>Student Birthday</th>
+                    <th>Student Grade</th>
+                    <th>Student Twitter</th>
+                    <th>Student Password Hash</th>
+                    <th>Student Resest Code</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.first_name }}</td>
+                    <td>{{ student.last_name }}</td>
+                    <td>{{ student.pic_url }}</td>
+                    <td>{{ student.birthday }}</td>
+                    <td>{{ student.grade }}</td>
+                    <td>{{ student.twitter }}</td>
+                    <td>{{ student.password_hash }}</td>
+                    <td>{{ student.reset_code }}</td>
+                    <td>
+                        <form action="/students/{{ student.id }}/delete" method="post">
+                            <button class="btn btn-primary btn-xs" type="submit" name="delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor%}
+            </tbody>
+        </table>
+        <h2>Courses:</h2>
+        <table class="table table-striped table-hover">
+            <thead>
+                
+                <tr>
+                    <th>Course ID</th>
+                    <th>Course Teacher Id</th>
+                    <th>Course Name</th>
+                    <th>Course Grade</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td>{{ course.id }}</td>
+                    <td>{{ course.teacher_id}}</td>
+                    <td>{{ course.course_name }}</td>
+                    <td>{{ course.grade }}</td>
+                    <td>
+                        <form action="/courses/{{ course.id }}/delete" method="post">
+                            <button class="btn btn-primary btn-xs" type="submit" name="delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor%}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
