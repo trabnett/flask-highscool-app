@@ -21,12 +21,13 @@
                     </div>
                     <div id="new_password1" class="form-group">
                         <label for="exampleInputPassword1"> New Password</label>
-                        <input type="password" name="new_password1" onkeyup="match(this.value)" class="form-control" id="Password2" placeholder="New Password">
+                        <input type="password" name="new_password1" onkeyup="match()" class="form-control" id="Password2" placeholder="New Password">
                     </div>
                     <div id="new_password2" class="form-group">
                         <label for="exampleInputPassword1">Confirm Password</label>
-                        <input type="password" name="new_password2" onkeyup="match(this.value)" class="form-control" id="Password3" placeholder="Confirm Password">
+                        <input type="password" name="new_password2" onkeyup="match()" class="form-control" id="Password3" placeholder="Confirm Password">
                     </div>
+                    <p id="password-match" class="text-center"></p>
                     <button type="button" id="password_update_button" class="btn btn-primary">Submit</button>
                 </form>
             </div>
