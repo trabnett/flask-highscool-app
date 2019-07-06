@@ -1,7 +1,7 @@
 {% extends 'layout.html'%}
 {% block content %}
-    <divs style="height:100%;">
-        <div id="school" class="homepage" style="height:100%;background:url({{ url_for('static', filename='img/school.jpg') }});" >
+    <div>
+        <div id="school" class="homepage" style="background:url({{ url_for('static', filename='img/school.jpg') }});" >
         </div>
         <div class="first homepage-banner">
             Welcome to TRHS. A fake highschool for practicing Flask Programming skills.
@@ -52,7 +52,7 @@
 
         </div>
     </div>
-    <div class="homepage-banner" style="min-height:80px;">
+    <div class="homepage-banner bottom">
             Thanks for visiting!
     </div>
 {% endblock %}

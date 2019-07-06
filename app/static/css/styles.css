@@ -25,6 +25,7 @@
     border-radius: 6px;
     box-shadow: 4px 5px 9px -2px rgba(0,0,0,0.8);
 }
+
 h3{
     line-height: 0.3em;
     margin-left: 1em;
@@ -45,6 +46,9 @@ h3{
     color:#9d9d9d;
     line-height:3.62em;
     margin-left:1em;
+}
+.pic-limit{
+    width: 100%;
 }
 .warning{
     color:red;
@@ -90,6 +94,9 @@ h3{
     background-color: #286090;
     border-color: #2e6da4;
     border-radius: 4px;
+}
+.add-student-buffer{
+    width: 14.5em;
 }
 .student-course-buffer{
     width: 15em;
@@ -153,6 +160,9 @@ h3{
 .last {
     position: sticky;
     top: 1.4em;
+}
+.bottom{
+    min-height:80px;
 }
 
 

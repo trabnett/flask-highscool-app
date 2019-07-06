@@ -32,7 +32,7 @@
                             {% with scores =  courses[course].test_scores %}
                             <tr id="row{{loop.index0}}">
                                 <td class="student-course-buffer"><a href="/courses/{{ courses[course].course_id }}">{{ course }}</a></td>
-                                <td>Grade {{ courses[course].grade }} {{ courses[course].course_name }}, with teacher: <a href="../teachers/{{ courses[course]['teacher_id'] }}">{{ courses[course].teacher }}</a><br>                                         
+                                <td>Grade {{ courses[course].grade }} {{ courses[course].course_name }}, with Professor <a href="../teachers/{{ courses[course]['teacher_id'] }}">{{ courses[course].teacher }}</a><br>                                         
                                     Thier current average in this course is <b>{{ courses[course].average }}%</b>
                                 </td>
                                 {% if student.id == current_user.id and current_user.birthday %}

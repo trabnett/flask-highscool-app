@@ -50,7 +50,7 @@ def login():
         if hasattr(user, 'started_at_school'):
             teacher_check['status'] = True
             return redirect(f'/teachers/{user.id}')
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('password_templates/login.html', title='Sign In', form=form)
 
 @app.route('/logout', methods=['POST'])
 def logout():
@@ -60,7 +60,7 @@ def logout():
 @app.route('/students')
 def students():
     enrolled_students = Student.query.all()
-    return render_template('students.html', students=enrolled_students)
+    return render_template('student_templates/students.html', students=enrolled_students)
 
 @app.route('/students/<string:id>', methods=['GET'])
 def student(id):
@@ -83,7 +83,7 @@ def student(id):
             ).filter(
                 student.id == Student.id
             ).all()
-    return render_template('student.html', student=student, years=years, courses=academic_summary, gpa=gpa, sports=student_sports)
+    return render_template('student_templates/student.html', student=student, years=years, courses=academic_summary, gpa=gpa, sports=student_sports)
 
 @app.route('/students/<string:id>', methods=['POST'])
 def update_student(id):
@@ -109,7 +109,7 @@ def delete_student(id):
 @app.route('/teachers')
 def teachers():
     teachers = Teacher.query.all()
-    return render_template('teachers.html', teachers=teachers)
+    return render_template('teacher_templates/teachers.html', teachers=teachers)
 
 @app.route('/teachers/<string:id>', methods=['GET'])
 def teacher(id):
@@ -125,7 +125,7 @@ def teacher(id):
         ).filter(educator.id == Teacher.id
         ).filter(Sport.coach_id == educator.id
         ).all()
-    return render_template('teacher.html', educator=educator, year_started=educator.started_at_school.year, courses=teacher_courses, sports=teacher_sports)
+    return render_template('teacher_templates/teacher.html', educator=educator, year_started=educator.started_at_school.year, courses=teacher_courses, sports=teacher_sports)
 
 @app.route('/teachers/<string:id>', methods=['POST'])
 def update_teacher(id):
@@ -165,7 +165,7 @@ def sports():
     sports = session.query(Sport, Teacher).filter(
         Sport.coach_id == Teacher.id
     ).all()
-    return render_template('sports.html', sports=sports, student_sports=num)
+    return render_template('teacher_templates/sports.html', sports=sports, student_sports=num)
 
 @app.route('/sports/<string:name>', methods=['GET', 'POST'])
 def sport(name):
@@ -184,7 +184,7 @@ def sport(name):
     ).filter(Teacher.id == Sport.coach_id
     ).filter(StudentSport.sport_id == Sport.id
     ).all()
-    return render_template('sport.html', sport=sport, summary=sport_summary)
+    return render_template('teacher_templates/sport.html', sport=sport, summary=sport_summary)
 
 @app.route('/students/<string:id>/sports/<string:name>/delete', methods=['POST'])
 def delete(name, id):
@@ -219,9 +219,9 @@ def courses():
             flash('this course already exists!')
             return redirect ('/courses/new')
         students = Student.query.filter_by(grade=form.grade.data).all()
-        return render_template('new_course_with_students.html', form=form, course_name=form.course_name.data, grade=form.grade.data, students=students)
+        return render_template('teacher_templates/new_course_with_students.html', form=form, course_name=form.course_name.data, grade=form.grade.data, students=students)
     elif request.method == 'POST':
-        return render_template('new_course.html', form=form)
+        return render_template('teacher_templates/new_course.html', form=form)
     courses = session.query(Course, Teacher
     ).filter(Teacher.id == Course.teacher_id).order_by(Course.grade).all()
     print(courses)
@@ -253,7 +253,7 @@ def new_course():
         else:
             flash('A course with that name is already being taught in that grade')
             return redirect('/courses/new')
-    return render_template('new_course.html', form=form)
+    return render_template('teacher_templates/new_course.html', form=form)
 
 @app.route('/courses/<int:id>')
 def course(id):
@@ -292,7 +292,7 @@ def remove_students(id):
     students = session.query(Student, StudentCourse
     ).filter(Student.id == StudentCourse.student_id
     ).filter(StudentCourse.course_id == id).all()
-    return render_template('course_remove_students.html', course=course, students=students)
+    return render_template('teacher_templates/course_remove_students.html', course=course, students=students)
 
 @app.route('/courses/<int:id>/add_students', methods=['GET','POST'])
 def add_students(id):
@@ -314,7 +314,7 @@ def add_students(id):
     grade = course.grade
     sub = session.query(StudentCourse.student_id).filter_by(course_id=id)
     students = session.query(Student).filter(Student.grade == grade).filter(~Student.id.in_(sub)).all()
-    return render_template('course_add_students.html', students=students, course=course)
+    return render_template('teacher_templates/course_add_students.html', students=students, course=course)
 
 @app.route('/courses/<int:id>/new_test', methods=['GET', 'POST'])
 def new_test(id):
@@ -341,7 +341,7 @@ def new_test(id):
     if len(course_summary) == 0:
         flash('You cannot add a test when there are no students registered in a course.')
         return redirect(f'/courses/{id}')
-    return render_template('new_test.html', course_summary=course_summary, form=form)
+    return render_template('teacher_templates/new_test.html', course_summary=course_summary, form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -351,7 +351,7 @@ def register():
         email_check = Student.query.filter_by(email=form.email.data).first()
         if email_check != None:
             flash('This email is already assigned to a student. Are you sure you are not already a student at this school?')
-            return render_template('register.html', form=form)
+            return render_template('student_templates/register.html', form=form)
         new_student = Student(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, birthday=form.birthday.data, grade=int(form.grade.data), pic_url=form.pic_url.data, password_hash=generate_password_hash(form.password.data))
         if len(form.twitter.data) > 0:
             new_student.twitter = form.twitter.data
@@ -359,7 +359,7 @@ def register():
         db.session.commit()
         flash(f'Thank you {new_student.first_name}  {new_student.last_name}. You are now a registered student! Please Log in!')
         return redirect('/login')
-    return render_template('register.html', form=form)
+    return render_template('student_templates/register.html', form=form)
 
 @app.route('/join_faculty', methods=['GET', 'POST'])
 def join_faculty():
@@ -368,13 +368,13 @@ def join_faculty():
         check_email = Teacher.query.filter_by(email=form.email.data).first()
         if check_email != None:
             flash('This email is already assigned to a Teacher. Are you sure you are not already a teacher at this school?')
-            return render_template('join_faculty.html', form=form)
+            return render_template('teacher_templates/join_faculty.html', form=form)
         new_teacher = Teacher(first_name=form.first_name.data, last_name=form.last_name.data, started_at_school=form.started_at_school.data, pic_url=form.pic_url.data, email=form.email.data, password_hash=generate_password_hash(form.password.data))
         db.session.add(new_teacher)
         db.session.commit()
         flash(f'Thank you {new_teacher.first_name} {new_teacher.last_name}. You are now a registered teacher. Please Log in!')
         return redirect('/login')
-    return render_template('join_faculty.html', form=form)
+    return render_template('teacher_templates/join_faculty.html', form=form)
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
@@ -388,32 +388,35 @@ def admin():
 @app.route('/reset_password/<string:code>', methods=['GET', 'POST'])
 def reset_password(code):
     if current_user.is_authenticated:
-        return render_template('reset_password.html', alert="You are already logged in. If you want to change your password, you can do that in the Account Settings Tab.")
+        flash('You are already logged in. If you want to change your password, you can do that in the Account Settings Tab.')
+        return render_template('password_templates/reset_password.html')
     form = ResetPassword()
     user = Student.query.filter_by(reset_code=code).first()
     if user == None:
         user = Teacher.query.filter_by(reset_code=code).first()
     if user == None:
-        return render_template('reset_password.html', alert="This link in no longer active. Please click the link send to your email, or ask for a new one to be resent.")
+        return render_template('password_templates/reset_password.html', alert="This link in no longer active. Please click the link send to your email, or ask for a new one to be resent.")
     if form.validate_on_submit():
         new_hash = generate_password_hash(form.new_password.data)
         user.password_hash = new_hash
         db.session.commit()
         flash('Your Password has been updated. Please Login.')
         return redirect('/login')
-    return render_template('reset_password.html', code=code, user=user, form=form)
+    return render_template('password_templates/reset_password.html', code=code, user=user, form=form)
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if current_user.is_authenticated:
-        return render_template('forgot_password.html', alert="You are already logged in. If you want to change your password, you can do that in the Account Settings Tab.")
+        flash('You are already logged in. If you want to change your password, you can do that in the Account Settings Tab.')
+        return render_template('password_templates/forgot_password.html')
     form = ForgotPassword()
     if form.validate_on_submit():
         user = Student.query.filter_by(email=form.email.data).first()
         if user == None:
             user = Teacher.query.filter_by(email=form.email.data).first()
         if user == None:
-            return render_template('reset_password.html', alert="Hmmm. This email doesn't seem to be registered at this highschool.")
+            flash("Hmmm. This email doesn't seem to be registered at this highschool.")
+            return render_template('password_templates/reset_password.html')
         code = secrets.token_hex(20)
         user.reset_code = code
         db.session.commit()
@@ -425,7 +428,7 @@ def forgot_password():
         mail.send(msg)
         flash('Please check your email. A link has been sent to you with a link to reset your password.')
         return redirect('/login')
-    return render_template('forgot_password.html', form=form)
+    return render_template('password_templates/forgot_password.html', form=form)
 
 @app.errorhandler(404)
 def not_found_error(error):

@@ -17,7 +17,7 @@
                             <td><a href="/sports/{{sport[0].sport_name}}">{{ sport[0].sport_name }}</a>
                             <td>You are on this team!</td>
                         {% else %}
-                            <td style="display:inline-flex;"><a href="/sports/{{sport[0].sport_name}}">{{ sport[0].sport_name }}</a></td>
+                            <td><a href="/sports/{{sport[0].sport_name}}">{{ sport[0].sport_name }}</a></td>
                             <td>
                                 <form action="/students/{{ current_user.id }}/sports/{{ sport[0].sport_name}}/join" method="post">
                                     <button class="btn btn-primary btn-xs" type="submit" name="dropout">Join Team</button>

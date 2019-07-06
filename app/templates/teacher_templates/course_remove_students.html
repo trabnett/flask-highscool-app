@@ -12,7 +12,7 @@
                     </thead>
                         {% for student in students %}
                             <tr class="student-checkbox">
-                                <td><label style="width:14.5em"><input id="id{{ student[0].id }}"type="checkbox" class="checkbox style-2 pull-right" name="student{{ loop.index }}" value="{{ student[0].id }}">{{ student[0].first_name }} {{ student[0].last_name }}</lable></td>
+                                <td><label class="add-student-buffer"><input id="id{{ student[0].id }}"type="checkbox" class="checkbox style-2 pull-right" name="student{{ loop.index }}" value="{{ student[0].id }}">{{ student[0].first_name }} {{ student[0].last_name }}</lable></td>
                             </tr>
                         {% endfor %}
                         <tr>
