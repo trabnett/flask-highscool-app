@@ -35,7 +35,7 @@
                                 <button type="button" class="user_circle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ current_user.first_name[0] }}{{ current_user.last_name[0] }}
                                 </button>
-                                <div class="dropdown-menu">
+                                <div class="dropdown-menu override">
                                     {% if current_user.started_at_school %}
                                     <a class="user_circle_dropdown dropdown-item" href="/teachers/{{current_user.id}}">{{ current_user.first_name }} {{ current_user.last_name }}</a><br>
                                     <a class="user_circle_dropdown dropdown-item" href="/courses/new">Add New Class</a><br>

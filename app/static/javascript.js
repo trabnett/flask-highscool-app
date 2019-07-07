@@ -9,6 +9,12 @@ $(document).ready(function(){
         $('.homepage-card').css('margin-top', 20)
     } else {
         $('.card-backdrop').height($(window).height())
+        $('.btn-group').css('right', 160)
+    }
+    if ($(window).width() < 768){
+        $('.btn-group').css('right', 0)
+    } else {
+        $('.btn-group').css('right', '160px')
     }
 
 
