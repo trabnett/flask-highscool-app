@@ -49,10 +49,20 @@ flask run
 The main purposes of this app were to create relational data between students and teachers using SQLAlchemy and to practice responsive layouts. 
 
 ## Screenshots
+### Some features include:
+
+Front page with parallax scrolling with fade
+
 ![Front Page](https://github.com/trabnett/flask-highscool-app/blob/master/app/static/img/homepage.gif)
+
+Responsive Student page that summarizes academic performance
 
 ![Student Page](https://github.com/trabnett/flask-highscool-app/blob/master/app/static/img/student.gif)
 
+Teacher page allows teachers to enter new test scores and remove or add Students from Courses
+
 ![Teacher Page](https://github.com/trabnett/flask-highscool-app/blob/master/app/static/img/teacher.gif)
+
+Responsive view displays well on most mobile devices
 
 ![Mobile View Page](https://github.com/trabnett/flask-highscool-app/blob/master/app/static/img/mobile.gif)
