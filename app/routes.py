@@ -201,7 +201,6 @@ def delete(name, id):
 def join(name, id):
     sport = Sport.query.filter_by(sport_name=name).first()
     count = StudentSport.query.filter_by(sport_id=sport.id).count()
-    print(count)
     if count >= sport.max_size:
         flash('This team is full. You cannot register right now.')
         return  redirect(f'/sports/{name}')
@@ -224,7 +223,6 @@ def courses():
         return render_template('teacher_templates/new_course.html', form=form)
     courses = session.query(Course, Teacher
     ).filter(Teacher.id == Course.teacher_id).order_by(Course.grade).all()
-    print(courses)
     return render_template('courses.html', courses=courses)
 
 @app.route('/courses/new', methods=['GET', 'POST'])
@@ -280,7 +278,6 @@ def delete_course(id):
 @app.route('/courses/<int:id>/remove_students', methods=['GET','POST'])
 def remove_students(id):
     course = Course.query.filter_by(id=id).first()
-    print(course.course_name)
     if request.method == 'POST':
         data = request.form
         for student in data:
