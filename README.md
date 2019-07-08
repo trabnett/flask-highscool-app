@@ -1,6 +1,52 @@
-# flask-highscool-app
-app for fake highschool developed with flask
+# Welcome to Tim Rabnett High School
+## A simulated highschool website created using Flask and Postgres.
+##### This project uses many common features of Flask, Postgres and Flask-Bootstrap. 
 
-Under construction
 
-Simulation of a highschool that allows users to be Students or Teachers. Offers Courses, Sports, Tests, and uses many common Flask features like SQLalchemy, Flask-Mail, WTForms.
+
+webapp is hosted on heroku at:
+[TRHS webapp](https://trhs.herokuapp.com/)
+
+
+#### employs:
+
++ Flask
++ Flask-Bootstrap
++ WTForms
++ Flask-Login
++ Flask-Mail
++ Scripting with Javascript and jQuery
+
+#### Quick Start
+1. Clone the repo
+``
+ $ git clone https://github.com/trabnett/flask-highscool-app
+``
+``
+ $ cd flask-highschool-app
+``
+
+2. Initialize and activate a virtualenv
+``
+$ virtualenv venv
+``
+``
+$ source venv/bin/activate
+``
+3. Install dependencies
+``
+$ pip install -r requirements.txt
+``
+4. Configure .env file
+``
+copy the example of the .envexample file
+``
+5. Run the development server  
+``
+flask run
+``
+
+The main purposes of this app were to create relational data between students and teachers using SQLAlchemy and to practice responsive layouts. 
+
+## Screenshots
+![Front Page]()
