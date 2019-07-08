@@ -18,9 +18,11 @@
     crossorigin="anonymous"></script>
 {% endblock %}
 {% block head %}
-
-{% endblock %}
+{{super()}}
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+{% endblock %}
+
+
 {% block navbar %}
     {% include 'includes/_navbar.html' %}
     {% include 'includes/_settings_modal.html' %}
