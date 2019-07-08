@@ -173,9 +173,9 @@ h3{
 }
 
 @media screen and (max-width: 767px) {
-    .btn-group {
+    /* .btn-group {
         right: 0;
-    }
+    } */
     /* .test_scores{
         width: 5em;
     }
