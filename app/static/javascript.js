@@ -2,22 +2,8 @@
 $(document).ready(function(){
     // adjustments for various mobile views
     $('#school').height($(window).height() - $('.first').height()).css({'background-repeat': 'no-repeat', 'background-attachment': 'fixed', 'background-size': 'cover'}).attr("class","")
-    let offset = ($(window).height()/2) - 40
-    $('.homepage-card').css('margin-top', offset)
-    if ($(window).width() < 590){
-        $('.card-backdrop').height(1000)
-        $('.homepage-card').css('margin-top', 20)
-    } else {
-        $('.card-backdrop').height($(window).height())
-        $('.btn-group').css('right', 160)
-    }
-    if ($(window).width() < 768){
-        $('.btn-group').css('right', 0)
-    } else {
-        $('.btn-group').css('right', '160px')
-    }
 
-
+    
     // scroll fade feature for homepage
     let scroll = 0
     $(window).scroll(function(){

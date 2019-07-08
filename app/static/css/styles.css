@@ -35,7 +35,7 @@ h3{
     margin-left: 1em;
     margin-top: 2em;
 }
-.user_circle{
+.user-circle{
     border-radius: 50%;
     height: 3.1em;
     width: 3.1em;
@@ -62,7 +62,7 @@ h3{
     text-align: center;
 }
 .test_scores{
-    width: 15em;
+    width: 12em;
 }
 .student-checkbox{
     font-size: 16px;
@@ -106,7 +106,7 @@ h3{
     width: 14.5em;
 }
 .student-course-buffer{
-    width: 15em;
+    width: 12em;
 }
 .homepage {
     background-repeat: no-repeat !important;
@@ -172,4 +172,44 @@ h3{
     min-height:80px;
 }
 
+@media screen and (max-width: 767px) {
+    .btn-group {
+        right: 0;
+    }
+    /* .test_scores{
+        width: 5em;
+    }
+    .student-course-buffer{
+        width: 7.5em;
+    }
+    .card-icon{
+        height: 6em;
+    }
+    .homepage-card{
+        height: 14em;
+    }
+    .card-content{
+        width: 9em;
+    } */
+}
 
+@media screen and (max-width: 440px) {
+    .test_scores{
+        width: 5em;
+    }
+    .student-course-buffer{
+        width: 5em;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .card-icon{
+        height: 6em;
+    }
+    .homepage-card{
+        height: 14em;
+    }
+    .card-content{
+        width: 7em;
+    }
+}

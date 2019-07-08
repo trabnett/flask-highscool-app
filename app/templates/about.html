@@ -2,7 +2,34 @@
 {% block content %}
     <div class="buffer container">
         <h1>About:</h1>
+        <div>
+            <p>Welcome to TRHS, a project to simulate a highschool website created using Flask and Postgress. This project uses many common features of Flask, Postgress and Flask-Bootstrap.</p>
+            <p>To best experience the app, log in as either a teacher or student. You can either sign up or use one of the following example accounts:</p>
+            <ul>
+                <li>
+                    exampleteacher@trhs.com, password: asdf
+                </li>
+                <li>
+                    examplestudent@trhs.com, password: asdf
+                </li>
+            </ul>
+            <p>The main purpose of this app was to create relational data between students and teachers using <b>SQLAlchemy</b>.</p>
+            <p>For <b>Teachers</b>, this means:</p>
+            <ul>
+                <li><b>Teachers</b> can create <b>Courses</b> and add or remove <b>Students</b> to them.</li>
+                <li><b>Teachers</b> can create <b>Sports</b>, however, only <b>Students</b> can add or remove themselves from <b>Sports</b></li>
+                <li><b>Teachers</b> can create <b>Tests</b> and record <b>Student</b><b>Test Scores</b></li>
+                <li><b>Teachers</b> can delete their account, removing all records of their <b>Courses</b>, <b>Sports</b>, and <b>Tests</b></li>
+            </ul>
+            <p>For <b>Students</b>, this means:</p>
+            <ul>
+                <li><b>Students</b> can enroll or unenroll from <b>Sports</b></li>
+                <li><b>Students</b> can see thier individual <b>Test Scores</b> and <b>Course Averages</b></li>
+                <li><b>Students</b> can delete their account, removing all records of their <b>Student Courses</b>, <b>Student Tests</b> and <b>Student Sports</b></li>
+            </ul>
+            <p>Responsive styling is done using <b>Flask-Bootstrap</b>. Forms are created using <b>WTForms</b>. Scripting done using <b>Javascript</b> and <b>jQuery</b>.</p>
+            <p>Github repostitory at <a href="https://github.com/trabnett/flask-highscool-app">TRHS Highschool App Git Hub Repository</a></p>
+        </div>
 
-        under construction
     </div>
 {% endblock %}
