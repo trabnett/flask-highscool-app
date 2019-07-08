@@ -49,4 +49,10 @@ flask run
 The main purposes of this app were to create relational data between students and teachers using SQLAlchemy and to practice responsive layouts. 
 
 ## Screenshots
-![Front Page]()
+![Front Page](https://github.com/trabnett/flask-highscool-app/blob/master/app/static/img/homepage.gif)
+
+![Student Page](https://github.com/trabnett/flask-highscool-app/blob/master/app/static/img/student.gif)
+
+![Teacher Page](https://github.com/trabnett/flask-highscool-app/blob/master/app/static/img/teacher.gif)
+
+![Mobile View Page](https://github.com/trabnett/flask-highscool-app/blob/master/app/static/img/mobile.gif)
