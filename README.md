@@ -1,5 +1,5 @@
 # Welcome to Tim Rabnett High School
-## A simulated highschool website created using Flask and Postgres.
+## A simulated RESTful highschool website created using Flask and Postgres.
 ##### This project uses many common features of Flask, Postgres and Flask-Bootstrap. 
 
 
