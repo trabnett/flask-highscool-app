@@ -198,15 +198,22 @@ h3{
         width: 7em;
     }
 }
+/* adjust for iphones which don't support fixed background attachments */
 @supports (-webkit-overflow-scrolling: touch) {
     /* CSS specific to iOS devices */ 
-    .homepage #school{
+    .homepage {
         background-repeat: no-repeat !important;
         background-attachment: scroll !important;
         background-size: cover !important;
         min-height: 46em !important;
-      }
-      .btn-group {
+    }
+    #school {
+        background-repeat: no-repeat !important;
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        min-height: 46em !important;
+    }
+    .btn-group {
         right: 200px;
     }
   }
