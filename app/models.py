@@ -7,7 +7,7 @@ from app import login
 
 @login.user_loader
 def load_user(id):
-    if app.routes.teacher_check['status'] == False:
+    if app.routes.teacher_check['status'] != True:
         user = Student.query.get(id)
         return user
     user = Teacher.query.get(id)
