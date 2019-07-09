@@ -2,9 +2,9 @@
 $(document).ready(function(){
     // adjustments for various mobile views
     $('homepage').height($(window).height())
-    $('#school').height($(window).height() - $('.first').height()).css({'background-repeat': 'no-repeat', 'background-attachment': 'scroll', 'background-size': 'cover'}).attr("class","")
+    $('#school').height($(window).height() - $('.first').height()).css({'background-repeat': 'no-repeat', 'background-attachment': 'fixed', 'background-size': 'cover'}).attr("class","")
     $('.card-backdrop').css('min-height', $(window).height())
-    $('.homepage-card').text($(window).height())
+    $('.homepage-card').text(10)
 
     // scroll fade feature for homepage
     let scroll = 0
