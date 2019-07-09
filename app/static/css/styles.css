@@ -173,6 +173,9 @@ h3{
 }
 
 @media screen and (max-width: 767px) {
+    .homepage {
+        
+    }
     /* .btn-group {
         right: 0;
     } */
