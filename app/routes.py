@@ -17,9 +17,7 @@ import secrets
 engine = db.engine
 Session = sessionmaker(engine)
 session = Session()
-teacher_check = {'status': None}
 
-print('<----------------------------------Test Print------------------------>')
 @app.route('/')
 def welcome():
     return render_template('index.html')
@@ -32,7 +30,6 @@ def about():
 def login():
     if current_user.is_authenticated:
         if hasattr(current_user, 'birthday'):
-            teacher_check['status'] = False
             return redirect(f'/students/{current_user.id}')
         else:
             return redirect(f'/teachers/{current_user.id}')
@@ -45,11 +42,9 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         if hasattr(user, 'birthday'):
-            teacher_check['status'] = False
             login_user(user, remember=form.remember_me.data)
             return redirect(f'/students/{user.id}')
         if hasattr(user, 'started_at_school'):
-            teacher_check['status'] = True
             login_user(user, remember=form.remember_me.data)
             return redirect(f'/teachers/{user.id}')
     return render_template('password_templates/login.html', title='Sign In', form=form)
@@ -346,12 +341,14 @@ def new_test(id):
 def register():
     form = Register()
     if form.validate_on_submit():
-        data = request.form
         email_check = Student.query.filter_by(email=form.email.data).first()
         if email_check != None:
             flash('This email is already assigned to a student. Are you sure you are not already a student at this school?')
             return render_template('student_templates/register.html', form=form)
-        new_student = Student(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, birthday=form.birthday.data, grade=int(form.grade.data), pic_url=form.pic_url.data, password_hash=generate_password_hash(form.password.data))
+        count1 = Student.query.order_by(Student.id.desc()).all()[0].id
+        count2 = Teacher.query.order_by(Teacher.id.desc()).all()[0].id
+        id = max(count1, count2) + 1
+        new_student = Student(id=id, first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, birthday=form.birthday.data, grade=int(form.grade.data), pic_url=form.pic_url.data, password_hash=generate_password_hash(form.password.data))
         if len(form.twitter.data) > 0:
             new_student.twitter = form.twitter.data
         db.session.add(new_student)
@@ -368,7 +365,11 @@ def join_faculty():
         if check_email != None:
             flash('This email is already assigned to a Teacher. Are you sure you are not already a teacher at this school?')
             return render_template('teacher_templates/join_faculty.html', form=form)
-        new_teacher = Teacher(first_name=form.first_name.data, last_name=form.last_name.data, started_at_school=form.started_at_school.data, pic_url=form.pic_url.data, email=form.email.data, password_hash=generate_password_hash(form.password.data))
+        # work around to make sure user loader doesn't confuse teachers and students
+        count1 = Student.query.order_by(Student.id.desc()).all()[0].id
+        count2 = Teacher.query.order_by(Teacher.id.desc()).all()[0].id
+        id = max(count1, count2) + 1
+        new_teacher = Teacher(id=id, first_name=form.first_name.data, last_name=form.last_name.data, started_at_school=form.started_at_school.data, pic_url=form.pic_url.data, email=form.email.data, password_hash=generate_password_hash(form.password.data))
         db.session.add(new_teacher)
         db.session.commit()
         flash(f'Thank you {new_teacher.first_name} {new_teacher.last_name}. You are now a registered teacher. Please Log in!')

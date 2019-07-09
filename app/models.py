@@ -7,12 +7,10 @@ from app import login
 
 @login.user_loader
 def load_user(id):
-    if app.routes.teacher_check['status'] != True:
-        print('student')
-        user = Student.query.get(id)
+    user = Student.query.get(id)
+    if user == None:
+        user = Teacher.query.get(id)
         return user
-    user = Teacher.query.get(id)
-    print('teacher')
     return user
 
 class Student(UserMixin, db.Model):
