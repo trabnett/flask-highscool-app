@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
     // adjustments for various mobile views
-    $('.homepage').css('width', $(window).width())
+    $('.homepage').css('width', $(window).width()).height($(window).height() - 90)
     $('#school').height($(window).height() - $('.first').height()).css({'background-repeat': 'no-repeat', 'background-attachment': 'fixed', 'background-size': 'cover'}).attr("class","")
     $('.card-backdrop').css('min-height', $(window).height())
     let a = $('.homepage').height()
