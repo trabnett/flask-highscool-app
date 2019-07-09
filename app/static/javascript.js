@@ -1,11 +1,11 @@
 
 $(document).ready(function(){
     // adjustments for various mobile views
-    $('.homepage').css('height', 160)
+    $('.homepage').css('height', $(window).height() - 60)
     $('#school').height($(window).height() - $('.first').height()).css({'background-repeat': 'no-repeat', 'background-attachment': 'fixed', 'background-size': 'cover'}).attr("class","")
     $('.card-backdrop').css('min-height', $(window).height())
     let a = $('.homepage').height()
-    let b = $('#class').height()
+    let b = $(window).width()
     let c = $('#school').height()
     $('.homepage-card').text(`${a}  ${b}  ${c}`)
 
