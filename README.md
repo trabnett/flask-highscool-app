@@ -11,10 +11,10 @@ webapp is hosted on heroku at:
 #### employs:
 
 + Flask
-+ Flask-Bootstrap
-+ WTForms
-+ Flask-Login
-+ Flask-Mail
++ Flask-Bootstrap for styling
++ WTForms for forms
++ Flask-Login user authentication
++ Flask-Mail for resetting forgotten passwords
 + Scripting with Javascript and jQuery
 
 #### Quick Start
@@ -63,6 +63,6 @@ Teacher page allows teachers to enter new test scores and remove or add Students
 
 ![Teacher Page](https://github.com/trabnett/flask-highscool-app/blob/master/app/static/img/teacher.gif)
 
-Responsive view displays well on most mobile devices
+Responsive view displays well on most mobile devices (no fixed background pictures on iOS devices)
 
 ![Mobile View Page](https://github.com/trabnett/flask-highscool-app/blob/master/app/static/img/mobile.gif)
