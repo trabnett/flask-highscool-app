@@ -200,10 +200,13 @@ h3{
 }
 @supports (-webkit-overflow-scrolling: touch) {
     /* CSS specific to iOS devices */ 
-    .homepage {
+    .homepage #school{
         background-repeat: no-repeat !important;
         background-attachment: scroll !important;
         background-size: cover !important;
         min-height: 46em !important;
       }
+      .btn-group {
+        right: 200px;
+    }
   }
