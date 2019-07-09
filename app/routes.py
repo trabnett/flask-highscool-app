@@ -345,6 +345,7 @@ def register():
         if email_check != None:
             flash('This email is already assigned to a student. Are you sure you are not already a student at this school?')
             return render_template('student_templates/register.html', form=form)
+        # work around so that user loader doesn't get confused
         count1 = Student.query.order_by(Student.id.desc()).all()[0].id
         count2 = Teacher.query.order_by(Teacher.id.desc()).all()[0].id
         id = max(count1, count2) + 1
