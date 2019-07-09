@@ -110,9 +110,10 @@ h3{
 }
 .homepage {
     background-repeat: no-repeat !important;
-    background-attachment: scroll !important;
+    background-attachment: fixed !important;
     background-size: cover !important;
-    /* min-height: 46em !important; */
+
+    min-height: 46em !important;
   }
 .homepage-banner {
     max-height:8em;
@@ -172,24 +173,9 @@ h3{
 }
 
 @media screen and (max-width: 767px) {
-    /* .btn-group {
+    .btn-group {
         right: 0;
-    } */
-    /* .test_scores{
-        width: 5em;
     }
-    .student-course-buffer{
-        width: 7.5em;
-    }
-    .card-icon{
-        height: 6em;
-    }
-    .homepage-card{
-        height: 14em;
-    }
-    .card-content{
-        width: 9em;
-    } */
 }
 
 @media screen and (max-width: 440px) {
@@ -212,3 +198,9 @@ h3{
         width: 7em;
     }
 }
+@supports (-webkit-overflow-scrolling: touch) {
+    /* CSS specific to iOS devices */ 
+    .card-icon{
+        background-color: red;
+    }
+  }
