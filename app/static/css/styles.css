@@ -110,7 +110,7 @@ h3{
 }
 .homepage {
     background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
+    background-attachment: scroll !important;
     background-size: cover !important;
     /* min-height: 46em !important; */
   }
