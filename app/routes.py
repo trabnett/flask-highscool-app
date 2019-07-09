@@ -19,6 +19,7 @@ Session = sessionmaker(engine)
 session = Session()
 teacher_check = {'status': None}
 
+print('<----------------------------------Test Print------------------------>')
 @app.route('/')
 def welcome():
     return render_template('index.html')
