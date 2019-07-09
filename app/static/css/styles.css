@@ -217,6 +217,16 @@ h3{
         right: 350px;
     }
     .user-circle{
-        right: 25em;
+        border-radius: 50%;
+        height: 12.1em;
+        width: 12.1em;
+        position: fixed !important;
+        top: 0;
+        right: 24.5em;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 3px;
     }
   }
