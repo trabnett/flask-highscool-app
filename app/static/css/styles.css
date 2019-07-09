@@ -214,14 +214,14 @@ h3{
         min-height: 46em !important;
     }
     .btn-group {
-        right: 5em;
+        right: 4.5em;
     }
     .user-circle{
         border-radius: 50%;
         height: 3.1em;
         width: 3.1em;
         position: fixed !important;
-        top: 3.3;
+        top: 3;
         right: 15px;
         display: inline-flex;
         flex-direction: column;
