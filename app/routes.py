@@ -29,12 +29,12 @@ def about():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated and current_user.birthday:
-        teacher_check['status'] = False
-        return redirect(f'/students/{current_user.id}')
-    if current_user.is_authenticated and current_user.started_at_school:
-        teacher_check['status'] = True
-        return redirect(f'/teachers/{current_user.id}')
+    if current_user.is_authenticated:
+        if hasattr(current_user, 'birthday'):
+            teacher_check['status'] = False
+            return redirect(f'/students/{current_user.id}')
+        else:
+            return redirect(f'/teachers/{current_user.id}')
     form = LoginForm()
     if form.validate_on_submit():
         user = Student.query.filter_by(email=form.email.data).first()
@@ -46,9 +46,11 @@ def login():
         login_user(user, remember=form.remember_me.data)
         if hasattr(user, 'birthday'):
             teacher_check['status'] = False
+            print(teacher_check)
             return redirect(f'/students/{user.id}')
         if hasattr(user, 'started_at_school'):
             teacher_check['status'] = True
+            print(teacher_check)
             return redirect(f'/teachers/{user.id}')
     return render_template('password_templates/login.html', title='Sign In', form=form)
 
