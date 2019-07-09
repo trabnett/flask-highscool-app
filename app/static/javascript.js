@@ -9,6 +9,7 @@ $(document).ready(function(){
     // scroll fade feature for homepage
     let scroll = 0
     $(window).scroll(function(){
+        
         let id1 = ''
         let id2 = ''
         let scroll_num = 0
@@ -24,10 +25,14 @@ $(document).ready(function(){
             scroll_num = scroll - 1500
             id1 = "sportpic"
             id2 = "cafeteria"
-        } else {
+        } else if (scroll < 2683) {
             scroll_num = scroll - 2080
             id1 = "cafeteria"
             id2 = "test"
+        } else {
+            scroll_num = scroll - 2683
+            id1 = "test"
+            id2 = ""
         }
         let opacity = 1 - (scroll_num / 500)
         scroll = $(this).scrollTop()
