@@ -1,10 +1,13 @@
 
 $(document).ready(function(){
     // adjustments for various mobile views
-    $('homepage').height($(window).height())
+    $('.homepage').css('height', $(window).height() - 60)
     $('#school').height($(window).height() - $('.first').height()).css({'background-repeat': 'no-repeat', 'background-attachment': 'fixed', 'background-size': 'cover'}).attr("class","")
     $('.card-backdrop').css('min-height', $(window).height())
-    $('.homepage-card').text(10)
+    let a = $('.homepage').height()
+    let b = $('#class').height()
+    let c = $('#school').height()
+    $('.homepage-card').text(`${a}  ${b}  ${c}`)
 
     // scroll fade feature for homepage
     let scroll = 0
