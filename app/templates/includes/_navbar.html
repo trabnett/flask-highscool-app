@@ -17,21 +17,20 @@
                 <li><a href="{{ url_for('courses')}}">Courses</a></li>
                 <li><a href="{{ url_for('sports')}}">Athletics</a></li>
                 {% if current_user.is_anonymous %}
-                <li>
-                    <a href="{{ url_for('register') }}">Register</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('join_faculty') }}">Join Faculty</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('login') }}">Login</a>
-                </li>
-                </ul>
+                    <li>
+                        <a href="{{ url_for('register') }}">Register</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('join_faculty') }}">Join Faculty</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('login') }}">Login</a>
+                    </li>
+            </ul>
                 {% else %}
-                    </ul>
                     <ul class="navbar-nav mr-auto">
                         <li>
-                            <div class="btn-group">
+                            <div class="btn-group mobile">
                                 <button type="button" class="user-circle btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ current_user.first_name[0] }}{{ current_user.last_name[0] }}
                                 </button>
@@ -55,6 +54,7 @@
                             </div>
                         </li>
                     </ul>
+                </ul>
                 {% endif %}
                     
         </div><!--/.nav-collapse -->
