@@ -43,14 +43,13 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
-        login_user(user, remember=form.remember_me.data)
         if hasattr(user, 'birthday'):
             teacher_check['status'] = False
-            print(teacher_check)
+            login_user(user, remember=form.remember_me.data)
             return redirect(f'/students/{user.id}')
         if hasattr(user, 'started_at_school'):
             teacher_check['status'] = True
-            print(teacher_check)
+            login_user(user, remember=form.remember_me.data)
             return redirect(f'/teachers/{user.id}')
     return render_template('password_templates/login.html', title='Sign In', form=form)
 
