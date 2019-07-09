@@ -200,7 +200,10 @@ h3{
 }
 @supports (-webkit-overflow-scrolling: touch) {
     /* CSS specific to iOS devices */ 
-    .card-icon{
-        background-color: red;
-    }
+    .homepage {
+        background-repeat: no-repeat !important;
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        min-height: 46em !important;
+      }
   }
