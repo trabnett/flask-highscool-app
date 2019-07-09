@@ -227,7 +227,7 @@ h3{
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-top: 3px;
+        margin-top: 3em;
         z-index: 3;
     }
   }
