@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
     // adjustments for various mobile views
-    $('#school').height($(window).height() - $('.first').height()).css({'background-repeat': 'no-repeat', 'background-attachment': 'fixed', 'background-size': 'cover'}).attr("class","")
+    $('#school').height($(window).height() - $('.first').height()).css({'background-repeat': 'no-repeat', 'background-attachment': 'scroll', 'background-size': 'cover'}).attr("class","")
     $('.card-backdrop').css('min-height', $(window).height())
 
     // scroll fade feature for homepage
