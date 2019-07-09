@@ -218,8 +218,8 @@ h3{
     }
     .user-circle{
         border-radius: 50%;
-        height: 6.1em;
-        width: 6.1em;
+        height: 3.1em;
+        width: 3.1em;
         position: fixed !important;
         top: 3;
         right: 3.5em;
