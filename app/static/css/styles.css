@@ -228,5 +228,6 @@ h3{
         justify-content: center;
         align-items: center;
         margin-top: 3px;
+        z-index: 3;
     }
   }
