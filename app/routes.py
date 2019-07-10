@@ -427,7 +427,7 @@ def forgot_password():
                     recipients=[user.email])
         msg.html = template1(user, code)
         mail.send(msg)
-        flash('Please check your email. A link has been sent to you with a link to reset your password.')
+        flash('Please check your inbox. An email has been sent to you with a link to reset your password.')
         return redirect('/login')
     return render_template('password_templates/forgot_password.html', form=form)
 
