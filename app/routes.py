@@ -148,7 +148,7 @@ def delete_teacher(id):
 @app.route('/sports', methods=['GET', 'POST'])
 def sports():
     if request.method == 'POST':
-        new_sport = request.form.get('sport_name')
+        new_sport = request.form.get('sport_name').title()
         max_size = request.form.get('max_size')
         sport = Sport(sport_name=new_sport,coach_id=current_user.id,max_size=max_size)
         session.add(sport)
@@ -226,9 +226,9 @@ def courses():
 def new_course():
     form = NewCourse()
     if request.method == 'POST' and form.validate():
-        check = Course.query.filter_by(course_name=request.form.get('course_name'), grade=request.form.get('grade')).first()
+        check = Course.query.filter_by(course_name=request.form.get('course_name').title(), grade=request.form.get('grade')).first()
         if check == None:
-            y = Course(course_name=request.form.get('course_name'), grade=request.form.get('grade'), teacher_id=current_user.id)
+            y = Course(course_name=request.form.get('course_name').title(), grade=request.form.get('grade'), teacher_id=current_user.id)
             session.add(y)
             session.commit()
             data = request.form
@@ -313,7 +313,7 @@ def add_students(id):
 @app.route('/courses/<int:id>/new_test', methods=['GET', 'POST'])
 def new_test(id):
     if request.method == 'POST':
-        test_name = request.form.get('test_name')
+        test_name = request.form.get('test_name').title()
         new_test = Test(course_id = id, test_name = test_name)
         session.add(new_test)
         session.commit()
@@ -349,7 +349,7 @@ def register():
         count1 = Student.query.order_by(Student.id.desc()).all()[0].id
         count2 = Teacher.query.order_by(Teacher.id.desc()).all()[0].id
         id = max(count1, count2) + 1
-        new_student = Student(id=id, first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, birthday=form.birthday.data, grade=int(form.grade.data), pic_url=form.pic_url.data, password_hash=generate_password_hash(form.password.data))
+        new_student = Student(id=id, first_name=form.first_name.data.title(), last_name=form.last_name.data.title(), email=form.email.data, birthday=form.birthday.data, grade=int(form.grade.data), pic_url=form.pic_url.data, password_hash=generate_password_hash(form.password.data))
         if len(form.twitter.data) > 0:
             new_student.twitter = form.twitter.data
         db.session.add(new_student)
@@ -370,7 +370,7 @@ def join_faculty():
         count1 = Student.query.order_by(Student.id.desc()).all()[0].id
         count2 = Teacher.query.order_by(Teacher.id.desc()).all()[0].id
         id = max(count1, count2) + 1
-        new_teacher = Teacher(id=id, first_name=form.first_name.data, last_name=form.last_name.data, started_at_school=form.started_at_school.data, pic_url=form.pic_url.data, email=form.email.data, password_hash=generate_password_hash(form.password.data))
+        new_teacher = Teacher(id=id, first_name=form.first_name.data.title(), last_name=form.last_name.data.title(), started_at_school=form.started_at_school.data, pic_url=form.pic_url.data, email=form.email.data, password_hash=generate_password_hash(form.password.data))
         db.session.add(new_teacher)
         db.session.commit()
         flash(f'Thank you {new_teacher.first_name} {new_teacher.last_name}. You are now a registered teacher. Please Log in!')
