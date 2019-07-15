@@ -10,19 +10,17 @@ session = Session()
 
 
 def get_average(student_id, course_name):
-    res = []
     grades = session.query(StudentTest, Course, Test, StudentCourse
     ).filter(StudentTest.student_course_id == StudentCourse.id
     ).filter(Course.course_name == course_name
     ).filter(StudentTest.test_id == Test.id
     ).filter(Test.course_id == Course.id
     ).filter(StudentCourse.student_id == student_id).all()
-    for grade in grades:
-        res.append(grade[0].score)
-    if len(res) == 0:
+    res = sum([grade[0].score for grade in grades])
+    if len(grades) == 0:
         return 0
     else:
-        return round((sum(res) / len(res)), 1)
+        return round((res / len(grades)), 1)
 
 def get_test_scores(student_id):
     student_courses = session.query(
@@ -65,10 +63,7 @@ def get_test_scores(student_id):
     return dic
 
 def get_gpa(academic_summary):
-    gpa = []
     if len(academic_summary) == 0:
         return 100
-    for course in academic_summary:
-        gpa.append(sum(test[1] for test in academic_summary[course]['test_scores']) / len(academic_summary[course]['test_scores']))
-    gpa = round(sum(gpa)/ len(gpa),1)
+    gpa = round(sum([sum(test[1] for test in academic_summary[course]['test_scores']) / len(academic_summary[course]['test_scores']) for course in academic_summary]) / len(academic_summary), 1)
     return gpa
