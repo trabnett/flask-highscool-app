@@ -36,6 +36,9 @@ class Student(UserMixin, db.Model):
     def __repr__(self):
         return '<Student {}>'.format(self.last_name)
 
+    def convert_json(self):
+        return {"id": self.id, "first_name": self.first_name, "last_name": self.last_name, "birthday": self.birthday, "grade": self.grade, "pic_url": self.pic_url, "twitter": self.twitter, "email": self.email, "password_hash": self.password_hash, "reset_code": self.reset_code}
+
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
@@ -47,6 +50,9 @@ class Course(db.Model):
 
     def __repr__(self):
         return '<Course {}>'.format(self.course_name)
+
+    def convert_json(self):
+        return {"id": self.id, "teacher_id": self.teacher_id, "course_name": self.course_name, "grade": self.grade}
 
 class Teacher(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,6 +1,6 @@
 from app import app
 import os
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, json, jsonify
 from app.forms import LoginForm, TestScore, NewSport, NewCourse, Register, JoinFaculty, ResetPassword, ForgotPassword
 from app import db, mail
 from flask_mail import Message
@@ -439,3 +439,11 @@ def not_found_error(error):
 def internal_error(error):
     db.session.rollback()
     return render_template('alerts/500.html'), 500
+
+# json routes
+@app.route('/json_students/<int:id>')
+def json_students(id):
+    x = Course.query.get(id)
+    b = "hello"
+    # y = [z.tim_json() for z in x]
+    return jsonify(x.convert_json())
