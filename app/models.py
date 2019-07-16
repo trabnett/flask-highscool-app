@@ -72,6 +72,9 @@ class Teacher(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def convert_json(self):
+        return {"id": self.id, "first_name": self.first_name, "last_name": self.last_name, "started_at_school": self.started_at_school, "pic_url": self.pic_url, "email": self.email, "password_hash": self.password_hash, "reset_code": self.reset_code}
+
     def __repr__(self):
         return '<Teacher {}>'.format(self.last_name)
 
@@ -86,6 +89,9 @@ class StudentCourse(db.Model):
     def __repr__(self):
         return '<StudentCourse {}>'.format(self.id)
 
+    def convert_json(self):
+        return {"id": self.id, "course_id": self.course_id, "student_id": self.student_id}
+
 class Test(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
@@ -95,6 +101,9 @@ class Test(db.Model):
 
     def __repr__(self):
         return '<Test {}>'.format(self.test_name)
+
+    def convert_json(self):
+        return {"id": self.id, "course_id": self.course_id, "test_name": self.test_name}
 
 class StudentTest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -106,6 +115,9 @@ class StudentTest(db.Model):
 
     def __repr__(self):
         return '<StudentTest {}>'.format(self.id)
+
+    def convert_json(self):
+        return {"id": self.id, "test_id": self.test_id, "student_course_id": self.student_course_id, "score": self.score}
 
 class Sport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -119,6 +131,9 @@ class Sport(db.Model):
     def __repr__(self):
         return '<Sport {}>'.format(self.sport_name)
 
+    def convert_json(self):
+        return {"id": self.id, "sport_name": self.sport_name, "coach_id": self.coach_id, "max_size": self.max_size}
+
 class StudentSport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
@@ -128,6 +143,9 @@ class StudentSport(db.Model):
 
     def __repr__(self):
         return '<StudentSport {}>'.format(self.id)
+
+    def convert_json(self):
+        return {"id": self.id, "student_id": self.student_id, "sport_id": self.sport_id}
 
 class SportScore(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -140,5 +158,8 @@ class SportScore(db.Model):
 
     def __repr__(self):
         return '<Score {} >'.format(self.sport)
+
+    def convert_json(self):
+        return {"id": self.id, "sport_id": self.sport_id, "date": self.date, "opponent": self.opponent, "trhs_score": self.trhs_score, "opponent_score": self.opponent_score}
 
 

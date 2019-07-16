@@ -440,10 +440,92 @@ def internal_error(error):
     db.session.rollback()
     return render_template('alerts/500.html'), 500
 
-# json routes
+# json routes----------------------------------------------------------------------
+nojson = {"alert": "no such records exist"}
+@app.route('/json_students')
+def json_students():
+    students = Student.query.all()
+    if students:
+        return jsonify([i.convert_json() for i in students])
+    else:
+        return jsonify(nojson)
+
 @app.route('/json_students/<int:id>')
-def json_students(id):
-    x = Course.query.get(id)
-    b = "hello"
-    # y = [z.tim_json() for z in x]
-    return jsonify(x.convert_json())
+def json_student(id):
+    student = Student.query.get(id)
+    if student:
+        return jsonify(student.convert_json())
+    else:
+        return jsonify(nojson)
+
+@app.route('/json_teachers')
+def json_teachers():
+    teachers = Teacher.query.all()
+    if teachers:
+        return jsonify([i.convert_json() for i in teachers])
+    else:
+        return jsonify(nojson)
+
+@app.route('/json_teachers/<int:id>')
+def json_teacher(id):
+    teacher = Teacher.query.get(id)
+    if teacher:
+        return jsonify(teacher.convert_json())
+    else:
+        return jsonify(nojson)
+
+@app.route('/json_courses')
+def json_courses():
+    courses = Course.query.all()
+    if courses:
+        return jsonify([i.convert_json() for i in courses])
+    else:
+        return jsonify(nojson)
+
+@app.route('/json_courses/<int:id>')
+def json_course(id):
+    course = Course.query.get(id)
+    if course:
+        return jsonify(course.convert_json())
+    else:
+        return jsonify(nojson)
+
+@app.route('/json_sports')
+def json_sports():
+    sports = Sport.query.all()
+    if sports:
+        return jsonify([i.convert_json() for i in sports])
+    else:
+        return jsonify(nojson)
+
+@app.route('/json_sports/<string:name>')
+def json_sport(name):
+    sport = Sport.query.filter_by(sport_name=name.title()).first()
+    if sport:
+        return jsonify(sport.convert_json())
+    else:
+        return jsonify(nojson)
+
+@app.route('/json_student_courses')
+def json_student_courses():
+    student_courses = StudentCourse.query.all()
+    if student_courses:
+        return jsonify([i.convert_json() for i in student_courses])
+    else:
+        return jsonify(nojson)
+
+@app.route('/json_tests')
+def json_tests():
+    tests = Test.query.all()
+    if tests:
+        return jsonify([i.convert_json() for i in tests])
+    else:
+        return jsonify(nojson)
+
+@app.route('/json_student_tests')
+def json_student_tests():
+    student_tests = StudentTest.query.all()
+    if student_tests:
+        return jsonify([i.convert_json() for i in student_tests])
+    else:
+        return jsonify(nojson)
